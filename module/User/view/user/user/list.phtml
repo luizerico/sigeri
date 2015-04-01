@@ -1,0 +1,38 @@
+<section class="list">
+<?php
+$title = 'User List';
+$this->headTitle ( $title );
+?>
+ 
+ <h2><?php echo $this->escapeHtml($title); ?></h2>
+ <p>
+     <a href="<?php echo $this->url('user', array('action'=>'add'));?>">Add new user</a>
+ </p> 
+ <table class="table">
+ <tr>
+     <th>ID</th>
+     <th>Name</th>
+     <th>Email</th>
+     <th>Unit</th>
+     <th>Manager</th>
+     <th>Groups</th>
+     <th>&nbsp;</th>
+ </tr>
+ <?php foreach ($dbArray as $dbRow ) : ?>
+ <tr>
+     <td><?php echo $this->escapeHtml($dbRow->getId());?></td>
+     <td><?php echo $this->escapeHtml($dbRow->getName());?></td>
+     <td><?php echo $this->escapeHtml($dbRow->getEmail());?></td>
+     <td><?php echo $this->escapeHtml($dbRow->getUnit());?></td>
+     <td><?php echo $this->escapeHtml($dbRow->getManager());?></td>
+     <td><?php foreach ($dbRow->getGroups() as $group) { echo $this->escapeHtml($group) . "<br>";};?></td>
+     <td>
+         <a href="<?php echo $this->url('user',
+             array('action'=>'edit', 'id' => $dbRow->getId()));?>">Edit</a>
+         <a href="<?php echo $this->url('user',
+             array('action'=>'delete', 'id' => $dbRow->getId()));?>">Delete</a>
+     </td>
+ </tr>
+ <?php endforeach; ?>
+ </table>
+</section>

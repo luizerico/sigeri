@@ -1,0 +1,30 @@
+
+<section class="delete">
+
+<?php
+	$title = 'Delete ' . $this->title;
+	$this->headTitle ( 'SIGERI - ' . $title );
+?>
+	<h2><?php echo $this->escapeHtml($title); ?></h2>
+	<p>Are you sure that you want to delete?	
+	<p>
+    Folder: '<?php echo $this->escapeHtml($dbArray->getName()); ?>' <br>
+    </p>
+	</p>
+<?php
+$url = $this->url ( $this->router, array (
+		'action' => 'delete',
+		'id' => $this->id 
+) );
+?>
+<form action="<?php echo $url; ?>" method="post" >
+		<div class="form-group" >
+			<input  type="hidden" name="id"
+				value="<?php echo (int) $dbArray->getId(); ?>" /> 
+			<input class="btn btn-warning" style="width:100px" type="submit" name="del" 
+				value="Yes" /> 
+			<input class="btn btn-primary" style="width:100px" type="submit"
+				name="del" value="No" />
+		</div>
+	</form>
+</section>

@@ -1,0 +1,29 @@
+
+<section class="delete">
+
+<?php
+// module/Album/view/album/album/delete.phtml:
+$title = 'Delete Threat Level';
+$this->headTitle ( $title );
+?>
+	<h2><?php echo $this->escapeHtml($title); ?></h2>
+	<p>Are you sure that you want to delete?</p>
+    Value: '<?php echo $this->escapeHtml($dbArray->getValue()); ?>' <br>
+    Description: '<?php echo $this->escapeHtml($dbArray->getDescription()); ?>'
+    </p>
+	</p>
+<?php
+$url = $this->url ( 'threatlevel', array (
+		'action' => 'delete',
+		'id' => $this->id 
+) );
+?>
+<form action="<?php echo $url; ?>" method="post">
+		<div>
+			<input type="hidden" name="id"
+				value="<?php echo (int) $dbArray->getId(); ?>" /> <input
+				type="submit" name="del" value="Yes" /> <input type="submit"
+				name="del" value="No" />
+		</div>
+	</form>
+</section>
