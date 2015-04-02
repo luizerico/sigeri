@@ -63,42 +63,38 @@ class DocumentController extends AbstractActionController {
 		$form = $builder->createForm ( $addObject );
 		$hydrator = new DoctrineHydrator ( $this->getEntityManager (), ENTITY );
 		$form->setHydrator ( $hydrator );
-
-		$file = new Element\File('file');
-		$file->setLabel('File Upload')->setAttribute('id', 'file');
-		$form->add($file);
 		
-		$submit = new Element\Submit();
-		$submit->setAttribute ( 'name', 'submit');
+		$file = new Element\File ( 'file' );
+		$file->setLabel ( 'File Upload' )->setAttribute ( 'id', 'file' );
+		$form->add ( $file );
+		
+		$submit = new Element\Submit ();
+		$submit->setAttribute ( 'name', 'submit' );
 		$submit->setAttribute ( 'value', 'Add' );
-		$form->add($submit );
+		$form->add ( $submit );
 		
 		$form->bind ( $addObject );
-				
+		
 		$request = $this->getRequest ();
 		if ($request->isPost ()) {
-			$post = array_merge_recursive ( 
-					$request->getPost ()->toArray (), 
-					$request->getFiles ()->toArray () );
+			$post = array_merge_recursive ( $request->getPost ()->toArray (), $request->getFiles ()->toArray () );
 			$form->setData ( $post );
 			if ($form->isValid ()) {
 				try {
-					var_dump($form->getData()->name);
+					var_dump ( $form->getData ()->name );
 					$file = $request->getFiles ()['file'];
-					$addObject->uploadFile ( $file );					
-
+					$addObject->uploadFile ( $file );
+					
 					$addObject->exchangeArray ( $hydrator->extract ( $form->getData () ) );
 					$this->getEntityManager ()->persist ( $addObject );
 					$this->getEntityManager ()->flush ();
-					
 				} catch ( Exception $ex ) {
-					var_dump($ex);
+					var_dump ( $ex );
 				}
-								
-				return $this->redirect ()->toRoute ( ROUTER, array (
-						'action' => 'list'
-				) );
 				
+				return $this->redirect ()->toRoute ( ROUTER, array (
+						'action' => 'list' 
+				) );
 			}
 		}
 		
@@ -153,11 +149,11 @@ class DocumentController extends AbstractActionController {
 		 */
 		
 		$form->bind ( $dbArray );
-		$form->remove('file');
-		$submit = new Element\Submit();
-		$submit->setAttribute ( 'name', 'submit');
+		$form->remove ( 'file' );
+		$submit = new Element\Submit ();
+		$submit->setAttribute ( 'name', 'submit' );
 		$submit->setAttribute ( 'value', 'Edit' );
-		$form->add($submit );
+		$form->add ( $submit );
 		
 		/*
 		 * Check if request is a post from edit form and
@@ -169,8 +165,8 @@ class DocumentController extends AbstractActionController {
 		$request = $this->getRequest ();
 		if ($request->isPost ()) {
 			$form->setData ( $request->getPost () );
-			var_dump($form->isValid());
-			if ($form->isValid ()) {	
+			var_dump ( $form->isValid () );
+			if ($form->isValid ()) {
 				
 				$editObject->exchangeArray ( $hydrator->extract ( $form->getData () ) );
 				$this->getEntityManager ()->flush ();
@@ -243,8 +239,6 @@ class DocumentController extends AbstractActionController {
 		 * Process the delete request and
 		 * Redirect to the list page
 		 */
-		$file = $dbArray->getAbsolutePath() . '/' . $dbArray->getName();
-		var_dump($file);
 		
 		$request = $this->getRequest ();
 		if ($request->isPost ()) {
@@ -252,15 +246,23 @@ class DocumentController extends AbstractActionController {
 			
 			if ($del == 'Yes') {
 				$id = $request->getPost ( 'id' );
-				$file = $dbArray->getAbsolutePath() . '/' . $dbArray->getName();
-				unlink($file);
-				$ORMRepository->remove ( $dbArray );
-				$ORMRepository->flush ();
+				if ($dbArray->deleteFile ()) {
+					$ORMRepository->remove ( $dbArray );
+					$ORMRepository->flush ();
+					
+					return $this->redirect ()->toRoute ( ROUTER, array (
+							'action' => 'list' 
+					) );
+				} else {
+					echo ('<h3 align="center">Has ocurred an error. Contact the support...</h3>
+						   <p align=center> Ckeck if you have permission to delete this file
+							or if the file really exists in the server.</p> ');
+				}
+			} else {
+				return $this->redirect ()->toRoute ( ROUTER, array (
+						'action' => 'list' 
+				) );
 			}
-			
-			return $this->redirect ()->toRoute ( ROUTER, array (
-					'action' => 'list' 
-			) );
 		}
 		
 		return array (

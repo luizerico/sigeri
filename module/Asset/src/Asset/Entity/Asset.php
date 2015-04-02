@@ -100,7 +100,7 @@ class Asset {
 	 * @Annotation\Required({"required":"false" })
 	 * @Annotation\Filter({"name":"StripTags"})
 	 * @Annotation\Options({"label":"Risks:"})
-	 * @Annotation\Attributes({"multiple":"multiple", "id":"my-select"})
+	 * @Annotation\Attributes({"multiple":"multiple"})
 	 *
 	 * @var \Risk\Entity\Risk
 	 * @access protected
@@ -113,7 +113,7 @@ class Asset {
 	 * @Annotation\Required({"required":"false" })
 	 * @Annotation\Filter({"name":"StripTags"})
 	 * @Annotation\Options({"label":"Dependencies:"})
-	 * @Annotation\Attributes({"multiple":"multiple", "id":"my-select"})
+	 * @Annotation\Attributes({"multiple":"multiple"})
 	 *
 	 * @var \Asset\Entity\Asset
 	 * @access protected
@@ -129,7 +129,7 @@ class Asset {
 	 * @Annotation\Attributes({"element.style":"width:100px"})
 	 * @Annotation\Filter({"name":"StripTags"})
 	 * @Annotation\Options({"label":"Relevance:"})
-	 * @Annotation\Attributes({"multiple":"multiple", "id":"my-select"})
+	 * @Annotation\Attributes({"multiple":"multiple"})
 	 *
 	 * @var \Asset\Entity\AssetType
 	 * @access protected
@@ -138,12 +138,17 @@ class Asset {
 	 */
 	
 	/**
-	 * @ORM\Column(type="string")
-	 * @Annotation\Type("Zend\Form\Element\File")
-	 * @Annotation\Required({"required":"False" })
-	 * @Annotation\Options({"label":"Attachment:"})
+	 * @ORM\ManyToMany(targetEntity="Document\Entity\Document")
+	 * @ORM\JoinColumn(name="documents_id", referencedColumnName="id")
+	 * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
+	 * @Annotation\Required({"required":"false" })
+	 * @Annotation\Options({"label":"Documents:"})
+	 * @Annotation\Attributes({"multiple":"multiple"})
+	 *
+	 * @var \Document\Entity\Document
+	 * @access protected
 	 */
-	protected $attachment;
+	protected $documents;
 	
 	/**
 	 * @Annotation\Type("Zend\Form\Element\Submit")
@@ -154,6 +159,7 @@ class Asset {
 	public function __construct(){
 		$this->risks = new ArrayCollection();
 		$this->dependencies = new ArrayCollection();
+		$this->documents = new ArrayCollection();
 	}
 	public function exchangeArray($data) {
 		$this->id = (isset ( $data ['id'] )) ? $data ['id'] : null;
@@ -164,7 +170,7 @@ class Asset {
 		$this->analyst = (isset ( $data ['analyst'] )) ? $data ['analyst'] : null;
 		$this->risks = (isset ( $data ['risks'] )) ? $data ['risks'] : null;
 		$this->dependencies = (isset ( $data ['dependencies'] )) ? $data ['dependencies'] : null;
-		$this->attachment = (isset ( $data ['attachment'] )) ? $data ['attachment'] : null;
+		$this->documents = (isset ( $data ['documents'] )) ? $data ['documents'] : null;
 	}
 	public function __toString() {
 		return sprintf ( '%s', $this->getName () );
@@ -248,12 +254,17 @@ class Asset {
 		return $this->dependencies;
 	}	
 	
-	public function getAttachment() {
-		return $this->attachment;
+	public function addDocuments(Collection $documents) {
+		foreach($documents as $document){
+			$this->documents->add($document);
+		}
 	}
-	public function setAttachment( $attachment ) {
-		$this->attachment = $attachment;
-		return $this;
+	public function removeDocuments(Collection $documents) {
+		foreach($documents as $document){
+			$this->documents->removeElement($document);
+		}
 	}
-	
+	public function getDocuments() {
+		return $this->documents;
+	}	
 }

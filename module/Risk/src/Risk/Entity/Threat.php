@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @ORM\Entity
@@ -135,10 +136,28 @@ class Threat {
 	protected $annotations;
 	
 	/**
+	 * @ORM\ManyToMany(targetEntity="Document\Entity\Document")
+	 * @ORM\JoinColumn(name="documents_id", referencedColumnName="id")
+	 * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
+	 * @Annotation\Required({"required":"false" })
+	 * @Annotation\Options({"label":"Documents:"})
+	 * @Annotation\Attributes({"multiple":"multiple"})
+	 *
+	 * @var \Document\Entity\Document
+	 * @access protected
+	 */
+	protected $documents;
+	
+	/**
 	 * @Annotation\Type("Zend\Form\Element\Submit")
 	 * @Annotation\Attributes({"value":"Submit"})
 	 */
 	protected $submit;
+	
+	public function __construct(){
+		$this->documents = new ArrayCollection();
+	}
+	
 	public function exchangeArray($data) {
 		$this->id = (isset ( $data ['id'] )) ? $data ['id'] : null;
 		$this->name = (isset ( $data ['name'] )) ? $data ['name'] : null;
@@ -149,6 +168,7 @@ class Threat {
 		$this->analyst = (isset ( $data ['analyst'] )) ? $data ['analyst'] : null;
 		$this->date = (isset ( $data ['date'] )) ? $data ['date'] : null;
 		$this->annotations = (isset ( $data ['annotations'] )) ? $data ['annotations'] : null;
+		$this->documents = (isset ( $data ['documents'] )) ? $data ['documents'] : null;
 	}
 	public function __toString() {
 		return sprintf ( '%s', $this->getName () );
@@ -218,6 +238,19 @@ class Threat {
 	public function setAnnotations($annotations) {
 		$this->annotations = $annotations;
 		return $this;
+	}
+	public function addDocuments(Collection $documents) {
+		foreach($documents as $document){
+			$this->documents->add($document);
+		}
+	}
+	public function removeDocuments(Collection $documents) {
+		foreach($documents as $document){
+			$this->documents->removeElement($document);
+		}
+	}
+	public function getDocuments() {
+		return $this->documents;
 	}
 }
 	

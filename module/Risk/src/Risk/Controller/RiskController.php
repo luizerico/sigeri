@@ -17,6 +17,7 @@ use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use Exception;
 use Doctrine\Common\Annotations\Annotation;
 use DoctrineORMModule\Form\Annotation\AnnotationBuilder as DoctrineAnnotationBuilder;
+use Zend\Json\Json;
 
 class RiskController extends AbstractActionController {
 	
@@ -39,6 +40,19 @@ class RiskController extends AbstractActionController {
 		}
 		return $this->em;
 	}
+	
+	public function reportAction(){
+		$json = \Zend\Json\Json::encode(array(
+						'ass'=>8,
+						'bss'=>2, 
+						'css'=>5, 
+						'dss'=>100));
+		return array (
+				'title' => TITLE,
+				'data' => $json
+				 );	
+	}
+	
 	public function addAction() {
 		/*
 		 * $addObject = new Risk ();

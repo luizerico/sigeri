@@ -64,10 +64,10 @@ class Threat extends \Risk\Entity\Threat implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'id', 'name', 'description', 'level', 'type', 'source', 'analyst', 'date', 'annotations', 'submit');
+            return array('__isInitialized__', 'id', 'name', 'description', 'level', 'type', 'source', 'analyst', 'date', 'annotations', 'documents', 'submit');
         }
 
-        return array('__isInitialized__', 'id', 'name', 'description', 'level', 'type', 'source', 'analyst', 'date', 'annotations', 'submit');
+        return array('__isInitialized__', 'id', 'name', 'description', 'level', 'type', 'source', 'analyst', 'date', 'annotations', 'documents', 'submit');
     }
 
     /**
@@ -406,6 +406,39 @@ class Threat extends \Risk\Entity\Threat implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAnnotations', array($annotations));
 
         return parent::setAnnotations($annotations);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addDocuments(\Doctrine\Common\Collections\Collection $documents)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addDocuments', array($documents));
+
+        return parent::addDocuments($documents);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeDocuments(\Doctrine\Common\Collections\Collection $documents)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeDocuments', array($documents));
+
+        return parent::removeDocuments($documents);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDocuments()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDocuments', array());
+
+        return parent::getDocuments();
     }
 
 }

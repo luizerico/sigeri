@@ -55,27 +55,33 @@ class Document {
 	//public $file;
 	
 		
+	public function __toString(){
+		return sprintf ( '%s / %s', $this->getFolder(), $this->getName() );
+	}
 	public function getAbsolutePath() {
 		return null === $this->path ? null : $this->getUploadRootDir ();
 	}
 	public function getWebPath() {
-		return null === $this->path ? null : $this->getUploadDir () . '/';
+		return null === $this->folder ? null : $this->getUploadDir () . '/';
 	}
 	protected function getUploadRootDir() {
 		return __DIR__ . '/../../../../../public/' . $this->getUploadDir ();
 	}
 	protected function getUploadDir() {
-		return '/data/documents';
+		return '/data/documents/' . $this->getFolder();
 	}
 	public function uploadFile($file) {
 		$this->name = $file['name'];
 		$this->type = $file['type'];
-		$this->path = $this->getUploadRootDir() ;
 		
 		$filter = new \Zend\Filter\File\RenameUpload ( $this->getUploadRootDir() );
 		$filter->setUseUploadName ( true );
 		$filter->filter ( $file );
-	}
+	}	
+	public function deleteFile() {
+		var_dump($this->getUploadRootDir() . '/' . $this->name);
+		return unlink ( $this->getUploadRootDir() . '/' . $this->name );
+	}	
 	public function exchangeArray($data) {
 		$this->id = (isset ( $data ['id'] )) ? $data ['id'] : null;
 		$this->description = (isset ( $data ['description'] )) ? $data ['description'] : null;
@@ -106,7 +112,7 @@ class Document {
 		return $this->folder;
 	}
 	public function setFolder($folder) {
-		$this->path = $folder;
+		$this->folder = $folder;
 		return $this;
 	}
 	public function getDescription() {
