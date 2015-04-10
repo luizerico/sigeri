@@ -18,6 +18,7 @@ use Exception;
 use Doctrine\Common\Annotations\Annotation;
 use DoctrineORMModule\Form\Annotation\AnnotationBuilder as DoctrineAnnotationBuilder;
 use Zend\Json\Json;
+use Zend\View\Model\JsonModel;
 
 class RiskController extends AbstractActionController {
 	
@@ -42,15 +43,52 @@ class RiskController extends AbstractActionController {
 	}
 	
 	public function reportAction(){
-		$json = \Zend\Json\Json::encode(array(
-						'ass'=>8,
-						'bss'=>2, 
-						'css'=>5, 
-						'dss'=>100));
+		$dataset = array(
+				names=>array("aa","bb","cc","dd","ee"),
+				values=>array(10,20,30,40,10,8,7,5,100,34,67,83,67,87)
+		);
+		
+		$json = \Zend\Json\Json::encode($dataset);
+		
+		/*$json = \Zend\Json\Json::encode(array(
+						8,7,5,10,88,99,100,100,
+						8,7,5,100,34,67,83,67,87,1
+		));*/
+		
+		
+		$ORMRepository = $this->getEntityManager ()->getRepository ( ENTITY );
+		$dbArray = $ORMRepository->findAll ();
+		
+
+		//$json2 = \Zend\Json\Json::encode($dbArray, true);
+		//$json2 = $dbArray->exportTo('json');
+		
+		
+		$ORMRepository = $this->getEntityManager()->createQueryBuilder();
+		$ORMRepository->select('t')->from('Risk\Entity\Risk', 't');
+		
+		$results = $ORMRepository->getQuery()->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
+		
+		
+		$ORMRepository = $this->getEntityManager();
+		$query = $ORMRepository->createQuery("SELECT u.name,i.value AS impact,p.value AS probability 
+				                            FROM Risk\Entity\Risk u 
+											JOIN u.impact i 
+											JOIN u.probability p");
+		
+		$results = $query->getArrayResult(\Doctrine\ORM\AbstractQuery::HYDRATE_SCALAR);
+		
+		//return new JsonModel($results);
+		
+		$json2 = \Zend\Json\Json::encode($results, true);
+				
 		return array (
 				'title' => TITLE,
-				'data' => $json
-				 );	
+				'data' => $json,
+				'data2' => $json2,
+				'results' => $results,
+				'dbArray' => $dbArray
+				 );
 	}
 	
 	public function addAction() {
