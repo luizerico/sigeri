@@ -1,0 +1,164 @@
+/* 
+Theme Name: lema-01
+Author: Luiz Erico <luizerico at gmail.com>
+URI: http://...
+Version: 1.0
+Date: 11/08/2015
+*/
+
+body {
+    color: #333333;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+
+}
+
+.site-header {
+    border-bottom: 1px solid #005082;
+    margin-bottom: 20px;
+}
+
+/* Navigation Menus */
+//.menu {
+//    display: block;
+//   height: 37px;
+//}
+
+.site-nav {
+    overflow: hidden;
+    z-index: 999;
+}
+
+.site-nav ul {
+    margin: 0;
+    padding: 0;
+}
+
+.site-nav ul:before .site-nav ul:after { content: ""; display: table; }
+.site-nav ul:after { clear: both; }
+.site-nav ul { *zoom: 1; }
+
+.site-nav ul li {
+    list-style: none;
+    float: left;
+}
+
+.sub-menu {
+    display: none;
+}
+
+.menu-item {
+
+}
+
+/* Site Header Menu */
+.site-header nav ul li a:link,
+.site-header nav ul li a:visited {
+    display: block;
+    padding: 8px 20px;
+    border: 1px solid #BBB;
+    border-bottom: none;
+    text-decoration: none;
+    margin-right: 3px;
+    font-weight: bold;
+}
+
+.site-header nav ul li.current-menu-item a:link,
+.site-header nav ul li.current-menu-item a:visited {
+    color :#fdefef;
+    font-weight: bold;
+    background-color: #0090b2;
+}
+
+.site-header nav ul li a:hover {
+    color :#fdefef;
+    font-weight: bold;
+    background-color: #005082;
+
+}
+
+
+div.container {
+    max-width: 920px;
+    margin: 0 auto;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+article.post {
+    border-bottom: dotted 1px;
+    margin-bottom: 20px;
+}
+
+article.post:last-of-type {
+    border-bottom: none;
+
+}
+
+.thetitle {
+    font-size: 1.5em;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+}
+
+.thecontent {
+    font-size: 14px;
+    //font-family: Arial, sans-serif;
+}
+
+/* Page */
+
+.page article {
+    font-size: 1em;
+}
+
+.content-column {
+    width: 75%;
+    float: right;
+}
+.title-column {
+    width: 25%;
+    float: left;
+}
+
+/* InfoBox */
+div.infobox {
+    width: 30%;
+    padding: 15px;
+    background-color: #CCC;
+    font-size: 0.8rem;
+    float: right;
+    margin: 0 0 20px 20px;
+}
+
+/* Parent Child Links*/
+span.parent-child {
+    list-style: none;    
+    padding-bottom: 20px;
+    display: block;
+    //clear: left;
+    //visibility: visible;
+    //overflow: hidden;
+
+}
+
+.parent-child li {
+    float: left;
+    border-right: 1px solid #CCC; 
+    padding-right: 10px;
+    margin-right: 10px
+}
+
+.widget-area {
+    float: right;    
+    width: 30%;  
+    padding: 0px 10px;
+}
+
+.widget-area aside {   
+    padding: 0 10px;
+    margin: 10px;
+    border: 1px solid #DDD;
+    background-color: #EEE;
+}
+
