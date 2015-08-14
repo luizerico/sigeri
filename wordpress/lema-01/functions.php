@@ -143,7 +143,6 @@ function mt_add_pages() {
 //function mt_settings_page() {
 //    echo "<h2>" . __('Test Settings', 'menu-test') . "</h2>";
 //}
-
 // mt_tools_page() displays the page content for the Test Tools submenu
 function mt_tools_page() {
     echo "<h2>" . __('Test Tools', 'menu-test') . "</h2>";
@@ -178,14 +177,14 @@ function mt_settings_page() {
     $opt_name = 'mt_favorite_color';
     $bck_color = 'mt_bck_color';
     $fgd_color = 'mt_fgd_color';
-    
+
     $hidden_field_name = 'mt_submit_hidden';
     $data_field_name = 'mt_favorite_color';
     $data_bck_name = 'mt_bck_color';
     $data_fgd_name = 'mt_fgd_color';
 
     // Read in existing option value from database
-    $opt_val = get_option($opt_name); 
+    $opt_val = get_option($opt_name);
     $bck_val = get_option($bck_color);
     $fgd_val = get_option($fgd_color);
 
@@ -241,3 +240,110 @@ function mt_settings_page() {
 
     <?php
 }
+
+/* Appearance Menu Test */
+
+function lema01_customize_register($wp_customize) {
+
+    $wp_customize->add_section('header_layout', array(
+        'title' => __('Header Layout', 'theme_textdomain'),
+        'description' => 'Customize Header Image and Color',
+        'priority' => 130,
+        'active_callback' => 'is_front_page',
+    ));
+
+    /* Color Header */
+    $wp_customize->add_setting('header_color', array(
+        'default' => '#000',
+        'type' => 'theme_mod',
+        'capability' => 'edit_theme_options',
+    ));
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'header_color', array(
+        'label' => __('Header Color', 'theme_textdomain'),
+        'section' => 'header_layout',
+    )));
+
+    /* Image Header */
+    $wp_customize->add_setting('header_image', array(
+        'default' => '000',
+        'type' => 'theme_mod',
+        'capability' => 'edit_theme_options',
+    ));
+    
+    $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'header_image', array(
+        'label' => __('Header Image', 'theme_textdomain'),
+        'section' => 'header_layout',
+        'mime_type' => 'image',
+    )));
+}
+
+add_action('customize_register', 'lema01_customize_register');
+
+
+/*
+function twentyfourteen_customize_register($wp_customize) {
+    $wp_customize->add_setting('header_image', array(
+        'default' => '',
+        'type' => 'theme_mod',
+        'capability' => 'edit_theme_options',
+    ));
+
+    $wp_customize->add_setting('header_color', array(
+        'default' => '#000',
+        'type' => 'theme_mod',
+        'capability' => 'edit_theme_options',
+    ));
+
+    $wp_customize->add_section('header_layout', array(
+        'title' => __('Header Layout', 'headerlayout'),
+        'priority' => 200,
+    ));
+    
+    // Add postMessage support for site title and description.
+    $wp_customize->get_setting('blogname')->transport = 'postMessage';
+    $wp_customize->get_setting('blogdescription')->transport = 'postMessage';
+    $wp_customize->get_setting('header_textcolor')->transport = 'postMessage';
+
+    // Rename the label to "Site Title Color" because this only affects the site title in this theme.
+    $wp_customize->get_control('header_textcolor')->label = __('Site Title Color', 'twentyfourteen');
+
+    // Rename the label to "Display Site Title & Tagline" in order to make this option extra clear.
+    $wp_customize->get_control('display_header_text')->label = __('Display Site Title &amp; Tagline', 'twentyfourteen');
+
+    // Add custom description to Colors and Background controls or sections.
+    if (property_exists($wp_customize->get_control('background_color'), 'description')) {
+        $wp_customize->get_control('background_color')->description = __('May only be visible on wide screens.', 'twentyfourteen');
+        $wp_customize->get_control('background_image')->description = __('May only be visible on wide screens.', 'twentyfourteen');
+    } else {
+        $wp_customize->get_section('colors')->description = __('Background may only be visible on wide screens.', 'twentyfourteen');
+        $wp_customize->get_section('background_image')->description = __('Background may only be visible on wide screens.', 'twentyfourteen');
+    }
+
+    // Add the featured content section in case it's not already there.
+    $wp_customize->add_section('featured_content', array(
+        'title' => __('Featured Content', 'twentyfourteen'),
+        'description' => sprintf(__('Use a <a href="%1$s">tag</a> to feature your posts. If no posts match the tag, <a href="%2$s">sticky posts</a> will be displayed instead.', 'twentyfourteen'), esc_url(add_query_arg('tag', _x('featured', 'featured content default tag slug', 'twentyfourteen'), admin_url('edit.php'))), admin_url('edit.php?show_sticky=1')
+        ),
+        'priority' => 130,
+        'active_callback' => 'is_front_page',
+    ));
+
+    // Add the featured content layout setting and control.
+    $wp_customize->add_setting('featured_content_layout', array(
+        'default' => 'grid',
+        'sanitize_callback' => 'twentyfourteen_sanitize_layout',
+    ));
+
+    $wp_customize->add_control('featured_content_layout', array(
+        'label' => __('Layout', 'twentyfourteen'),
+        'section' => 'featured_content',
+        'type' => 'select',
+        'choices' => array(
+            'grid' => __('Grid', 'twentyfourteen'),
+            'slider' => __('Slider', 'twentyfourteen'),
+        ),
+    ));
+}
+
+add_action('customize_register', 'twentyfourteen_customize_register');
+*/

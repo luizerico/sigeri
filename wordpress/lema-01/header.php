@@ -5,20 +5,35 @@
         <meta name="viewport" content="width=device-width">
         <title><?php bloginfo('name'); ?></title>
         <?php wp_head(); ?>
+        <style>
+            .site-header {
+                background: url('<?php echo bloginfo('stylesheet_directory') . '/images/' . get_theme_mod('header_image')?>') no-repeat bottom center;                
+            }
+        </style>
     </head>
     <body <?php body_class(); ?>>
+        <div class="site-container">
 
-        <div class="container">
+            <!-- Site Header -->
             <header class="site-header">
-                <h1><a href="<?php echo home_url(); ?>"><?php bloginfo('name'); ?></a></h1>
-                <h4><?php bloginfo('description'); ?></h4> 
-
+                
+                <div class="site-header-title">
+                    <h1>
+                        <a href="<?php echo home_url(); ?>"><?php bloginfo('name'); ?></a>
+                    </h1>
+                    <h4><?php bloginfo('description'); ?></h4>                 
+                </div>
                 <nav class="site-nav">
-                    <?php
-                    wp_nav_menu(array('theme_location' => 'primary',
-                        'menu_class' => ''));
-                    ?>
+                    <div class="div-site-nav">
+                        <?php
+                        wp_nav_menu(array('theme_location' => 'primary',
+                            'menu_class' => ''));
+                        ?>
+                    </div>
                 </nav>
+                
             </header>
+            <!-- Site Header -->
+
             <div>
 
