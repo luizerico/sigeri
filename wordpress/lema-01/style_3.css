@@ -1,0 +1,387 @@
+/* 
+Theme Name: lema-01
+Author: Luiz Erico <luizerico at gmail.com>
+URI: http://...
+Version: 1.0
+Date: 11/08/2015
+*/
+
+body {
+    color: #333333;
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    font-family: Arial, sans-serif;   
+    background-color: #EEE;
+}
+
+a {
+   transition: all 250ms ease-in-out; 
+}
+
+div.site-container {
+    max-width: 100%;
+    margin: 0 auto;
+    //padding-left: 20px;
+    //padding-right: 20px;
+}
+
+
+// ####################/* Site Header Custom */####################
+.site-header {    
+    color: #FFF;
+    position: relative; 
+    padding: 10px;
+    border-radius: 5px;    
+    margin-bottom: 30px;
+    // background-color: #1b607f;  
+    //border-bottom: 1px solid #005082;  
+}
+
+header.site-header {    
+    background-color: #1b607f; 
+    clear: both;
+    overflow: hidden;
+    //margin: 5px;
+    //border-bottom: 1px solid #005082;  
+}
+
+.header-top {
+    background-color: #EEE;
+    height: 35px;
+}
+
+.header-pre {
+    float: left;
+    padding: 5px;
+}
+
+.header-post {
+    float: right;
+    padding: 5px;
+}
+
+.header-title {
+    padding: 10px;
+    font-weight: bold;
+    font-size: 2em;
+    color: #FFF;    
+}
+
+.header-subtitle {
+    padding-left: 10px;
+    border-left: 1px solid #CCC;
+    font-style: italic;
+    font-size: .9em;
+    color: #FFF;
+}
+
+.header-slider {
+    clear: both;
+    height: 320px;
+    background-color: #000000;
+}
+
+/* #################### Site Content Custom #################### */
+
+.content {
+    display:block;
+    margin-top: -150px;
+    margin-left: 100px;
+    margin-right: 100px;   
+    padding: 20px;
+    //border: 1px solid #000;
+    overflow: hidden;
+}
+
+.main-content {
+    width: 65%;
+    float: left;
+    
+}
+
+.lateral-content {
+    width: 30%;
+    float: right;
+    background-color: #FFF;
+    height: 200px;
+}
+
+.post{
+    background-color: #FFF;
+    box-shadow: 0 2px 1px 0px rgba(0, 0 , 0, .05);
+    margin-bottom: 35px;
+    //padding: 25px;
+    text-shadow: rgba(0, 0, 0, .1) 0px 0px 1px;
+    -webkit-font-smoothing: antialiased;
+    
+}
+
+.post a{
+    text-decoration: none;
+    color: #333;
+}
+
+.post-title, .post-info, .post-excerpt {
+    padding-left: 30px;
+    padding-right: 30px;
+    overflow: hidden;
+}
+
+.post-title {
+    padding-top: 40px;
+    font-size: 2.5em;
+    color: #333; 
+}
+
+.post-title a:hover {
+    color: #666;       
+}
+
+.post-info {
+    color: #999;
+    font-size: 0.9em;    
+}
+
+.post-info:hover {    
+    color: #333;    
+}
+
+.post-featured-image > img {
+    padding-top: 30px;
+    padding-bottom: 20px;
+    width: 100%;
+    height: auto;
+}
+
+.post-excerpt {
+    //font-family: cursive;
+    font-size: 1.2em;
+    margin-top:25px;
+    line-height: 1.4;
+}
+
+.post-excerpt:first-letter {
+    font-family: cursive;
+    font-size: 4em;
+    float: left;
+    //line-height: .85;
+    line-height: .5;
+    padding-top: 1px;
+    margin-right: 2px;
+    color: lightslategray;
+}
+
+.post-excerpt > div  {
+    padding-top: 20px;
+    padding-bottom: 40px;
+}
+
+.post-excerpt > div > a  {
+    //display: block;
+    margin-top: 20px;
+    padding: 5px;
+    padding-left: 20px;
+    padding-right: 20px;    
+    border: 1px solid lightslategray;
+    border-radius: 0px;
+    color: lightslategray;
+    font-size: 0.9em;
+    //box-shadow: 0 2px 1px 0px rgba(0, 0 , 0, .05);
+    border-radius: 20px;
+}
+
+.post-excerpt > div > a:hover {
+    //display: block;    
+    color: #FFF;
+    background-color: lightslategray;    
+}
+
+
+// ####################/* Site Header Original */####################
+
+.site-header {    
+    color: #FFF;
+    position: relative; 
+    padding: 10px;
+    border-radius: 5px;    
+    margin-bottom: 30px;
+    // background-color: #1b607f;  
+    //border-bottom: 1px solid #005082;  
+}
+
+div.site-header-title {  
+    position: absolute;
+    text-align: center;
+    height: 90%;
+    width: 100%;
+}
+
+div.site-header-title::before {   
+    vertical-align: middle;
+    height: 30%;
+    content: '';
+    display: inline-block;
+}
+
+.site-header a {
+    text-decoration: none;
+    color: #FFF;
+}
+
+/* Navigation Menus */
+//.menu {
+//    display: block;
+//   height: 37px;
+//}
+
+.site-nav {
+    position: absolute;
+    text-align: center;
+    width: 100%;
+}
+
+.menu-nav {
+    //position: absolute;
+    //overflow: hidden;
+    display: inline-block;
+    z-index: 999;  
+    //background-color: #006505;
+}
+
+.menu-nav ul {    
+    list-style: none;
+    text-align: center;
+    margin: 0;
+    padding: 0;    
+}
+
+.menu-nav li{
+    //display: inline-block;
+    position:relative;
+    float:left;
+    //border-right:1px solid #c0c0c0;
+    //background-color: #0090b2;
+}
+
+.menu-nav li ul {
+    //display: none;
+    border: none;
+
+
+}
+
+.menu-nav li:hover ul, .menu-nav li.over ul { 
+    //width: 150px;
+    display: block ;
+    position: relative;    
+}
+
+.menu-nav ul > li > ul > li{
+    display: none;    
+    float: none;
+
+}
+
+//.site-nav ul:before .site-nav ul:after { content: "";  }
+
+//.site-nav ul:after { clear: both; }
+
+//.site-nav ul { *zoom: 1; }
+
+.menu-nav ul li a:link,
+.menu-nav ul li a:visited {
+    display: block;
+    padding: 5px 15px;
+    //border: 1px solid #BBB;
+    border-bottom: none;    
+    text-decoration: none;
+    //margin-right: 3px;
+    font-weight: bold;
+}
+
+.menu-nav ul li a:hover {
+    color :#fdefef;
+    background-color: #0090b2; 
+    opacity: 20%;
+}
+
+.menu-nav ul li.current-menu-item a:link,
+.menu-nav ul li.current-menu-item a:visited {
+    color :#000;
+    background-color: #CCC;
+
+}
+
+
+
+/* Site Header Menu */
+
+
+.thetitle {
+    font-size: 1.5em;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+}
+
+.thecontent {
+    font-size: 14px;
+    //font-family: Arial, sans-serif;
+}
+
+/* Page */
+
+.page article {
+    font-size: 1em;
+}
+
+.content-column {
+    width: 75%;
+    float: right;
+}
+.title-column {
+    width: 25%;
+    float: left;
+}
+
+/* InfoBox */
+div.infobox {
+    width: 30%;
+    padding: 15px;
+    background-color: #CCC;
+    font-size: 0.8rem;
+    float: right;
+    margin: 0 0 20px 20px;
+}
+
+/* Parent Child Links*/
+span.parent-child {
+    list-style: none;    
+    padding-bottom: 20px;
+    display: block;
+    //clear: left;
+    //visibility: visible;
+    //overflow: hidden;
+
+}
+
+.parent-child li {
+    float: left;
+    border-right: 1px solid #CCC; 
+    padding-right: 10px;
+    margin-right: 10px
+}
+
+.widget-area {
+    float: right;    
+    width: 30%;  
+    padding: 0px 10px;
+}
+
+.widget-area aside {   
+    padding: 0 10px;
+    margin: 10px;
+    border: 1px solid #DDD;
+    background-color: #EEE;
+}
+
