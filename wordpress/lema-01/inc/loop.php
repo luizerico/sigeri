@@ -32,7 +32,13 @@ if (have_posts()) :
         </article>
         <?php
     endwhile;
-    get_template_part('inc/pagination');
+    ?>
+    <div class="post-nav">
+        <span class="nav-prev"><?php next_posts_link('Older Posts...'); ?></span>
+        |
+        <span class="nav-next"><?php previous_posts_link('Newer Posts...'); ?></span> 
+    </div>
+    <?php
 else:
     echo "No Content Found!!!";
 endif;

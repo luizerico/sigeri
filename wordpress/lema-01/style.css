@@ -311,7 +311,259 @@ header.site-header {
     background-color: lightslategray;    
 }
 
+.entry-header, .entry-content, .entry-info {
+    padding-left: 30px;
+    padding-right: 30px;
+    overflow: hidden;
+}
 
+.entry-info {    
+    padding-top: 10px;
+    color: #666;   
+    overflow: initial;
+    //font-size: 0.95em;
+}
+
+.avatar {    
+    border-radius: 50%;
+    border: none;
+    padding: 2px;
+    background-color: #FFF;
+    margin-top: -30px;
+    vertical-align: middle;
+}
+
+.entry-header {
+    padding-top: 20px;
+    font-size: 2.5em;
+    color: #333; 
+}
+
+.entry-header a:hover {
+    color: #666;       
+}
+
+.entry-content {
+    font-size: 1.2em;
+    margin-top:25px;
+    line-height: 1.4;
+}
+
+.entry-content:first-letter {
+    font-family: cursive;
+    font-size: 4em;
+    float: left;
+    //line-height: .85;
+    line-height: .5;
+    padding-top: 1px;
+    margin-right: 2px;
+    color: lightslategray;
+}
+
+.entry-content  {
+    padding-bottom: 40px;
+}
+
+.edit-link {
+    //display: block;
+    margin-top: 20px;
+    padding: 5px;
+    padding-left: 20px;
+    padding-right: 20px;    
+    border: 1px solid lightslategray;
+    border-radius: 0px;
+    color: lightslategray;
+    font-size: 0.9em;
+    //box-shadow: 0 2px 1px 0px rgba(0, 0 , 0, .05);
+    border-radius: 20px;
+
+}
+
+.edit-link:hover {
+    //display: block;    
+    color: #FFF;
+    background-color: lightslategray;    
+}
+
+
+/* Navigation */
+
+.post-nav {
+    text-align: center;    
+    color: #666;
+}
+
+.post-nav a {
+    text-decoration: none;
+    color: #666;
+    padding: 10px;
+    font-size: 0.9em;
+}
+
+.nav-prev a::before {
+    content: "<";
+    padding-right: 1em;
+}
+
+.nav-next a::after {
+    content: ">";
+    padding-left: 1em;
+}
+
+/* Markups */
+
+/*blockquote > p::before {
+    content: '"';
+    font-size: 3.5em;
+    line-height: .5;
+    color: #000;
+    float: left;
+}
+
+blockquote > p::after {
+    content: '"';
+    font-size: 3.5em;
+    line-height: 1.5;
+    color: #000;
+    float: right;
+}*/
+
+blockquote > p {
+    border-radius: 3px;
+    background-color: #CCC;
+    color: #333;
+    padding: 10px;
+    font-style: italic;
+    font-size: 0.9em;
+}
+
+table{
+    color:#333;
+    font-size:0.9em;
+    //text-shadow: 1px 1px 0px #fff;
+    border:#ccc 1px solid; 
+    border-collapse: collapse;
+    background-color: #f0f0f0;   
+}
+
+table th {
+    padding:10px;        
+    border:#ccc 1px solid; 
+    //border-bottom:1px solid #e0e0e0;
+}
+
+table tr {    
+    border-bottom: 1px solid #00C;
+    //text-align: center;
+}
+
+table td {
+    border:#ccc 1px solid; 
+    padding: 5px;
+}
+
+/* Cells in even rows (2,4,6...) are one color */ 
+tr:nth-child(even) td { background: #F1F1F1; }   
+
+/* Cells in odd rows (1,3,5...) are another (excludes header cells)  */ 
+tr:nth-child(odd) td { background: #F6F6F6; }  
+
+tr:hover td { background: #999; color: #EEE; } /* Hover cell effect! */
+
+
+dt {
+    font-weight: bold;
+}
+
+dd {
+    font-size: 0.9em;
+    font-weight: normal; 
+    font-style: oblique;
+}
+
+.main-content img {
+    max-width: 100%;
+    height: auto;
+    margin-top: 7px;
+    margin-bottom: 1px;
+}
+
+.alignleft {
+    float: left;
+    margin-right: 10px;
+}
+
+.alignright {
+    float: right;
+    margin-left: 10px;
+}
+
+.aligncenter {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.alignnone {
+    display: block;
+    overflow: hidden;
+}
+
+.wp-caption {
+    max-width: 100%;
+}
+
+.wp-caption-text {
+    color: #666;
+    box-sizing: border-box;
+    font-size: 0.8em;
+    font-style: italic;
+    line-height: 1.5;
+    margin: 0;
+    text-align: center;
+}
+
+.post-tags ul{
+    padding: 0px;
+}
+
+.post-tags ul li {    
+    display: inline-block;   
+    margin-top: 20px;
+    margin-right: 10px;
+    padding: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border: 1px solid lightslategray;
+    border-radius: 0px;
+    color: lightslategray;
+    font-size: 0.9em;
+    border-radius: 20px;
+}
+
+.post-tags a {    
+    color: #CCC;       
+}
+
+.post-tags ul li:hover {
+    color: #EEE;
+    background-color: lightslategray;
+}
+
+.page-links span {    
+    display: inline-block;   
+    margin-top: 20px;
+    margin-right: 2px;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border: 1px solid lightslategray;
+    border-radius: 0px;
+    color: lightslategray;
+    font-size: 0.9em;
+    border-radius: 20px;
+}
 
 /* Lateral Content */
 

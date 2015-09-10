@@ -9,6 +9,19 @@
 ?>
 
 <div class="post-nav">
-    <span class="prev"><?php next_posts_link(__('&laquo; Older Entries', 'themify')) ?></span>
-    <span class="next"><?php previous_posts_link(__('Newer Entries &raquo;', 'themify')) ?></span>
+    <?php
+    $prev_post = get_previous_post();
+    if (!empty($prev_post)):
+        ?>    
+    <span class="nav-prev"><a href="<?php echo get_permalink($prev_post->ID); ?>"><?php echo $prev_post->post_title; ?></a></span>
+    <?php endif; ?>
+    | 
+    <?php
+    $next_post = get_next_post();
+    if (!empty($next_post)):
+        ?> 
+    <span class="nav-next"><a href="<?php echo get_permalink($next_post->ID); ?>"><?php echo get_the_title($next_post->ID); ?></a></span>
+    <?php endif; ?>     
 </div>
+
+
