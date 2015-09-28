@@ -1,16 +1,19 @@
 <?php
+
 // config/autoload/doctrine.global.php
-return array (
-		'doctrine' => array (
-				'connection' => array (
-						'orm_default' => array (
-								'driverClass' => 'Doctrine\DBAL\Driver\PDOMySql\Driver',
-								'params' => array (
-										'host' => 'localhost',
-										'port' => '3306',
-										'dbname' => 'zend004' 
-								) 
-						) 
-				) 
-		) 
+return array(
+    'doctrine' => array(
+        'connection' => array(
+            'orm_default' => array(
+                'driverClass' => 'Doctrine\DBAL\Driver\PDOMySql\Driver',
+                'params' => array(
+                    'host' => 'localhost',
+                    'port' => '3306',
+                    'dbname' => 'sigeri',
+                    'user' => 'sigeri',
+                    'password' => 'sigeri001'                 
+                )
+            )
+        )
+    )
 );
