@@ -2,7 +2,6 @@
 namespace Risk\Entity;
 
 use Zend\Form\Annotation;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

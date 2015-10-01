@@ -2,25 +2,19 @@
 
 namespace Risk\Controller;
 
-define('TITLE', 'Risk');
-define('ROUTER', 'risk');
-define('ENTITY', 'Risk\Entity\Risk');
+define('TITLE', 'Control');
+define('ROUTER', 'control');
+define('ENTITY', 'Risk\Entity\Control');
 
-use Risk\Entity\Risk;
-use Risk\Form\RiskForm;
+use Risk\Entity\Control;
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Mvc\Controller\Plugin\Redirect;
 use Zend\View\Model\ViewModel;
-use Zend\Form\Annotation\AnnotationBuilder;
 use Doctrine\ORM\EntityManager;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use Exception;
-use Doctrine\Common\Annotations\Annotation;
 use DoctrineORMModule\Form\Annotation\AnnotationBuilder as DoctrineAnnotationBuilder;
-use Zend\Json\Json;
-use Zend\View\Model\JsonModel;
 
-class RiskController extends AbstractActionController {
+class ControlController extends AbstractActionController {
     /*
      *
      * DRAFT Controller - Improve and clean the code ASAP ...
@@ -45,12 +39,6 @@ class RiskController extends AbstractActionController {
     }
 
     public function reportAction() {
-        return array(
-            'title' => TITLE,
-        );
-    }
-
-    public function jsonDataAction() {
         $dataset = array(
             names => array("aa", "bb", "cc", "dd", "ee"),
             values => array(10, 20, 30, 40, 10, 8, 7, 5, 100, 34, 67, 83, 67, 87)
@@ -73,42 +61,49 @@ class RiskController extends AbstractActionController {
 
 
         $ORMRepository = $this->getEntityManager()->createQueryBuilder();
-        $ORMRepository->select('t')->from('Risk\Entity\Risk', 't');
+        $ORMRepository->select('t')->from('Risk\Entity\Control', 't');
 
         $results = $ORMRepository->getQuery()->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
 
 
         $ORMRepository = $this->getEntityManager();
-        $query = $ORMRepository->createQuery("SELECT u.id, u.name, i.value AS impact, p.value AS probability 
-				                            FROM Risk\Entity\Risk u 
+        $query = $ORMRepository->createQuery("SELECT u.name,i.value AS impact,p.value AS probability 
+				                            FROM Risk\Entity\Control u 
 											JOIN u.impact i 
 											JOIN u.probability p");
 
         $results = $query->getArrayResult(\Doctrine\ORM\AbstractQuery::HYDRATE_SCALAR);
 
+        //return new JsonModel($results);
+
         $json2 = \Zend\Json\Json::encode($results, true);
 
-        return new JsonModel($results);
-        //return $this->getResponse()->setContent($json2);
+        return array(
+            'title' => TITLE,
+            'data' => $json,
+            'data2' => $json2,
+            'results' => $results,
+            'dbArray' => $dbArray
+        );
     }
 
     public function addAction() {
         /*
-         * $addObject = new Risk ();
+         * $addObject = new Control ();
          * // To do: How to automate this...
          * // $builder = new AnnotationBuilder ();
          * // $form = $builder->createForm ( $addObject );
          * //
-         * // $form = new RiskForm ( $this->getEntityManager () );
+         * // $form = new ControlForm ( $this->getEntityManager () );
          * // $form->get ( 'submit' )->setValue ( 'Add' );
          * $forms = $this->getServiceLocator()->get('FormElementManager');
-         * $form = $forms->get('RiskForm', array('name' => 'formName', 'options' => array()));
+         * $form = $forms->get('ControlForm', array('name' => 'formName', 'options' => array()));
          *
          * $form->setHydrator ( new DoctrineHydrator ( $this->getEntityManager (), ENTITY ) );
          *
          * $request = $this->getRequest ();
          * if ($request->isPost ()) {
-         * // $form->bind($riskType);
+         * // $form->bind($controlType);
          * $form->setData ( $request->getPost () );
          * if ($form->isValid ()) {
          * // var_dump($form->getData());
@@ -116,7 +111,7 @@ class RiskController extends AbstractActionController {
          * // Write de data to database using Doctrine
          * $this->getEntityManager ()->persist ( $addObject );
          * $this->getEntityManager ()->flush ();
-         * // Redirect to list risktype page
+         * // Redirect to list controltype page
          * return $this->redirect ()->toRoute ( ROUTER, array (
          * 'action' => 'list'
          * ) );
@@ -126,7 +121,7 @@ class RiskController extends AbstractActionController {
          * // define the submit label form to correspond to function name
          * $form->get ( 'submit' )->setAttribute ( 'value', 'Add' );
          */
-        $addObject = new Risk ();
+        $addObject = new Control ();
         $builder = new DoctrineAnnotationBuilder($this->getEntityManager());
         $form = $builder->createForm($addObject);
         $hydrator = new DoctrineHydrator($this->getEntityManager(), ENTITY);
@@ -144,7 +139,7 @@ class RiskController extends AbstractActionController {
                 $this->getEntityManager()->flush();
                 return $this->redirect()->toRoute(ROUTER, array(
                             'action' => 'list'
-                ));
+                        ));
             }
         }
 
@@ -157,11 +152,11 @@ class RiskController extends AbstractActionController {
     public function editAction() {
         /*
          *
-         * $editObject = new Risk ();
+         * $editObject = new Control ();
          * // $builder = new AnnotationBuilder ();
          * // $form = $builder->createForm ( $editObject );
          *
-         * $form = new RiskForm ();
+         * $form = new ControlForm ();
          *
          * $id = ( int ) $this->params ()->fromRoute ( 'id', 0 );
          * if (! $id) {
@@ -226,7 +221,7 @@ class RiskController extends AbstractActionController {
          * $form = $builder->createForm ( $editObject );
          * $entityManager = $this->getServiceLocator ()->get ( 'doctrine.entitymanager.orm_default' );
          */
-        $editObject = new Risk ();
+        $editObject = new Control ();
         $builder = new DoctrineAnnotationBuilder($this->getEntityManager());
         $form = $builder->createForm($editObject);
         $hydrator = new DoctrineHydrator($this->getEntityManager(), ENTITY);
@@ -237,7 +232,7 @@ class RiskController extends AbstractActionController {
         if (!$id) {
             return $this->Redirect()->toRoute(ROUTER, array(
                         'action' => 'list'
-            ));
+                    ));
         }
 
         /*
@@ -254,7 +249,7 @@ class RiskController extends AbstractActionController {
         } catch (Exception $ex) {
             return $this->redirect()->toRoute(ROUTER, array(
                         'action' => 'list'
-            ));
+                    ));
         }
 
         /*
@@ -282,7 +277,7 @@ class RiskController extends AbstractActionController {
                 $this->getEntityManager()->flush();
                 return $this->redirect()->toRoute(ROUTER, array(
                             'action' => 'list'
-                ));
+                        ));
             }
         }
 
@@ -320,7 +315,7 @@ class RiskController extends AbstractActionController {
             'title' => TITLE,
             'router' => ROUTER,
             'dbArray' => $dbArray
-        ));
+                ));
     }
 
     public function deleteAction() {
@@ -328,7 +323,7 @@ class RiskController extends AbstractActionController {
         if (!$id) {
             return $this->redirect()->toRoute(ROUTER, array(
                         'action' => 'list'
-            ));
+                    ));
         }
 
         /*
@@ -346,7 +341,7 @@ class RiskController extends AbstractActionController {
         } catch (Exception $ex) {
             return $this->redirect()->toRoute(ROUTER, array(
                         'action' => 'list'
-            ));
+                    ));
         }
 
         /*
@@ -366,7 +361,7 @@ class RiskController extends AbstractActionController {
 
             return $this->redirect()->toRoute(ROUTER, array(
                         'action' => 'list'
-            ));
+                    ));
         }
 
         return array(
@@ -380,8 +375,8 @@ class RiskController extends AbstractActionController {
     public function indexAction() {
         return new ViewModel ();
     }
-
-    public function chartAction() {
+    
+    public function chartAction(){
         return new ViewModel();
     }
 
