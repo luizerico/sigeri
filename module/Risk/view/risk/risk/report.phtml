@@ -14,6 +14,54 @@ echo $this->headScript()
             <h2><?php echo $this->escapeHtml($title); ?></h2>
             <?php echo $this->data2 ?>
 
+            <svg id="matrix"></svg>
+            <style></style>
+            <script type="text/javascript">
+                var width = 720,
+                        height = 400;
+
+                d3.json("jsonData", function (data) {
+
+                    var maxX = d3.max(data, function (d) {
+                        return d.impact;
+                    });
+
+                    var maxY = d3.max(data, function (d) {
+                        return d.probability;
+                    });
+
+                    var xPos = d3.scale.ordinal()
+                            .domain(d3.range(maxX))
+                            .rangeRoundBands([0, width], 0.01);
+
+                    var yPos = d3.scale.linear()
+                            .domain([0, maxY])
+                            .range([0, height]);
+
+                    var svg = d3.select("#matrix")
+                            .attr("width", width)
+                            .attr("height", height)
+                    
+                    
+                    svg.selectAll("circle")                            
+                            .data(data).enter()
+                            .append("circle")
+                            .attr("cx", function (d) {
+                                console.log(xPos(d.probability));
+                                return xPos(d.probability);
+                            })
+                            .attr("cy", function (d) {
+                                console.log(yPos(d.impact));
+                                return yPos(d.impact);
+                            })
+                            .attr("r", function (d) {
+                                return 10;
+                            });
+                });
+
+            </script>
+
+
 
             <div class="chart"></div>
 
@@ -53,17 +101,145 @@ echo $this->headScript()
 
             <p></p>
 
+
+            <p> ---- </p>
+
+
+            <svg class="chartbar"></svg>
+
+            <style>
+
+                .chartbar .bar:hover {
+                    fill: brown;
+                }
+
+                .chartbar .axis text {
+                    font: 10px sans-serif;
+                }
+
+                .chartbar .axis path, .axis line {
+                    fill: none;
+                    stroke: #000;
+                    shape-rendering: crispEdges;
+                }
+
+                .chartbar .x.axis path {          
+                    display: none;
+                }
+            </style>
+
+            <script type="text/javascript">
+
+                var margin = {top: 20, right: 30, bottom: 30, left: 40},
+                width = 720 - margin.left - margin.right,
+                        height = 400 - margin.top - margin.bottom;
+
+                /*var x = d3.scale.ordinal().rangeRoundBands([0, width], .1);
+                 var y = d3.scale.linear().range([height, 0]);
+                 
+                 var xAxis = d3.svg.axis()
+                 .scale(x)
+                 .orient("bottom");
+                 
+                 var yAxis = d3.svg.axis()
+                 .scale(y)
+                 .orient("left")
+                 .ticks(10, "%");
+                 */
+
+                var chartbar = d3.select(".chartbar")
+                        .attr("width", width + margin.left + margin.right)
+                        .attr("height", height + margin.top + margin.bottom)
+                        .append("g")
+                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+                d3.json("jsonData", function (data) {
+
+                    // Convert JSON data to stack format 
+                    var stack = d3.layout.stack();
+
+                    var fields = d3.keys(data[0])
+                            .filter(function (key) {
+                                return (key !== "name" && key !== "id");
+                            });
+
+                    var name = data.map(function (d) {
+                        return d.name;
+                    });
+
+                    var dataset = stack(d3.range(fields.length).map(function (d) {
+                        var a = [];
+                        for (var i = 0; i < data.length; ++i) {
+                            a[i] = {x: i, y: data[i][fields[d]]};
+                        }
+                        return a;
+                    }));
+
+
+                    var xScale = d3.scale.ordinal()
+                            .domain(d3.range(dataset[0].length))
+                            .rangeRoundBands([0, width], 0.05);
+
+                    var yScale = d3.scale.linear()
+                            .domain([0, d3.max(dataset, function (d) {
+                                    return d3.max(d, function (d) {
+                                        return d.y0 + d.y;
+                                    });
+                                })
+                            ]).range([0, height]);
+
+                    var colors = d3.scale.category10();
+
+                    // Add a group for each row of data
+                    var groups = chartbar.selectAll("g")
+                            .data(dataset)
+                            .enter()
+                            .append("g")
+                            .style("fill", function (d, i) {
+                                return colors(i);
+                            });
+
+                    // Add a rect for each data value
+                    var rects = groups.selectAll("rect")
+                            .data(function (d) {
+                                return d;
+                            })
+                            .enter()
+                            .append("rect")
+                            .attr("x", function (d, i) {
+                                return xScale(i);
+                            })
+                            .attr("y", function (d) {
+                                return yScale(d.y0);
+                            })
+                            .attr("height", function (d) {
+                                return yScale(d.y);
+                            })
+                            .attr("width", xScale.rangeBand());
+
+                });
+
+                function type(d) {
+                    d.value = +d.value; // coerce to number
+                    return d;
+                }
+
+            </script>
+
+
+            <p>----</p>
+
             <svg class="chartcircle"></svg>
 
             <style>
                 .bar {
                     fill: steelblue;
                 }
-                
+
                 .bar:hover {
                     fill: brown;
                 }
-                
+
                 .axis text {
                     font: 10px sans-serif;
                 }
@@ -82,19 +258,16 @@ echo $this->headScript()
             <script type="text/javascript">
 
                 var margin = {top: 20, right: 30, bottom: 30, left: 40},
-                    width = 720 - margin.left - margin.right,
-                    height = 400 - margin.top - margin.bottom;
-                            
-                var x = d3.scale.ordinal()
-                        .rangeRoundBands([0, width], .1);
+                width = 720 - margin.left - margin.right,
+                        height = 400 - margin.top - margin.bottom;
 
-                var y = d3.scale.linear()
-                        .range([height, 0]);
-                
+                var x = d3.scale.ordinal().rangeRoundBands([0, width], .1);
+                var y = d3.scale.linear().range([height, 0]);
+
                 var xAxis = d3.svg.axis()
                         .scale(x)
                         .orient("bottom");
-                
+
                 var yAxis = d3.svg.axis()
                         .scale(y)
                         .orient("left")
@@ -107,36 +280,50 @@ echo $this->headScript()
                         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
                 d3.json("jsonData", function (data) {
-                    x.domain(data.map(function (d) {return d.name;}));
-                    
-                    y.domain([0, d3.max(data, function (d) { return d.impact;})]);
-                    
+                    x.domain(data.map(function (d) {
+                        return d.name;
+                    }));
+
+                    y.domain([0, d3.max(data, function (d) {
+                            return d.impact;
+                        })]);
+
                     chart.append("g")
                             .attr("class", "x axis")
-                            .attr("transform", "translate(0," + height +")")
+                            .attr("transform", "translate(0," + height + ")")
                             .call(xAxis);
-                    
+
                     chart.append("g")
                             .attr("class", "y axis")
                             .call(yAxis)
                             .append("text")
                             .attr("transform", "rotate(-90)")
-                            .attr("y",6)
+                            .attr("y", 6)
                             .attr("dy", ".70em")
-                            .style("text-anchor","end")
-                            .text("Frequency");                          
+                            .style("text-anchor", "end")
+                            .text("Frequency");
 
                     chart.selectAll(".bar")
                             .data(data)
-                            .enter().append("a")                            
-                            .attr("xlink:href", function(d){ return "/risk/edit/" + d.id ;})
+                            .enter().append("a")
+                            .attr("xlink:href", function (d) {
+                                return "/risk/edit/" + d.id;
+                            })
                             .append("rect")
-                            .attr("class","bar")
-                            .attr("x", function(d){return x(d.name);})
-                            .attr("y", function(d){return y(d.impact);})
-                            .attr("height", function (d) {return height - y(d.impact);})
-                            .attr("width", x.rangeBand())                            
-                            .on("click", function(d){ console.log(d.id); });
+                            .attr("class", "bar")
+                            .attr("x", function (d) {
+                                return x(d.name);
+                            })
+                            .attr("y", function (d) {
+                                return y(d.impact);
+                            })
+                            .attr("height", function (d) {
+                                return height - y(d.impact);
+                            })
+                            .attr("width", x.rangeBand())
+                            .on("click", function (d) {
+                                console.log(d.id);
+                            });
 
                 });
 
@@ -147,7 +334,8 @@ echo $this->headScript()
 
             </script>
 
-            
+
+
 
             <!--
             <svg class="chartx"></svg><p>
