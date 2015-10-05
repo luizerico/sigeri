@@ -18,7 +18,16 @@ echo $this->headScript()
             <style></style>
             <script type="text/javascript">
                 var width = 720,
-                        height = 400;
+                        height = 700;
+
+                var r = 10;
+                
+                var svg = d3.select("#matrix")
+                        .attr("width", width)
+                        .attr("height", height)
+                        .attr("color", "#EEE");
+
+
 
                 d3.json("jsonData", function (data) {
 
@@ -30,20 +39,16 @@ echo $this->headScript()
                         return d.probability;
                     });
 
-                    var xPos = d3.scale.ordinal()
-                            .domain(d3.range(maxX))
-                            .rangeRoundBands([0, width], 0.01);
+                    var xPos = d3.scale.linear()
+                            .domain([0, maxX])
+                            .range([0, width]);
 
                     var yPos = d3.scale.linear()
                             .domain([0, maxY])
-                            .range([0, height]);
+                            .range([height, 0]);
 
-                    var svg = d3.select("#matrix")
-                            .attr("width", width)
-                            .attr("height", height)
-                    
-                    
-                    svg.selectAll("circle")                            
+
+                    svg.selectAll("circle")
                             .data(data).enter()
                             .append("circle")
                             .attr("cx", function (d) {
@@ -52,11 +57,44 @@ echo $this->headScript()
                             })
                             .attr("cy", function (d) {
                                 console.log(yPos(d.impact));
-                                return yPos(d.impact);
+                                return yPos(d.impact) + r;
                             })
                             .attr("r", function (d) {
-                                return 10;
+                                return r;
+                            })
+                            .on("click", function (d) {
+                                console.log(d.name);
+                            })
+                            .on("mouseover", function () {
+                                d3.select(this)
+                                        .attr("fill", "orange");
+                            })
+                            .on("mouseout", function () {
+                                d3.select(this)
+                                        .attr("fill", "blue");
+                            })
+                            .append("svg:title")
+                            .text(function (d) {
+                                return 'name: ' + d.name + '\n' +
+                                        'probability: ' + d.probability + '\n' +
+                                        'impact: ' + d.impact;
                             });
+
+                    var xAxis = d3.svg.axis()
+                            .scale(xPos)
+                            .orient("bottom");
+
+                    svg.append("g")
+                            .attr("transform", "translate(0," + (height) + ")")
+                            .call(xAxis);
+
+                    var yAxis = d3.svg.axis()
+                            .scale(yPos)
+                            .orient("right");
+
+                    svg.append("g")
+                            .attr("transform", "translate(0 ,0)")
+                            .call(yAxis);
                 });
 
             </script>
