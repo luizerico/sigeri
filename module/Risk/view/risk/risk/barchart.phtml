@@ -1,0 +1,89 @@
+<!-- <script src="" type="text/javascript" /> -->
+<?php
+echo $this->headScript()
+        ->prependFile($this->basePath() . '/js/d3.js')
+?>
+<section class="edit">
+    <div class="row">
+        <div class="col-md-8">                   
+            <?php
+            $title = 'Graphs ' . $this->title;
+            $this->headTitle('SIGERI - ' . $title);
+            ?>
+
+            <h2><?php echo $this->escapeHtml($title); ?></h2>
+            <?php echo $this->data2 ?>
+
+            <div class="areachart">
+                <div class="chart"></div>
+
+                <style>
+                    .axis text {
+                        font-size: 0.9em sans-serif;
+                    }
+
+                    .axis path, .axis line {
+                        fill: none;
+                        stroke: #000;
+                        shape-rendering: crispEdges;
+                    }
+                    
+                    .chart div {
+                        font: 10px sans-serif;
+                        background-color: steelblue;
+                        text-align: right;
+                        padding: 3px;
+                        margin: 1px;
+                        color: white;
+                    }
+                    .areachart {
+                        border: solid 1px #ccc;
+                        /* position: absolute; */
+                        width: 740px;
+                        padding: 9px;
+                        border-radius: 5px;
+                        /* display: block; */
+                    }
+                </style>
+
+                <script type="text/javascript">
+                    var margin = {top: 20, right: 20, bottom: 30, left: 40};
+                    
+                    var width = 720 - margin.left - margin.right,
+                            height = 400 - margin.top - margin.bottom;
+
+                    d3.json("jsonData", function (data) {
+                        var max_n = 0;
+                        
+                        for (var d in data) {
+                            max_n = Math.max(data[d].probability, max_n);
+                        }                        ;
+                        
+                        var x = d3.scale.linear()
+                                .domain([0, max_n])
+                                .range([0, width]);
+                        
+                        // Axis 
+                        var xAxis = d3.svg.axis()
+                                .scale(x)
+                                .orient("bottom");
+                       
+
+                        d3.select(".chart")
+                                .selectAll("div")
+                                .data(data)
+                                .enter().append("div")
+                                .style("width", function (d) {
+                                    return x(d.probability) + "px";
+                                })
+                                .text(function (d) {
+                                    return d.name;
+                                });
+                                
+                        
+                    });</script>
+
+            </div>
+
+            <div class="xychart">
+          

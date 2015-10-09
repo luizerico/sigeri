@@ -38,6 +38,11 @@ return array(
             'ThreatType' => 'Risk\Controller\ThreatTypeController',
             
             'Control' => 'Risk\Controller\ControlController',
+            
+            'Plan' => 'Risk\Controller\PlanController',
+            'PlanStatus' => 'Risk\Controller\PlanStatusController',
+            'PlanStrategy' => 'Risk\Controller\PlanStrategyController',
+            'PlanEffort' => 'Risk\Controller\PlanEffortController',
         )
     ),
     'router' => array(
@@ -223,7 +228,64 @@ return array(
                         'action' => 'index'
                     )
                 )
+            ),
+            'plan' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/plan[/][:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Plan',
+                        'action' => 'index'
+                    )
+                )
+            ),
+            'planeffort' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/planeffort[/][:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'PlanEffort',
+                        'action' => 'index'
+                    )
+                )
+            ),
+            'planstrategy' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/planstrategy[/][:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'PlanStrategy',
+                        'action' => 'index'
+                    )
+                )
+            ),
+            'planstatus' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/planstatus[/][:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'PlanStatus',
+                        'action' => 'index'
+                    )
+                )
             )
+            
         )
     )
     ,

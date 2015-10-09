@@ -1,0 +1,335 @@
+<!-- <script src="" type="text/javascript" /> -->
+<?php
+echo $this->headScript()
+        ->prependFile($this->basePath() . '/js/d3.js')
+?>
+<section class="edit">
+    <div class="row">
+        <div class="col-md-8">                   
+            <?php
+            $title = 'Graphs ' . $this->title;
+            $this->headTitle('SIGERI - ' . $title);
+            ?>
+
+            <h2><?php echo $this->escapeHtml($title); ?></h2>
+            <?php echo $this->data2 ?>
+
+            <div class="areachart">
+                <style>
+                    .bar {
+                        fill: steelblue;
+                    }
+
+                    .bar:hover {
+                        fill: brown;
+                    }
+
+                    .axis text {
+                        font: 10px sans-serif;
+                    }
+
+                    .axis path, .axis line {
+                        fill: none;
+                        stroke: #000;
+                        shape-rendering: crispEdges;
+                    }
+
+                    .x.axis path {          
+                        display: none;
+                    }
+
+                    text {
+                        font-size: 0.9em;
+                    }
+
+                    .tooltip {   
+                        position: absolute;           
+                        text-align: left;           
+                        //width: 80px;                  
+                        //height: 35px;                 
+                        padding: 10px;             
+                        font: 11px sans-serif;        
+                        background: #EEE;   
+                        border: 0px;      
+                        border-radius: 3px;           
+                        pointer-events: none;
+                        box-shadow: 1px 1px 2px #CCC;
+
+                    }
+                    label {
+                        width: 100%;
+                        text-align: right;
+                        //position: absolute;
+                        top: 20px;
+                        right: 15px;
+                        border: 0;
+                        padding: 0;
+                    }
+
+                    .areachart {
+                        border: solid 1px #ccc;
+                        /* position: absolute; */
+                        width: 740px;
+                        padding: 9px;
+                        border-radius: 5px;
+                        /* display: block; */
+                    }
+
+                </style>
+
+
+                <svg class="columnchart"></svg>
+
+                <script type="text/javascript">
+
+                    var margin = {top: 20, right: 30, bottom: 30, left: 40},
+                    width = 720 - margin.left - margin.right,
+                            height = 400 - margin.top - margin.bottom;
+
+                    var x = d3.scale.ordinal().rangeRoundBands([0, width], .1);
+                    var y = d3.scale.linear().range([height, 0]);
+
+                    var xAxis = d3.svg.axis()
+                            .scale(x)
+                            .orient("bottom");
+
+                    var yAxis = d3.svg.axis()
+                            .scale(y)
+                            .orient("left");
+
+                    var chart = d3.select(".columnchart")
+                            .attr("width", width + margin.left + margin.right)
+                            .attr("height", height + margin.top + margin.bottom)
+                            .append("g")
+                            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+                    d3.json("jsonData", function (data) {
+                        x.domain(data.map(function (d) {
+                            return d.name;
+                        }));
+
+                        y.domain([0, d3.max(data, function (d) {
+                                return d.impact * d.probability;
+                            })]);
+
+                        chart.append("g")
+                                .attr("class", "x axis")
+                                .attr("transform", "translate(0," + height + ")")
+                                .call(xAxis);
+
+                        chart.append("g")
+                                .attr("class", "y axis")
+                                .call(yAxis)
+                                .append("text")
+                                .attr("transform", "rotate(-90)")
+                                .attr("y", 6)
+                                .attr("dy", ".70em")
+                                .style("text-anchor", "end")
+                                .text("Impact x Probability");
+
+                        chart.selectAll(".bar")
+                                .data(data)
+                                .enter().append("a")
+                                .attr("xlink:href", function (d) {
+                                    return "/risk/edit/" + d.id;
+                                })
+                                .append("rect")
+                                .attr("class", "bar")
+                                .attr("x", function (d) {
+                                    return x(d.name);
+                                })
+                                .attr("y", function (d) {
+                                    return y(d.impact * d.probability);
+                                })
+                                .attr("height", function (d) {
+                                    return height - y(d.impact * d.probability);
+                                })
+                                .attr("width", x.rangeBand())                                
+                                .on("mouseover", function (d) {
+                                    tooltip.transition()
+                                            .duration(200)
+                                            .style("opacity", 1);
+                                    tooltip.html(
+                                            "Risk: " + d.name +
+                                            "</br>Probability: " + d.probability +
+                                            "</br>Impact: " + d.impact)
+                                            .style("left", (d3.event.pageX) + "px")
+                                            .style("top", (d3.event.pageY - 60) + "px");
+                                })
+                                .on("mouseout", function (d) {
+                                    tooltip.transition()
+                                            .duration(500)
+                                            .style("opacity", 0);
+                                })
+                                ;
+                        ;
+
+                        // Tip Text
+                        var tooltip = d3.select("body").append("div")
+                                .attr("class", "tooltip");
+
+                    });
+
+                    function type(d) {
+                        d.value = +d.value; // coerce to number
+                        return d;
+                    }
+                </script>
+
+            </div>
+            <p>  </p>
+            <div class="areachart">            
+
+                <svg class="columnchart2"></svg>
+                <script type="text/javascript">
+
+                    var margin = {top: 20, right: 30, bottom: 30, left: 40},
+                    width = 720 - margin.left - margin.right,
+                            height = 400 - margin.top - margin.bottom;
+
+                    /*var x = d3.scale.ordinal().rangeRoundBands([0, width], .1);
+                     var y = d3.scale.linear().range([height, 0]);
+                     
+                     var xAxis = d3.svg.axis()
+                     .scale(x)
+                     .orient("bottom");
+                     
+                     var yAxis = d3.svg.axis()
+                     .scale(y)
+                     .orient("left")
+                     .ticks(10, "%");
+                     */
+
+                    var columnchart2 = d3.select(".columnchart2")
+                            .attr("width", width + margin.left + margin.right)
+                            .attr("height", height + margin.top + margin.bottom)
+                            .append("g")
+                            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+                    d3.json("jsonData", function (data) {
+
+                        // Convert JSON data to stack format 
+                        var stack = d3.layout.stack();
+
+                        var fields = d3.keys(data[0])
+                                .filter(function (key) {
+                                    return (key !== "name" && key !== "id");
+                                });                                
+
+                        var name = data.map(function (d) {
+                            return d.name;
+                        });
+
+                        var dataset = stack(d3.range(fields.length).map(function (d) {
+                            var a = [];
+                            for (var i = 0; i < data.length; ++i) {
+                                a[i] = {x: i, y: data[i][fields[d]]};
+                            }
+                            return a;
+                        }));
+
+
+                        var xScale = d3.scale.ordinal()
+                                .domain(d3.range(dataset[0].length))
+                                .rangeRoundBands([0, width], 0.05);
+
+                        
+                        var yScale = d3.scale.linear()
+                                .domain([0, d3.max(dataset, function (d) {
+                                        return d3.max(d, function (d) {
+                                            return d.y0 + d.y;
+                                        });
+                                    })
+                                ]).range([height, 0]);
+                        
+                        var colors = d3.scale.category10();
+
+                        // Add a group for each row of data
+                        var groups = columnchart2.selectAll("g")
+                                .data(dataset)
+                                .enter()
+                                .append("g")
+                                .style("fill", function (d, i) {
+                                    return colors(i);
+                                });
+
+                        // Add a rect for each data value
+                        var rects = groups.selectAll("rect")
+                                .data(function (d) {
+                                    return d;
+                                })
+                                .enter()
+                                .append("a")
+                                .attr("xlink:href", function (d,i) {
+                                    return "/risk/edit/" + data[i].id;
+                                })
+                                .append("rect")                                                
+                                .attr("x", function (d, i) {
+                                    return xScale(i);
+                                })
+                                .attr("y", function (d) {
+                                    return yScale(d.y0 + d.y);
+                                })
+                                .attr("height", function (d) {
+                                    return height - yScale(d.y) ;
+                                })
+                                .attr("width", xScale.rangeBand())
+                                .on("mouseover", function (d, i) {
+                                    tooltip.transition()
+                                            .duration(200)
+                                            .style("opacity", 1);
+                                    tooltip.html(
+                                            "Probability: " + data[i].probability +
+                                            "</br>Impact: " + data[i].impact)                                            
+                                            .style("left", (d3.event.pageX) + "px")
+                                            .style("top", (d3.event.pageY - 40) + "px");
+                                })
+                                .on("mouseout", function (d) {
+                                    tooltip.transition()
+                                            .duration(500)
+                                            .style("opacity", 0);
+                                });
+                        
+                        // Axys
+                        x.domain(data.map(function (d) {
+                            return d.name;
+                        }));
+                        
+                        var xAxis = d3.svg.axis()
+                                .scale(x)
+                                .orient("bottom");
+
+                        var yAxis = d3.svg.axis()
+                                .scale(yScale)
+                                .orient("left");
+                                                
+                        columnchart2.append("g")
+                                .attr("class", "x axis")
+                                .attr("transform", "translate(0," + height + ")")
+                                .call(xAxis);
+
+                        columnchart2.append("g")
+                                .attr("class", "y axis")
+                                .call(yAxis)
+                                .append("text")
+                                .attr("transform", "rotate(-90)")
+                                .attr("y", 6)
+                                .attr("dy", ".70em")
+                                .style("text-anchor", "end")
+                                .text("Impact + Probability");
+                        
+                        var tooltip = d3.select("body").append("div")
+                                .attr("class", "tooltip");
+
+                    });
+                    
+                     
+
+                    function type(d) {
+                        d.value = +d.value; // coerce to number
+                        return d;
+                    }
+
+                </script>
+            </div>
+

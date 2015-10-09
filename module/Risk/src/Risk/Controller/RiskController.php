@@ -7,17 +7,12 @@ define('ROUTER', 'risk');
 define('ENTITY', 'Risk\Entity\Risk');
 
 use Risk\Entity\Risk;
-use Risk\Form\RiskForm;
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Mvc\Controller\Plugin\Redirect;
 use Zend\View\Model\ViewModel;
-use Zend\Form\Annotation\AnnotationBuilder;
 use Doctrine\ORM\EntityManager;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use Exception;
-use Doctrine\Common\Annotations\Annotation;
 use DoctrineORMModule\Form\Annotation\AnnotationBuilder as DoctrineAnnotationBuilder;
-use Zend\Json\Json;
 use Zend\View\Model\JsonModel;
 
 class RiskController extends AbstractActionController {
@@ -44,39 +39,42 @@ class RiskController extends AbstractActionController {
         return $this->em;
     }
 
-    public function reportAction() {
-        return array(
+    // Set one template to be used by all actions
+//    public function __construct()
+//    {
+//        $this->viewModel = new ViewModel();
+//        $this->viewModel->setTemplate('my-model/index/default.phtml');
+//    }
+
+    public function xychartAction() {
+        $viewModel = new ViewModel(array(
             'title' => TITLE,
-        );
+        ));
+        return $viewModel->setTemplate('risk/risk/xychart.phtml');
+    }
+
+    public function barchartAction() {
+        $viewModel = new ViewModel(array(
+            'title' => TITLE,
+        ));
+        return $viewModel->setTemplate('risk/risk/barchart.phtml');
+    }
+
+    public function columnchartAction() {
+        $viewModel = new ViewModel(array(
+            'title' => TITLE,
+        ));
+        return $viewModel->setTemplate('risk/risk/columnchart.phtml');
     }
 
     public function jsonDataAction() {
-        $dataset = array(
-            names => array("aa", "bb", "cc", "dd", "ee"),
-            values => array(10, 20, 30, 40, 10, 8, 7, 5, 100, 34, 67, 83, 67, 87)
-        );
-
-        $json = \Zend\Json\Json::encode($dataset);
-
-        /* $json = \Zend\Json\Json::encode(array(
-          8,7,5,10,88,99,100,100,
-          8,7,5,100,34,67,83,67,87,1
-          )); */
-
-
-        $ORMRepository = $this->getEntityManager()->getRepository(ENTITY);
-        $dbArray = $ORMRepository->findAll();
-
-
-        //$json2 = \Zend\Json\Json::encode($dbArray, true);
-        //$json2 = $dbArray->exportTo('json');
-
-
-        $ORMRepository = $this->getEntityManager()->createQueryBuilder();
-        $ORMRepository->select('t')->from('Risk\Entity\Risk', 't');
-
-        $results = $ORMRepository->getQuery()->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
-
+//        $ORMRepository = $this->getEntityManager()->getRepository(ENTITY);
+//        //$dbArray = $ORMRepository->findAll();
+//
+//        $ORMRepository = $this->getEntityManager()->createQueryBuilder();
+//        $ORMRepository->select('t')->from('Risk\Entity\Risk', 't');
+//
+//        $results = $ORMRepository->getQuery()->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
 
         $ORMRepository = $this->getEntityManager();
         $query = $ORMRepository->createQuery("SELECT u.id, u.name, i.value AS impact, p.value AS probability 
@@ -89,7 +87,6 @@ class RiskController extends AbstractActionController {
         $json2 = \Zend\Json\Json::encode($results, true);
 
         return new JsonModel($results);
-        //return $this->getResponse()->setContent($json2);
     }
 
     public function addAction() {
