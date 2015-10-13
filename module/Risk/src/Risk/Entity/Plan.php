@@ -140,12 +140,11 @@ class Plan {
     protected $date;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Risk\Entity\PlanReview", inversedBy="plans")
+     * @ORM\OneToMany(targetEntity="Risk\Entity\PlanReview", mappedBy="plan")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Required(false)
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Options({"label":"Revisions"})
-     * @Annotation\Attributes({"multiple":"multiple"})
      *
      * @var \Risk\Entity\PlanReview
      * @access protected

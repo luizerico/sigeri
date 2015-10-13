@@ -23,11 +23,16 @@
             <div id="description" class="tab-pane fade in active">
                 <p><?php echo $this->escapeHtml($dbArray->getDescription()); ?></p>
             </div>
-            
+
             <div id="revisions" class="tab-pane fade in">
                 <p>
-                    <a href="<?php echo $this->url('planreview', array('action' => 'add')); ?>">
-                        New revision register</a> 
+                    <a href="<?php
+                    echo $this->url('planreview', 
+                            array('action' => 'add'), 
+                            array('query' => array('plan_id' => $dbArray->getId()))
+                            );
+                    ?>">
+                        New revision ...register</a> 
                 </p>
                 <table id="datatable" class="display table">
                     <thead>

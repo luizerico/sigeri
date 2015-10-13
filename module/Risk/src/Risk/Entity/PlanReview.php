@@ -98,17 +98,17 @@ class PlanReview {
     protected $date;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Risk\Entity\Plan", mappedBy="revisions")
+     * @ORM\ManyToOne(targetEntity="Risk\Entity\Plan", inversedBy="revisions")
+     * @ORM\JoinColumn(name="plan_id", referencedColumnName="id")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Required(false)
      * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Plans"})
-     * @Annotation\Attributes({"multiple":"multiple"})
+     * @Annotation\Options({"label":"Plan"})     
      *
-     * @var \Risk\Entity\Plan
+     * @var string
      * @access protected
      */
-    protected $plans;
+    protected $plan;
 
     /**
      * @Annotation\Type("Zend\Form\Element\Submit")
@@ -117,9 +117,9 @@ class PlanReview {
      */
     protected $submit;
     
-    public function __construct() {        
-        $this->plans = new ArrayCollection();
-    }
+//    public function __construct() {        
+//        $this->plans = new ArrayCollection();
+//    }
 
     public function exchangeArray($data) {
         $this->id = (isset($data ['id'])) ? $data ['id'] : null;
@@ -128,7 +128,7 @@ class PlanReview {
         $this->analyst = (isset($data ['analyst'])) ? $data ['analyst'] : null;
         $this->status = (isset($data ['status'])) ? $data ['status'] : null;
         $this->date = (isset($data ['date'])) ? $data ['date'] : null;
-        $this->plans = (isset($data ['plans'])) ? $data ['plans'] : null;
+        $this->plan = (isset($data ['plan'])) ? $data ['plan'] : null;
     }
 
     public function __toString() {
@@ -193,20 +193,29 @@ class PlanReview {
         return $this;
     }
     
-    public function addPlans(Collection $plans) {
-        foreach ($plans as $plan) {
-            $this->plans->add($plan);
-        }
+    public function getPlan() {
+        return $this->plan;
     }
-
-    public function removePlans(Collection $plans) {
-        foreach ($plans as $plan) {
-            $this->plans->removeElement($plan);
-        }
+    
+    public function setPlan(\Risk\Entity\Plan $plan) {
+        $this->plan = $plan;
+        return $this;
     }
-
-    public function getPlans() {
-        return $this->plans;
-    }
+    
+//    public function addPlans(Collection $plans) {
+//        foreach ($plans as $plan) {
+//            $this->plans->add($plan);
+//        }
+//    }
+//
+//    public function removePlans(Collection $plans) {
+//        foreach ($plans as $plan) {
+//            $this->plans->removeElement($plan);
+//        }
+//    }
+//
+//    public function getPlans() {
+//        return $this->plans;
+//    }
 
 }

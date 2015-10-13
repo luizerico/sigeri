@@ -40,6 +40,8 @@ class PlanReviewController extends AbstractActionController {
 
         $form->bind($addObject);
 
+        $plan_id = $this->params()->fromQuery('plan_id', 0);
+
         $request = $this->getRequest();
         if ($request->isPost()) {
             $form->setData($request->getPost());
@@ -47,10 +49,15 @@ class PlanReviewController extends AbstractActionController {
                 $addObject->exchangeArray($hydrator->extract($form->getData()));
                 $this->getEntityManager()->persist($addObject);
                 $this->getEntityManager()->flush();
-                return $this->redirect()->toRoute(ROUTER, array(
-                            'action' => 'list'
+                return $this->redirect()->toRoute('plan', array(
+                            'action' => 'view',
+                            'id' => $plan_id,
                 ));
             }
+        }
+
+        if (isset($plan_id)) {
+            $form->get('plan')->setValue($plan_id);
         }
 
         return array(
@@ -197,9 +204,9 @@ class PlanReviewController extends AbstractActionController {
     public function indexAction() {
         return new ViewModel ();
     }
-    
+
     public function viewAction() {
-        
+
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
             return $this->redirect()->toRoute(ROUTER, array(
@@ -224,7 +231,7 @@ class PlanReviewController extends AbstractActionController {
                         'action' => 'list'
             ));
         }
-        
+
         return new ViewModel(array(
             'title' => TITLE,
             'router' => ROUTER,
