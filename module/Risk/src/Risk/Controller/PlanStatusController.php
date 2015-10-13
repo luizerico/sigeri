@@ -2,11 +2,11 @@
 
 namespace Risk\Controller;
 
-define('TITLE', 'Plan');
-define('ROUTER', 'plan');
-define('ENTITY', 'Risk\Entity\Plan');
+define('TITLE', 'Plan Status');
+define('ROUTER', 'planstatus');
+define('ENTITY', 'Risk\Entity\PlanStatus');
 
-use Risk\Entity\Plan;
+use Risk\Entity\PlanStatus;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Doctrine\ORM\EntityManager;
@@ -14,7 +14,7 @@ use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use Exception;
 use DoctrineORMModule\Form\Annotation\AnnotationBuilder as DoctrineAnnotationBuilder;
 
-class PlanController extends AbstractActionController {
+class PlanStatusController extends AbstractActionController {
 
     protected $em;
 
@@ -31,7 +31,7 @@ class PlanController extends AbstractActionController {
 
     public function addAction() {
 
-        $addObject = new Plan ();
+        $addObject = new PlanStatus();
         $builder = new DoctrineAnnotationBuilder($this->getEntityManager());
         $form = $builder->createForm($addObject);
         $hydrator = new DoctrineHydrator($this->getEntityManager(), ENTITY);
@@ -60,7 +60,7 @@ class PlanController extends AbstractActionController {
     }
 
     public function editAction() {
-        $editObject = new Plan ();
+        $editObject = new PlanStatus ();
         $builder = new DoctrineAnnotationBuilder($this->getEntityManager());
         $form = $builder->createForm($editObject);
         $hydrator = new DoctrineHydrator($this->getEntityManager(), ENTITY);
@@ -204,40 +204,6 @@ class PlanController extends AbstractActionController {
 
     public function indexAction() {
         return new ViewModel ();
-    }
-    
-    public function viewAction() {
-        
-        $id = (int) $this->params()->fromRoute('id', 0);
-        if (!$id) {
-            return $this->redirect()->toRoute(ROUTER, array(
-                        'action' => 'list'
-            ));
-        }
-
-        /*
-         * Check if the requested Id is valid and
-         * Exist in the database
-         * To do: Customize a page to report the request with a invalid Id
-         */
-        try {
-            $ORMRepository = $this->getEntityManager();
-            $dbArray = $ORMRepository->getRepository(ENTITY)->find($id);
-
-            if (!$dbArray) {
-                throw new Exception('Id invalido.');
-            }
-        } catch (Exception $ex) {
-            return $this->redirect()->toRoute(ROUTER, array(
-                        'action' => 'list'
-            ));
-        }
-        
-        return new ViewModel(array(
-            'title' => TITLE,
-            'router' => ROUTER,
-            'dbArray' => $dbArray
-        ));
     }
 
 }

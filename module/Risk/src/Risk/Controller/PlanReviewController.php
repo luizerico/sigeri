@@ -2,11 +2,11 @@
 
 namespace Risk\Controller;
 
-define('TITLE', 'Plan');
-define('ROUTER', 'plan');
-define('ENTITY', 'Risk\Entity\Plan');
+define('TITLE', 'Plan Review');
+define('ROUTER', 'planreview');
+define('ENTITY', 'Risk\Entity\PlanReview');
 
-use Risk\Entity\Plan;
+use Risk\Entity\PlanReview;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Doctrine\ORM\EntityManager;
@@ -14,7 +14,7 @@ use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use Exception;
 use DoctrineORMModule\Form\Annotation\AnnotationBuilder as DoctrineAnnotationBuilder;
 
-class PlanController extends AbstractActionController {
+class PlanReviewController extends AbstractActionController {
 
     protected $em;
 
@@ -31,7 +31,7 @@ class PlanController extends AbstractActionController {
 
     public function addAction() {
 
-        $addObject = new Plan ();
+        $addObject = new PlanReview ();
         $builder = new DoctrineAnnotationBuilder($this->getEntityManager());
         $form = $builder->createForm($addObject);
         $hydrator = new DoctrineHydrator($this->getEntityManager(), ENTITY);
@@ -60,7 +60,7 @@ class PlanController extends AbstractActionController {
     }
 
     public function editAction() {
-        $editObject = new Plan ();
+        $editObject = new PlanReview ();
         $builder = new DoctrineAnnotationBuilder($this->getEntityManager());
         $form = $builder->createForm($editObject);
         $hydrator = new DoctrineHydrator($this->getEntityManager(), ENTITY);
@@ -95,7 +95,6 @@ class PlanController extends AbstractActionController {
          * bind to the form and
          * change the Submit value button to edit
          */
-
         $form->bind($dbArray);
         $form->get('submit')->setAttribute('value', 'Edit');
 
@@ -105,7 +104,6 @@ class PlanController extends AbstractActionController {
          * flush to database using ORM and
          * redirect to list page
          */
-
         $request = $this->getRequest();
         if ($request->isPost()) {
             $form->setData($request->getPost());
@@ -134,12 +132,6 @@ class PlanController extends AbstractActionController {
         $ORMRepository = $this->getEntityManager()->getRepository(ENTITY);
         $dbArray = $ORMRepository->findAll();
 
-        /*
-         * Return de View on the long way...
-         * $viewModel = new ViewModel ();
-         * $viewModel->setVariable ( 'dbArray', $dbArray );
-         * return $viewModel;
-         */
         return new ViewModel(array(
             //'metadados' => $metadados,
             'title' => TITLE,

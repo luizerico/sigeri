@@ -26,9 +26,9 @@ class PlanEffort {
 	/**
 	 * @ORM\Column(type="string")
 	 * @Annotation\Type("Zend\Form\Element\Text")
-	 * @Annotation\Required({"required":"true" })
+	 * @Annotation\Required(true)
 	 * @Annotation\Filter({"name":"StripTags"})
-	 * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
+	 * @Annotation\Validator({"name":"StringLength", "options":{"min":"3"}})
 	 * @Annotation\Options({"label":"Effort"})
 	 * @Annotation\Attributes({"style":"width:100%"}) // Define the size in html code
 	 *
@@ -40,7 +40,7 @@ class PlanEffort {
         /**
 	 * @ORM\Column(type="integer")
 	 * @Annotation\Type("Zend\Form\Element\Text")
-	 * @Annotation\Required({"required":"true" })
+	 * @Annotation\Required(true)
 	 * @Annotation\Options({"label":"Value:"})
 	 * 
 	 * @var integer
@@ -51,7 +51,7 @@ class PlanEffort {
 	/**
 	 * @ORM\Column(type="string", nullable=true)
 	 * @Annotation\Type("Zend\Form\Element\Text")
-	 * @Annotation\Required({"required":"false" })
+	 * @Annotation\Required(false)
 	 * @Annotation\Filter({"name":"StripTags"})
 	 * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
 	 * @Annotation\Options({"label":"Description:"})
@@ -68,7 +68,7 @@ class PlanEffort {
 	protected $submit;
 	
 	public function __toString(){
-		return sprintf('%s - %s', $this->getValue(), $this->getDescription());
+		return sprintf('%s - %s', $this->getValue(), $this->getName());
 	}
 	public function getId() {
 		return $this->id;

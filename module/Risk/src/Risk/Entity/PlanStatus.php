@@ -26,7 +26,7 @@ class PlanStatus {
 	/**
 	 * @ORM\Column(type="string")
 	 * @Annotation\Type("Zend\Form\Element\Text")
-	 * @Annotation\Required({"required":"true" })
+	 * @Annotation\Required(true)
 	 * @Annotation\Filter({"name":"StripTags"})
 	 * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
 	 * @Annotation\Options({"label":"Status Name"})
@@ -40,7 +40,7 @@ class PlanStatus {
         /**
 	 * @ORM\Column(type="string", nullable=true)
 	 * @Annotation\Type("Zend\Form\Element\Text")
-	 * @Annotation\Required({"required":"false" })
+	 * @Annotation\Required(false)
 	 * @Annotation\Filter({"name":"StripTags"})
 	 * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
 	 * @Annotation\Options({"label":"Description:"})
@@ -57,7 +57,7 @@ class PlanStatus {
 	protected $submit;
 	
 	public function __toString(){
-		return sprintf('%s - %s', $this->getValue(), $this->getDescription());
+		return sprintf('%s', $this->getName());
 	}
 	public function getId() {
 		return $this->id;

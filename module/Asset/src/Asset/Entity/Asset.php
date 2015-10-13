@@ -30,7 +30,7 @@ class Asset {
     /**
      * @ORM\Column(type="string")
      * @Annotation\Type("Zend\Form\Element\Text")
-     * @Annotation\Required({"required":"true" })
+     * @Annotation\Required(true)
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
      * @Annotation\Options({"label":"Name:"})
@@ -43,7 +43,7 @@ class Asset {
     /**
      * @ORM\Column(type="text", nullable=true)
      * @Annotation\Type("Zend\Form\Element\Text")
-     * @Annotation\Required({"required":"false" })
+     * @Annotation\Required(false)
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
      * @Annotation\Options({"label":"Description:"})
@@ -57,7 +57,7 @@ class Asset {
      * @ORM\ManyToOne(targetEntity="Asset\Entity\AssetType")
      * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Required({"required":"true" })
+     * @Annotation\Required(true)
      * @Annotation\Attributes({"element.style":"width:100px"})
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Options({"label":"Type:"})
@@ -71,7 +71,7 @@ class Asset {
      * @ORM\ManyToOne(targetEntity="User\Entity\User")
      * @ORM\JoinColumn(name="analyst_id", referencedColumnName="id")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Required({"required":"false" })
+     * @Annotation\Required(false)
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Options({"label":"Analyst:"})
      *
@@ -84,7 +84,7 @@ class Asset {
      * @ORM\ManyToOne(targetEntity="User\Entity\Unit")
      * @ORM\JoinColumn(name="unit_id", referencedColumnName="id")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Required({"required":"false" })
+     * @Annotation\Required(false)
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Options({"label":"Unit:"})
      *
@@ -97,7 +97,7 @@ class Asset {
      * @ORM\ManyToOne(targetEntity="User\Entity\Unit")
      * @ORM\JoinColumn(name="unit_id", referencedColumnName="id")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Required({"required":"false" })
+     * @Annotation\Required(false)
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Options({"label":"Location"})
      *
@@ -109,7 +109,7 @@ class Asset {
     /**
      * @ORM\ManyToMany(targetEntity="Risk\Entity\Risk")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Required({"required":"false" })
+     * @Annotation\Required(false)
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Options({"label":"Risks:"})
      * @Annotation\Attributes({"multiple":"multiple"})
@@ -122,7 +122,7 @@ class Asset {
     /**
      * @ORM\ManyToMany(targetEntity="Risk\Entity\Vulnerability")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Required({"required":"False" })
+     * @Annotation\Required(false)
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Options({"label":"Vulnerabilities"})
      * @Annotation\Attributes({"multiple":"multiple"})
@@ -135,7 +135,7 @@ class Asset {
     /**
      * @ORM\ManyToMany(targetEntity="Risk\Entity\Threat")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Required({"required":"False" })
+     * @Annotation\Required(false)
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Options({"label":"Threaties"})
      * @Annotation\Attributes({"multiple":"multiple"})
@@ -144,11 +144,24 @@ class Asset {
      * @access protected
      */
     protected $threaties;
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="Risk\Entity\Plan")
+     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
+     * @Annotation\Required(false)
+     * @Annotation\Filter({"name":"StripTags"})
+     * @Annotation\Options({"label":"Plans"})
+     * @Annotation\Attributes({"multiple":"multiple"})
+     *
+     * @var \Risk\Entity\Threat
+     * @access protected
+     */
+    protected $plans;
 
     /**
      * @ORM\ManyToMany(targetEntity="Asset\Entity\Asset")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Required({"required":"false" })
+     * @Annotation\Required(false)
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Options({"label":"Dependencies:"})
      * @Annotation\Attributes({"multiple":"multiple"})
@@ -163,7 +176,7 @@ class Asset {
      * @ORM\ManyToOne(targetEntity="Asset\Entity\AssetType", cascade={"all"})
      * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Required({"required":"true" })
+     * @Annotation\Required(true)
      * @Annotation\Attributes({"element.style":"width:100px"})
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Options({"label":"Relevance:"})
@@ -179,7 +192,7 @@ class Asset {
      * @ORM\ManyToMany(targetEntity="Document\Entity\Document")
      * @ORM\JoinColumn(name="documents_id", referencedColumnName="id")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Required({"required":"false" })
+     * @Annotation\Required(false)
      * @Annotation\Options({"label":"Documents:"})
      * @Annotation\Attributes({"multiple":"multiple"})
      *

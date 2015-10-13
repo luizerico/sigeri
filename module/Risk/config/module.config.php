@@ -43,6 +43,7 @@ return array(
             'PlanStatus' => 'Risk\Controller\PlanStatusController',
             'PlanStrategy' => 'Risk\Controller\PlanStrategyController',
             'PlanEffort' => 'Risk\Controller\PlanEffortController',
+            'PlanReview' => 'Risk\Controller\PlanReviewController',
         )
     ),
     'router' => array(
@@ -284,8 +285,21 @@ return array(
                         'action' => 'index'
                     )
                 )
+            ),
+            'planreview' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/planreview[/][:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'PlanReview',
+                        'action' => 'index'
+                    )
+                )
             )
-            
         )
     )
     ,

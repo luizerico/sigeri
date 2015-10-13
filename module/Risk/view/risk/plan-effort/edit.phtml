@@ -1,8 +1,8 @@
-<section class="add">
+<section class="edit">
     <div class="row">
         <div class="col-md-8">
             <?php
-            $title = 'Add ' . $this->title;
+            $title = 'Edit ' . $this->title;
             $this->headTitle('SIGERI - ' . $title);
             ?>
 
@@ -21,8 +21,8 @@
             echo $this->form()->openTag($form);
 
             foreach ($form as $element) :
-
-                if ($element->getAttribute('name') != 'evisions') { ?>
+                if ($element->getAttribute('name') != 'revisions') {
+                    ?>
 
                     <div class="form-group <?php
                     if ($this->formElementErrors($element))
@@ -49,6 +49,25 @@
                         </div>
                     </div>
 
+                <?php } 
+                elseif ($element->getAttribute('name') != 'revisions') {
+                    ?>
+                    <div class="form-group <?php
+                    if ($this->formElementErrors($element))
+                        echo "error"
+                        ?>">
+                        <label class="col-sm-2 control-label"><?php echo $element->getLabel() ?></label>
+                        <div class="col-sm-10">
+                            <?php
+                            $element->setAttribute('class', 'form-control');
+
+                            echo $this->formElement($element);
+                            if ($this->formElementErrors($element))
+                                
+                                ?>
+                            <span class="help-inline"><?php echo $this->formElementErrors($element) ?></span>
+                        </div>
+                    </div>
                     <?php
                 }
             endforeach;

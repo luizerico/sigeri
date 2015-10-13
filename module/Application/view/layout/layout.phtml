@@ -59,6 +59,15 @@ echo $this->headScript()
                                 <li><a href="/asset/list">Assets</a></li>
                                 <li><a href="/assettype/list">Asset Types</a></li>
                                 <li class="divider"></li>
+                                <li><a href="/vulnerability/list">Vulnerabilities</a></li>
+                                <li><a href="/vulnerabilitytype/list">Vulnerability Type</a></li>
+                                <li><a href="/vulnerabilitylevel/list">Vulnerability Level</a></li>
+                                <li class="divider"></li>
+                                <li><a href="/threat/list">Threat</a></li>
+                                <li><a href="/threattype/list">Threat Type</a></li>
+                                <li><a href="/threatlevel/list">Threat Level</a></li>
+                                <li><a href="/threatsource/list">Threat Source</a></li>
+                                <li class="divider"></li>
                                 <li><a href="#">Asset Reports</a></li>
                             </ul></li>
                     </ul>
@@ -75,24 +84,20 @@ echo $this->headScript()
                                 <li><a href="/impact/list">Impact</a></li>
                                 <li><a href="/probability/list">Probability</a></li>
                                 <li class="divider"></li>
-                                <li><a href="/vulnerability/list">Vulnerabilities</a></li>
-                                <li><a href="/vulnerabilitytype/list">Vulnerability Type</a></li>
-                                <li><a href="/vulnerabilitylevel/list">Vulnerability Level</a></li>
-                                <li class="divider"></li>
-                                <li><a href="/threat/list">Threat</a></li>
-                                <li><a href="/threattype/list">Threat Type</a></li>
-                                <li><a href="/threatlevel/list">Threat Level</a></li>
-                                <li><a href="/threatsource/list">Threat Source</a></li>
+                                <li><a href="/control/list">Controls</a></li>                                
                             </ul></li>
                     </ul>
                     <ul class="nav navbar-nav">
                         <li class="dropdown"><a href="#" class="dropdown-toggle"
-                                                data-toggle="dropdown" role="button" aria-expanded="false">Controls
+                                                data-toggle="dropdown" role="button" aria-expanded="false">Plans
                                 <span class="caret"></span>
                             </a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="/control/list">Controls</a></li>
-                                <li><a href="/plan/list">Plans</a></li>                                
+                            <ul class="dropdown-menu" role="menu">                                
+                                <li><a href="/plan/list">Plans</a></li>
+                                <li><a href="/planreview/list">Plan Reviews</a></li> 
+                                <li><a href="/planstatus/list">Plan Status</a></li> 
+                                <li><a href="/planstrategy/list">Plan Strategies</a></li> 
+                                <li><a href="/planeffort/list">Plan Efforts</a></li> 
                                 <li class="divider"></li>
                                 <li><a href="#">Calendar</a></li>
                             </ul></li>

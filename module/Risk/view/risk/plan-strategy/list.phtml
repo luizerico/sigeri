@@ -14,10 +14,8 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Name</th>
-                <th>Status</th>                
-                <th>Analyst</th>
-                <th>Register</th>
+                <th>Name</th>                
+                <th>Description</th>
                 <th>&nbsp;</th>
             </tr>
         </thead>
@@ -25,18 +23,9 @@
             <?php foreach ($dbArray as $dbRow) : ?>
                 <tr>
                     <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
-                    <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>
-                    <td><?php echo $this->escapeHtml($dbRow->getStatus()); ?></td>
-                    <td><?php echo $this->escapeHtml($dbRow->getAnalyst()); ?></td>
-                    <td><?php echo $this->escapeHtml($dbRow->getFormatedDate()); ?></td>
+                    <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>                   
+                    <td><?php echo $this->escapeHtml($dbRow->getDescription()); ?></td>
                     <td><a
-                            href="<?php
-                            echo $this->url($this->router, array(
-                                'action' => 'view',
-                                'id' => $dbRow->getId()
-                            ));
-                            ?>">View</a>
-                        <a
                             href="<?php
                             echo $this->url($this->router, array(
                                 'action' => 'edit',
@@ -49,7 +38,7 @@
                                 'action' => 'delete',
                                 'id' => $dbRow->getId()
                             ));
-                            ?>">Del</a>
+                            ?>">Delete</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -61,7 +50,8 @@
 
     $(document).ready(function () {
         var table = $('#datatable').DataTable({
-            "pageLength": 20,
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            "pageLength": 50,
         });
 
     });

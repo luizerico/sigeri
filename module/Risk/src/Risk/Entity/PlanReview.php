@@ -9,11 +9,11 @@ use Doctrine\Common\Collections\Collection;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="plan")
+ * @ORM\Table(name="planreview")
  * @Annotation\Hydrator("Zend\Stdlib\Hydrator\ObjectProperty")
- * @Annotation\Name("Plan")
+ * @Annotation\Name("PlanReview")
  */
-class Plan {
+class PlanReview {
 
     /**
      * @ORM\Id
@@ -42,6 +42,20 @@ class Plan {
     protected $name;
 
     /**
+     * @ORM\ManyToOne(targetEntity="User\Entity\User")
+     * @ORM\JoinColumn(name="analyst_id", referencedColumnName="id")
+     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
+     * @Annotation\Required({"required":"False" })
+     * @Annotation\Filter({"name":"StripTags"})
+     * @Annotation\Options({"label":"Analyst"})
+     * @Annotation\Attributes({"style":"width:50%"})
+     *
+     * @var \User\Entity\User
+     * @access protected
+     */
+    protected $analyst;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Risk\Entity\PlanStatus")
      * @ORM\JoinColumn(name="status_id", referencedColumnName="id")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
@@ -54,49 +68,7 @@ class Plan {
      * @access protected
      */
     protected $status;
-    
-    /**
-     * @ORM\ManyToOne(targetEntity="Risk\Entity\PlanStrategy")
-     * @ORM\JoinColumn(name="strategy_id", referencedColumnName="id")
-     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Required(true)
-     * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Strategy"})
-     * @Annotation\Attributes({"style":"width:100%"})
-     *
-     * @var string
-     * @access protected
-     */
-    protected $strategy;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Risk\Entity\PlanEffort")
-     * @ORM\JoinColumn(name="effort_id", referencedColumnName="id")
-     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Required(true)
-     * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Effort"})
-     * @Annotation\Attributes({"style":"width:100%"})
-     *
-     * @var string
-     * @access protected
-     */
-    protected $effort;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="User\Entity\User")
-     * @ORM\JoinColumn(name="analyst_id", referencedColumnName="id")
-     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Required(true)
-     * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Analyst"})
-     * @Annotation\Attributes({"style":"width:50%"})
-     *
-     * @var \User\Entity\User
-     * @access protected
-     */
-    protected $analyst;
-    
     /**
      * @ORM\Column(type="text", nullable=true)
      * @Annotation\Type("Zend\Form\Element\Text")
@@ -112,20 +84,6 @@ class Plan {
     protected $description;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     * @Annotation\Type("Zend\Form\Element\Text")
-     * @Annotation\Required(false)
-     * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
-     * @Annotation\Options({"label":"Annotations"})
-     * @Annotation\Attributes({"style":"width:100%"})
-     *
-     * @var string
-     * @access protected
-     */
-    protected $annotations;
-    
-    /**
      * @ORM\Column(type="date")
      * @Annotation\Type("Zend\Form\Element\Date")
      * @Annotation\Required(false)
@@ -140,20 +98,18 @@ class Plan {
     protected $date;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Risk\Entity\PlanReview", inversedBy="plans")
+     * @ORM\ManyToMany(targetEntity="Risk\Entity\Plan", mappedBy="revisions")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Required(false)
      * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Revisions"})
+     * @Annotation\Options({"label":"Plans"})
      * @Annotation\Attributes({"multiple":"multiple"})
      *
-     * @var \Risk\Entity\PlanReview
+     * @var \Risk\Entity\Plan
      * @access protected
      */
-    protected $revisions;
-    
-    
-    
+    protected $plans;
+
     /**
      * @Annotation\Type("Zend\Form\Element\Submit")
      * @Annotation\Attributes({"value":"Submit"})
@@ -162,7 +118,7 @@ class Plan {
     protected $submit;
     
     public function __construct() {        
-        $this->revisions = new ArrayCollection();
+        $this->plans = new ArrayCollection();
     }
 
     public function exchangeArray($data) {
@@ -170,12 +126,9 @@ class Plan {
         $this->name = (isset($data ['name'])) ? $data ['name'] : null;
         $this->description = (isset($data ['description'])) ? $data ['description'] : null;
         $this->analyst = (isset($data ['analyst'])) ? $data ['analyst'] : null;
-        $this->effort = (isset($data ['effort'])) ? $data ['effort'] : null;
-        $this->strategy = (isset($data ['strategy'])) ? $data ['strategy'] : null;
         $this->status = (isset($data ['status'])) ? $data ['status'] : null;
         $this->date = (isset($data ['date'])) ? $data ['date'] : null;
-        $this->annotations = (isset($data ['annotations'])) ? $data ['annotations'] : null;
-        $this->revisions = (isset($data ['revisions'])) ? $data ['revisions'] : null;
+        $this->plans = (isset($data ['plans'])) ? $data ['plans'] : null;
     }
 
     public function __toString() {
@@ -218,24 +171,6 @@ class Plan {
         return $this;
     }
 
-    public function getEffort() {
-        return $this->effort;
-    }
-
-    public function setEffort(\Risk\Entity\PlanEffort $effort) {
-        $this->effort = $effort;
-        return $this;
-    }
-
-    public function getStrategy() {
-        return $this->strategy;
-    }
-
-    public function setStrategy(\Risk\Entity\PlanStrategy $strategy) {
-        $this->strategy = $strategy;
-        return $this;
-    }
-
     public function getStatus() {
         return $this->status;
     }
@@ -257,30 +192,21 @@ class Plan {
         $this->date = $date;
         return $this;
     }
-
-    public function getAnnotations() {
-        return $this->annotations;
-    }
-
-    public function setAnnotations($annotations) {
-        $this->annotations = $annotations;
-        return $this;
-    }
     
-    public function addRevisions(Collection $revisions) {
-        foreach ($revisions as $revision) {
-            $this->revisions->add($revision);
+    public function addPlans(Collection $plans) {
+        foreach ($plans as $plan) {
+            $this->plans->add($plan);
         }
     }
 
-    public function removeRevisions(Collection $revisions) {
-        foreach ($revisions as $revision) {
-            $this->revisions->removeElement($revision);
+    public function removePlans(Collection $plans) {
+        foreach ($plans as $plan) {
+            $this->plans->removeElement($plan);
         }
     }
 
-    public function getRevisions() {
-        return $this->revisions;
+    public function getPlans() {
+        return $this->plans;
     }
 
 }
