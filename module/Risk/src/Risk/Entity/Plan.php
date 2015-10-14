@@ -47,7 +47,7 @@ class Plan {
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Required(true)
      * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Status"})
+     * @Annotation\Options({"label":"Status", "empty_option":"Please select..."})
      * @Annotation\Attributes({"style":"width:100%"})
      *
      * @var string
@@ -61,7 +61,7 @@ class Plan {
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Required(true)
      * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Strategy"})
+     * @Annotation\Options({"label":"Strategy", "empty_option":"Please select..."})
      * @Annotation\Attributes({"style":"width:100%"})
      *
      * @var string
@@ -75,7 +75,7 @@ class Plan {
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Required(true)
      * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Effort"})
+     * @Annotation\Options({"label":"Effort", "empty_option":"Please select..."})
      * @Annotation\Attributes({"style":"width:100%"})
      *
      * @var string
@@ -89,8 +89,8 @@ class Plan {
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Required(true)
      * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Analyst"})
-     * @Annotation\Attributes({"style":"width:50%"})
+     * @Annotation\Options({"label":"Analyst", "empty_option":"Please select..."})
+     * @Annotation\Attributes({"style":"width:100%"})
      *
      * @var \User\Entity\User
      * @access protected

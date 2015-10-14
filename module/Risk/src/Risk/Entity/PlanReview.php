@@ -34,7 +34,7 @@ class PlanReview {
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
      * @Annotation\Options({"label":"Name"})
-     * @Annotation\Attributes({"style":"width:100%"}) // Define the size in html code
+     * @Annotation\Attributes({"style":"width:100%"})
      *
      * @var string
      * @access protected
@@ -47,8 +47,7 @@ class PlanReview {
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Required({"required":"False" })
      * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Analyst"})
-     * @Annotation\Attributes({"style":"width:50%"})
+     * @Annotation\Options({"label":"Analyst", "empty_option":"Please select..."})
      *
      * @var \User\Entity\User
      * @access protected
@@ -61,7 +60,7 @@ class PlanReview {
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Required(true)
      * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Status"})
+     * @Annotation\Options({"label":"Status", "empty_option":"Please select..."})
      * @Annotation\Attributes({"style":"width:100%"})
      *
      * @var string
@@ -103,7 +102,7 @@ class PlanReview {
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Required(false)
      * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Plan"})     
+     * @Annotation\Options({"label":"Plan", "empty_option":"Please select..."})  
      *
      * @var string
      * @access protected

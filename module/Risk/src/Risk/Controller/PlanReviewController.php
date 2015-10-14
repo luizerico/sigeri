@@ -38,6 +38,16 @@ class PlanReviewController extends AbstractActionController {
         $form->setHydrator($hydrator);
         $form->get('submit')->setAttribute('value', 'Add');
 
+        $redirectUrl = (string) $this->getRequest()
+                        ->getHeader('Referer')->uri()->getPath();
+        $form->add(array(
+            'type' => 'Zend\Form\Element\Hidden',
+            'name' => 'redirecturl',
+            'attributes' => array(
+                'value' => $redirectUrl,
+            )
+        ));
+
         $form->bind($addObject);
 
         $plan_id = $this->params()->fromQuery('plan_id', 0);
@@ -49,10 +59,12 @@ class PlanReviewController extends AbstractActionController {
                 $addObject->exchangeArray($hydrator->extract($form->getData()));
                 $this->getEntityManager()->persist($addObject);
                 $this->getEntityManager()->flush();
-                return $this->redirect()->toRoute('plan', array(
-                            'action' => 'view',
-                            'id' => $plan_id,
-                ));
+                $url = $this->params()->fromPost('redirecturl');
+                return $this->redirect()->toUrl($url);
+//                return $this->redirect()->toRoute('plan', array(
+//                            'action' => 'view',
+//                            'id' => $plan_id,
+//                ));
             }
         }
 
@@ -79,6 +91,9 @@ class PlanReviewController extends AbstractActionController {
             return $this->Redirect()->toRoute(ROUTER, array(
                         'action' => 'list'
             ));
+        } else {
+            $redirectUrl = (string) $this->getRequest()
+                            ->getHeader('Referer')->uri()->getPath();
         }
 
         /*
@@ -104,6 +119,13 @@ class PlanReviewController extends AbstractActionController {
          */
         $form->bind($dbArray);
         $form->get('submit')->setAttribute('value', 'Edit');
+        $form->add(array(
+            'type' => 'Zend\Form\Element\Hidden',
+            'name' => 'redirecturl',
+            'attributes' => array(
+                'value' => $redirectUrl,
+            )
+        ));
 
         /*
          * Check if request is a post from edit form and
@@ -117,9 +139,11 @@ class PlanReviewController extends AbstractActionController {
             if ($form->isValid()) {
                 $editObject->exchangeArray($hydrator->extract($form->getData()));
                 $this->getEntityManager()->flush();
-                return $this->redirect()->toRoute(ROUTER, array(
-                            'action' => 'list'
-                ));
+                $url = $this->params()->fromPost('redirecturl');
+                return $this->redirect()->toUrl($url);
+//                return $this->redirect()->toRoute(ROUTER, array(
+//                            'action' => 'list'
+//                ));
             }
         }
 
@@ -206,7 +230,6 @@ class PlanReviewController extends AbstractActionController {
     }
 
     public function viewAction() {
-
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
             return $this->redirect()->toRoute(ROUTER, array(

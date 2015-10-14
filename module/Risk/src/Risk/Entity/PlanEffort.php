@@ -39,7 +39,7 @@ class PlanEffort {
         
         /**
 	 * @ORM\Column(type="integer")
-	 * @Annotation\Type("Zend\Form\Element\Text")
+	 * @Annotation\Type("Zend\Form\Element\Number")
 	 * @Annotation\Required(true)
 	 * @Annotation\Options({"label":"Value:"})
 	 * 
