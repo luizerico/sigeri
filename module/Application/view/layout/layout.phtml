@@ -19,6 +19,7 @@ echo $this->headLink(array(
         ->prependStylesheet($this->basePath() . '/css/bootstrap-theme.min.css')
         ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css')
         ->prependStylesheet($this->basePath() . '/datatables/css/jquery.dataTables.min.css')
+        
 ?>
 
         <!-- Scripts -->
@@ -26,6 +27,7 @@ echo $this->headLink(array(
 echo $this->headScript()
         ->prependFile($this->basePath() . '/multiselect/js/jquery.multi-select.js')
         ->prependFile($this->basePath() . '/datatables/js/jquery.dataTables.min.js')
+        ->prependFile($this->basePath() . '/ckeditor/ckeditor.js')
         ->prependFile($this->basePath() . '/multiselect/js/jquery.quicksearch.js')
         ->prependFile($this->basePath() . '/js/bootstrap.min.js')
         ->prependFile($this->basePath() . '/js/jquery.min.js')
@@ -80,6 +82,8 @@ echo $this->headScript()
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="/risk/list">Risks</a></li>
                                 <li><a href="/risktype/list">Risk Type</a></li>
+                                <li><a href="/riskstatus/list">Risk Status</a></li>
+                                <li><a href="/riskreview/list">Risk Review</a></li>
                                 <li class="divider"></li>
                                 <li><a href="/impact/list">Impact</a></li>
                                 <li><a href="/probability/list">Probability</a></li>

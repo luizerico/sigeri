@@ -66,6 +66,10 @@ class RiskController extends AbstractActionController {
         ));
         return $viewModel->setTemplate('risk/risk/columnchart.phtml');
     }
+    
+    public function chartAction() {
+        return new ViewModel();
+    }
 
     public function jsonDataAction() {
 //        $ORMRepository = $this->getEntityManager()->getRepository(ENTITY);
@@ -286,7 +290,8 @@ class RiskController extends AbstractActionController {
         return array(
             'title' => TITLE,
             'id' => $id,
-            'form' => $form
+            'form' => $form,
+            'dbArray' => $dbArray
         );
     }
 
@@ -377,9 +382,41 @@ class RiskController extends AbstractActionController {
     public function indexAction() {
         return new ViewModel ();
     }
+    
+    public function viewAction() {
 
-    public function chartAction() {
-        return new ViewModel();
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute(ROUTER, array(
+                        'action' => 'list'
+            ));
+        }
+
+        /*
+         * Check if the requested Id is valid and
+         * Exist in the database
+         * To do: Customize a page to report the request with a invalid Id
+         */
+        try {
+            $ORMRepository = $this->getEntityManager();
+            $dbArray = $ORMRepository->getRepository(ENTITY)->find($id);
+
+            if (!$dbArray) {
+                throw new Exception('Id invalido.');
+            }
+        } catch (Exception $ex) {
+            return $this->redirect()->toRoute(ROUTER, array(
+                        'action' => 'list'
+            ));
+        }
+
+        return new ViewModel(array(
+            'title' => TITLE,
+            'router' => ROUTER,
+            'dbArray' => $dbArray
+        ));
     }
+
+    
 
 }

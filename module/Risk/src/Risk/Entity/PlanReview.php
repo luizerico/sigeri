@@ -38,9 +38,22 @@ class PlanReview {
      *
      * @var string
      * @access protected
-     */
+     */    
     protected $name;
-
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Risk\Entity\Plan", inversedBy="revisions")
+     * @ORM\JoinColumn(name="plan_id", referencedColumnName="id")
+     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
+     * @Annotation\Required(false)
+     * @Annotation\Filter({"name":"StripTags"})
+     * @Annotation\Options({"label":"Plan", "empty_option":"Please select..."})  
+     *
+     * @var string
+     * @access protected
+     */
+    protected $plan;
+    
     /**
      * @ORM\ManyToOne(targetEntity="User\Entity\User")
      * @ORM\JoinColumn(name="analyst_id", referencedColumnName="id")
@@ -72,10 +85,9 @@ class PlanReview {
      * @ORM\Column(type="text", nullable=true)
      * @Annotation\Type("Zend\Form\Element\Text")
      * @Annotation\Required(false)
-     * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
      * @Annotation\Options({"label":"Description"})
-     * @Annotation\Attributes({"style":"width:100%"})
+     * @Annotation\Attributes({"style":"width:100%", "class":"ckeditor"})
      *
      * @var string
      * @access protected
@@ -95,19 +107,6 @@ class PlanReview {
      * @access protected
      */
     protected $date;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Risk\Entity\Plan", inversedBy="revisions")
-     * @ORM\JoinColumn(name="plan_id", referencedColumnName="id")
-     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Required(false)
-     * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Plan", "empty_option":"Please select..."})  
-     *
-     * @var string
-     * @access protected
-     */
-    protected $plan;
 
     /**
      * @Annotation\Type("Zend\Form\Element\Submit")

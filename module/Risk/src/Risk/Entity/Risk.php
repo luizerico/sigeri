@@ -4,6 +4,8 @@ namespace Risk\Entity;
 
 use Zend\Form\Annotation;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @ORM\Entity
@@ -40,27 +42,27 @@ class Risk {
     protected $name;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     * @Annotation\Type("Zend\Form\Element\Text")
-     * @Annotation\Required(false)
+     * @ORM\ManyToOne(targetEntity="Risk\Entity\RiskStatus")
+     * @ORM\JoinColumn(name="status_id", referencedColumnName="id")
+     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
+     * @Annotation\Required(true)
      * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
-     * @Annotation\Options({"label":"Description"})
+     * @Annotation\Options({"label":"Status", "empty_option":"Please select..."})
      * @Annotation\Attributes({"style":"width:100%"})
      *
      * @var string
      * @access protected
      */
-    protected $description;
+    protected $status;
 
     /**
      * @ORM\ManyToOne(targetEntity="Risk\Entity\Probability")
      * @ORM\JoinColumn(name="probability_id", referencedColumnName="id")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Required(false)
+     * @Annotation\Required(true)
      * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Probability"})
-     * @Annotation\Attributes({"style":"width:50%"})
+     * @Annotation\Options({"label":"Probability", "empty_option":"Please select..."})
+     * @Annotation\Attributes({"style":"width:100%"})
      *
      * @var \Risk\Entity\Probability
      * @access protected
@@ -71,10 +73,10 @@ class Risk {
      * @ORM\ManyToOne(targetEntity="Risk\Entity\Impact")
      * @ORM\JoinColumn(name="impact_id", referencedColumnName="id")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Required(false)
+     * @Annotation\Required(true)
      * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Impact"})
-     * @Annotation\Attributes({"style":"width:50%"})
+     * @Annotation\Options({"label":"Impact", "empty_option":"Please select..."})
+     * @Annotation\Attributes({"style":"width:100%"})
      *
      * @var \Risk\Entity\Impact
      * @access protected
@@ -82,69 +84,27 @@ class Risk {
     protected $impact;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     * @Annotation\Type("Zend\Form\Element\Text")
-     * @Annotation\Required(false)
-     * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
-     * @Annotation\Options({"label":"Impact Detail"})
-     * @Annotation\Attributes({"style":"width:100%"})
-     *
-     * @var string
-     * @access protected
-     */
-    protected $detimpact;
-
-    /**
      * @ORM\ManyToOne(targetEntity="Risk\Entity\RiskType")
      * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Required(false)
+     * @Annotation\Required(true)
      * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Type"})
-     * @Annotation\Attributes({"style":"width:50%"})
+     * @Annotation\Options({"label":"Type", "empty_option":"Please select..."})
+     * @Annotation\Attributes({"style":"width:100%"})
      *
      * @var \Risk\Entity\RiskType
      * @access protected
      */
     protected $type;
-// Applied Control Regulations 
-    /**
-     * @ORM\Column(type="string")
-     * @Annotation\Type("Zend\Form\Element\Text")
-     * @Annotation\Required(true)
-     * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
-     * @Annotation\Options({"label":"Control Regulation"})
-     * @Annotation\Attributes({"style":"width:100%"}) // Define the size in html code
-     *
-     * @var string
-     * @access protected
-     */
-    protected $regulations;
-    // Proposed Controls 
-    /**
-     * @ORM\Column(type="string")
-     * @Annotation\Type("Zend\Form\Element\Text")
-     * @Annotation\Required(true)
-     * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
-     * @Annotation\Options({"label":"Controls"})
-     * @Annotation\Attributes({"style":"width:100%"}) // Define the size in html code
-     *
-     * @var string
-     * @access protected
-     */
-    protected $controls;
 
     /**
      * @ORM\ManyToOne(targetEntity="User\Entity\User")
      * @ORM\JoinColumn(name="analyst_id", referencedColumnName="id")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Required(false)
+     * @Annotation\Required(true)
      * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Analyst"})
-     * @Annotation\Attributes({"style":"width:50%"})
+     * @Annotation\Options({"label":"Analyst", "empty_option":"Please select..."})
+     * @Annotation\Attributes({"style":"width:100%"})
      *
      * @var \User\Entity\User
      * @access protected
@@ -154,7 +114,7 @@ class Risk {
     /**
      * @ORM\Column(type="date")
      * @Annotation\Type("Zend\Form\Element\Date")
-     * @Annotation\Required(false)
+     * @Annotation\Required(true)
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Validator({"name":"StringLength"})
      * @Annotation\Options({"label":"Registered"})
@@ -169,15 +129,89 @@ class Risk {
      * @ORM\Column(type="text", nullable=true)
      * @Annotation\Type("Zend\Form\Element\Text")
      * @Annotation\Required(false)
-     * @Annotation\Filter({"name":"StripTags"})
+     * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
+     * @Annotation\Options({"label":"Description"})
+     * @Annotation\Attributes({"style":"width:100%", "class":"ckeditor"})
+     *
+     * @var string
+     * @access protected
+     */
+    protected $description;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Required(false)
      * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
      * @Annotation\Options({"label":"Annotations"})
-     * @Annotation\Attributes({"style":"width:100%"})
+     * @Annotation\Attributes({"style":"width:100%", "class":"ckeditor"})
      *
      * @var string
      * @access protected
      */
     protected $annotations;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Required(false)
+     * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
+     * @Annotation\Options({"label":"Impact Detail"})
+     * @Annotation\Attributes({"style":"width:100%", "class":"ckeditor"})
+     *
+     * @var string
+     * @access protected
+     */
+    protected $detimpact;
+
+    /**
+     * @ORM\Column(type="string")
+     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Required(false)
+     * @Annotation\Filter({"name":"StripTags"})
+     * @Annotation\Options({"label":"Control Regulation"})
+     *
+     * @var string
+     * @access protected
+     */
+    protected $regulations;
+
+    /**
+     * @ORM\Column(type="string")
+     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Required(false)
+     * @Annotation\Filter({"name":"StripTags"})
+     * @Annotation\Options({"label":"Controls"})
+     *
+     * @var string
+     * @access protected
+     */
+    protected $controls;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Document\Entity\Document")
+     * @ORM\JoinColumn(name="documents_id", referencedColumnName="id")
+     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
+     * @Annotation\Required(false)
+     * @Annotation\Options({"label":"Documents:"})
+     * @Annotation\Attributes({"multiple":"multiple"})
+     *
+     * @var \Document\Entity\Document
+     * @access protected
+     */
+    protected $documents;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Risk\Entity\RiskReview", mappedBy="risk")
+     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
+     * @Annotation\Required(false)
+     * @Annotation\Filter({"name":"StripTags"})
+     * @Annotation\Options({"label":"Revisions"})
+     *
+     * @var \Risk\Entity\PlanReview
+     * @access protected
+     */
+    protected $revisions;
 
     /**
      * @Annotation\Type("Zend\Form\Element\Submit")
@@ -186,9 +220,17 @@ class Risk {
      */
     protected $submit;
 
+    public function __construct() {
+        $this->revisions = new ArrayCollection();
+        $this->documents = new ArrayCollection();
+        $this->controls = new ArrayCollection();
+        $this->regulations = new ArrayCollection();
+    }
+
     public function exchangeArray($data) {
         $this->id = (isset($data ['id'])) ? $data ['id'] : null;
         $this->name = (isset($data ['name'])) ? $data ['name'] : null;
+        $this->status = (isset($data ['status'])) ? $data ['status'] : null;
         $this->description = (isset($data ['description'])) ? $data ['description'] : null;
         $this->probability = (isset($data ['probability'])) ? $data ['probability'] : null;
         $this->impact = (isset($data ['impact'])) ? $data ['impact'] : null;
@@ -197,6 +239,10 @@ class Risk {
         $this->analyst = (isset($data ['analyst'])) ? $data ['analyst'] : null;
         $this->date = (isset($data ['date'])) ? $data ['date'] : null;
         $this->annotations = (isset($data ['annotations'])) ? $data ['annotations'] : null;
+        $this->revisions = (isset($data ['revisions'])) ? $data ['revisions'] : null;
+        $this->documents = (isset($data ['documents'])) ? $data ['documents'] : null;
+        $this->controls = (isset($data ['controls'])) ? $data ['controls'] : null;
+        $this->regulations = (isset($data ['regulations'])) ? $data ['regulations'] : null;
     }
 
     public function __toString() {
@@ -218,6 +264,15 @@ class Risk {
 
     public function setName($name) {
         $this->name = $name;
+        return $this;      
+    }
+    
+    public function getStatus() {
+        return $this->status;
+    }
+
+    public function setStatus(\Risk\Entity\RiskStatus $status) {
+        $this->status = $status;
         return $this;
     }
 
@@ -294,6 +349,80 @@ class Risk {
 
     public function setDetimpact($detimpact) {
         $this->detimpact = $detimpact;
+        return $this;
+    }
+
+    public function addDocuments(Collection $documents) {
+        foreach ($documents as $document) {
+            $this->documents->add($document);
+        }
+    }
+
+    public function removeDocuments(Collection $documents) {
+        foreach ($documents as $document) {
+            $this->documents->removeElement($document);
+        }
+    }
+
+    public function getDocuments() {
+        return $this->documents;
+    }
+
+    public function addRevisions(Collection $revisions) {
+        foreach ($revisions as $revision) {
+            $this->revisions->add($revision);
+        }
+    }
+
+    public function removeRevisions(Collection $revisions) {
+        foreach ($revisions as $revision) {
+            $this->revisions->removeElement($revision);
+        }
+    }
+
+    public function getRevisions() {
+        return $this->revisions;
+    }
+
+    public function addControls(Collection $controls) {
+        foreach ($controls as $control) {
+            $this->acontrols->add($control);
+        }
+    }
+
+    public function removeControls(Collection $controls) {
+        foreach ($controls as $control) {
+            $this->controls->removeElement($control);
+        }
+    }
+
+    public function getControls() {
+        return $this->controls;
+    }
+
+    public function addRegulations(Collection $regulations) {
+        foreach ($regulations as $regulation) {
+            $this->regulations->add($regulation);
+        }
+    }
+
+    public function removeRegulations(Collection $regulations) {
+        foreach ($regulations as $regulation) {
+            $this->regulations->removeElement($regulation);
+        }
+    }
+
+    public function getRegulations() {
+        return $this->regulations;
+    }
+
+    public function setControls($controls) {
+        $this->controls = $controls;
+        return $this;
+    }
+
+    public function setRegulations($regulations) {
+        $this->regulations = $regulations;
         return $this;
     }
 

@@ -64,10 +64,10 @@ class Risk extends \Risk\Entity\Risk implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'id', 'name', 'description', 'type', 'manager', 'submit');
+            return array('__isInitialized__', 'id', 'name', 'status', 'probability', 'impact', 'type', 'analyst', 'date', 'description', 'annotations', 'detimpact', 'regulations', 'controls', 'documents', 'revisions', 'submit');
         }
 
-        return array('__isInitialized__', 'id', 'name', 'description', 'type', 'manager', 'submit');
+        return array('__isInitialized__', 'id', 'name', 'status', 'probability', 'impact', 'type', 'analyst', 'date', 'description', 'annotations', 'detimpact', 'regulations', 'controls', 'documents', 'revisions', 'submit');
     }
 
     /**
@@ -176,6 +176,28 @@ class Risk extends \Risk\Entity\Risk implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function exchangeArray($data)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'exchangeArray', array($data));
+
+        return parent::exchangeArray($data);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function __toString()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__toString', array());
+
+        return parent::__toString();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getId()
     {
         if ($this->__isInitialized__ === false) {
@@ -224,6 +246,28 @@ class Risk extends \Risk\Entity\Risk implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function getStatus()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getStatus', array());
+
+        return parent::getStatus();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setStatus(\Risk\Entity\RiskStatus $status)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setStatus', array($status));
+
+        return parent::setStatus($status);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getDescription()
     {
 
@@ -246,45 +290,320 @@ class Risk extends \Risk\Entity\Risk implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function exchangeArray($data)
+    public function getProbability()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'exchangeArray', array($data));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getProbability', array());
 
-        return parent::exchangeArray($data);
+        return parent::getProbability();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setInputFilter(\Zend\InputFilter\InputFilterInterface $inputFilter)
+    public function setProbability(\Risk\Entity\Probability $probability)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setInputFilter', array($inputFilter));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setProbability', array($probability));
 
-        return parent::setInputFilter($inputFilter);
+        return parent::setProbability($probability);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getInputFilter()
+    public function getImpact()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getInputFilter', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getImpact', array());
 
-        return parent::getInputFilter();
+        return parent::getImpact();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function __toString()
+    public function setImpact(\Risk\Entity\Impact $impact)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__toString', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setImpact', array($impact));
 
-        return parent::__toString();
+        return parent::setImpact($impact);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getType()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getType', array());
+
+        return parent::getType();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setType(\Risk\Entity\RiskType $type)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setType', array($type));
+
+        return parent::setType($type);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAnalyst()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAnalyst', array());
+
+        return parent::getAnalyst();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setAnalyst(\User\Entity\User $analyst)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAnalyst', array($analyst));
+
+        return parent::setAnalyst($analyst);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getFormatedDate()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getFormatedDate', array());
+
+        return parent::getFormatedDate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDate()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDate', array());
+
+        return parent::getDate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setDate($date)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setDate', array($date));
+
+        return parent::setDate($date);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAnnotations()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAnnotations', array());
+
+        return parent::getAnnotations();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setAnnotations($annotations)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAnnotations', array($annotations));
+
+        return parent::setAnnotations($annotations);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDetimpact()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDetimpact', array());
+
+        return parent::getDetimpact();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setDetimpact($detimpact)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setDetimpact', array($detimpact));
+
+        return parent::setDetimpact($detimpact);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addDocuments(\Doctrine\Common\Collections\Collection $documents)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addDocuments', array($documents));
+
+        return parent::addDocuments($documents);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeDocuments(\Doctrine\Common\Collections\Collection $documents)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeDocuments', array($documents));
+
+        return parent::removeDocuments($documents);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDocuments()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDocuments', array());
+
+        return parent::getDocuments();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addRevisions(\Doctrine\Common\Collections\Collection $revisions)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addRevisions', array($revisions));
+
+        return parent::addRevisions($revisions);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeRevisions(\Doctrine\Common\Collections\Collection $revisions)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeRevisions', array($revisions));
+
+        return parent::removeRevisions($revisions);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRevisions()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRevisions', array());
+
+        return parent::getRevisions();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addControls(\Doctrine\Common\Collections\Collection $controls)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addControls', array($controls));
+
+        return parent::addControls($controls);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeControls(\Doctrine\Common\Collections\Collection $controls)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeControls', array($controls));
+
+        return parent::removeControls($controls);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getControls()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getControls', array());
+
+        return parent::getControls();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addRegulations(\Doctrine\Common\Collections\Collection $regulations)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addRegulations', array($regulations));
+
+        return parent::addRegulations($regulations);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeRegulations(\Doctrine\Common\Collections\Collection $regulations)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeRegulations', array($regulations));
+
+        return parent::removeRegulations($regulations);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRegulations()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRegulations', array());
+
+        return parent::getRegulations();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setControls($controls)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setControls', array($controls));
+
+        return parent::setControls($controls);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setRegulations($regulations)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRegulations', array($regulations));
+
+        return parent::setRegulations($regulations);
     }
 
 }

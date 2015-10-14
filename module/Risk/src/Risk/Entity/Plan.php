@@ -99,12 +99,11 @@ class Plan {
     
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Type("Zend\Form\Element\TextArea")
      * @Annotation\Required(false)
-     * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
      * @Annotation\Options({"label":"Description"})
-     * @Annotation\Attributes({"style":"width:100%"})
+     * @Annotation\Attributes({"style":"width:100%", "class":"ckeditor"})
      *
      * @var string
      * @access protected
@@ -113,17 +112,29 @@ class Plan {
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Type("Zend\Form\Element\TextArea")
      * @Annotation\Required(false)
-     * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
      * @Annotation\Options({"label":"Annotations"})
-     * @Annotation\Attributes({"style":"width:100%"})
+     * @Annotation\Attributes({"style":"width:100%", "class":"ckeditor"})
      *
      * @var string
      * @access protected
      */
     protected $annotations;
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="Document\Entity\Document")
+     * @ORM\JoinColumn(name="documents_id", referencedColumnName="id")
+     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
+     * @Annotation\Required(false)
+     * @Annotation\Options({"label":"Documents:"})
+     * @Annotation\Attributes({"multiple":"multiple"})
+     *
+     * @var \Document\Entity\Document
+     * @access protected
+     */
+    protected $documents;
     
     /**
      * @ORM\Column(type="date")
@@ -153,6 +164,7 @@ class Plan {
     
     
     
+    
     /**
      * @Annotation\Type("Zend\Form\Element\Submit")
      * @Annotation\Attributes({"value":"Submit"})
@@ -175,6 +187,7 @@ class Plan {
         $this->date = (isset($data ['date'])) ? $data ['date'] : null;
         $this->annotations = (isset($data ['annotations'])) ? $data ['annotations'] : null;
         $this->revisions = (isset($data ['revisions'])) ? $data ['revisions'] : null;
+        $this->documents = (isset($data ['documents'])) ? $data ['documents'] : null;
     }
 
     public function __toString() {
@@ -264,6 +277,22 @@ class Plan {
     public function setAnnotations($annotations) {
         $this->annotations = $annotations;
         return $this;
+    }
+    
+    public function addDocuments(Collection $documents) {
+        foreach ($documents as $document) {
+            $this->documents->add($document);
+        }
+    }
+
+    public function removeDocuments(Collection $documents) {
+        foreach ($documents as $document) {
+            $this->documents->removeElement($document);
+        }
+    }
+
+    public function getDocuments() {
+        return $this->documents;
     }
     
     public function addRevisions(Collection $revisions) {

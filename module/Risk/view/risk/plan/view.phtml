@@ -4,89 +4,126 @@
     $this->headTitle('SIGERI - ' . $title);
     ?>
 
-    <h3><?php echo $this->escapeHtml($title); ?></h3>    
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3><?php echo $this->escapeHtml($title); ?></h3>
+        </div>
+        <div class="panel-body">
+            <p>
+                <a href="<?php
+                echo $this->url('plan', array('action' => 'edit', 'id' => $dbArray->getId()));
+                ?>">
+                    Edit register</a> 
+            </p>
 
-    <p><label>ID: </label> <?php echo $this->escapeHtml($dbArray->getId()); ?></p>   
-    <p><label>Status: </label> <?php echo $this->escapeHtml($dbArray->getStatus()); ?></p>                
-    <p><label>Analyst: </label> <?php echo $this->escapeHtml($dbArray->getAnalyst()); ?></p>
-    <p><label>Register: </label> <?php echo $this->escapeHtml($dbArray->getFormatedDate()); ?></p>
+            <p><label>ID: </label> <?php echo $this->escapeHtml($dbArray->getId()); ?></p>   
+            <p><label>Status: </label> <?php echo $this->escapeHtml($dbArray->getStatus()); ?></p>                
+            <p><label>Analyst: </label> <?php echo $this->escapeHtml($dbArray->getAnalyst()); ?></p>
+            <p><label>Register: </label> <?php echo $this->escapeHtml($dbArray->getFormatedDate()); ?></p>
 
 
 
-    <ul class="nav nav-tabs nav-justified" style="color:#000;font-weight: bold;">
-        <li class="active"><a data-toggle="tab" href="#description">Description</a></li>
-        <li><a data-toggle="tab" href="#notes">Notes</a></li>
-        <li><a data-toggle="tab" href="#revisions">Revisions</a></li>        
-    </ul>
-    <div class="panel" style="padding-top:5px;">
+            <ul class="nav nav-tabs nav-justified" style="color:#000;font-weight: bold;">
+                <li class="active"><a data-toggle="tab" href="#description">Description</a></li>
+                <li><a data-toggle="tab" href="#notes">Notes</a></li>
+                <li><a data-toggle="tab" href="#documents">Documents</a></li>
+                <li><a data-toggle="tab" href="#revisions">Revisions</a></li>        
+            </ul>
+            <div class="panel" style="padding-top:5px;">
 
-        <div class="tab-content col-sm-12">
-            <div id="description" class="tab-pane fade in active">
-                <p><?php echo $this->escapeHtml($dbArray->getDescription()); ?></p>
-            </div>
-            <div id="notes" class="tab-pane fade in">
-                <p><?php echo $this->escapeHtml($dbArray->getAnnotations()); ?></p>
-            </div>
-            <div id="revisions" class="tab-pane fade in">
-                <p>
-                    <a href="<?php
-                    echo $this->url('planreview', 
-                            array('action' => 'add'), 
-                            array('query' => array('plan_id' => $dbArray->getId()))
+                <div class="tab-content col-sm-12">
+                    <div id="description" class="tab-pane fade in active">
+                        <p><?php echo $dbArray->getDescription(); ?></p>
+                    </div>
+                    <div id="notes" class="tab-pane fade in">
+                        <p><?php echo $dbArray->getAnnotations(); ?></p>
+                    </div>
+                    <div id="documents" class="tab-pane fade in">
+                        <p>&nbsp;
+                        </p>
+                        <table id="datatable" class="display table">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Folder</th>
+                                    <th>Type</th> 
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($dbArray->getDocuments() as $dbRow) : ?>
+                                    <tr>
+                                        <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
+                                        <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>
+                                        <td><?php echo $this->escapeHtml($dbRow->getDescription()); ?></td>
+                                        <td><?php echo $this->escapeHtml($dbRow->getFolder()); ?></td>
+                                        <td><?php echo $this->escapeHtml($dbRow->getType()); ?></td>                                
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="revisions" class="tab-pane fade in">
+                        <p>
+                            <a href="<?php
+                            echo $this->url('planreview', array('action' => 'add'), array('query' => array('plan_id' => $dbArray->getId()))
                             );
-                    ?>">
-                        New revision register</a> 
-                </p>
-                <table id="datatable" class="display table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Status</th>                
-                            <th>Analyst</th>
-                            <th>Register</th>
-                            <th>&nbsp;</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($dbArray->getRevisions() as $dbRow) : ?>
-                            <tr>
-                                <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
-                                <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>
-                                <td><?php echo $this->escapeHtml($dbRow->getStatus()); ?></td>
-                                <td><?php echo $this->escapeHtml($dbRow->getAnalyst()); ?></td>
-                                <td><?php echo $this->escapeHtml($dbRow->getFormatedDate()); ?></td>
-                                <td><a
-                                        href="<?php
-                                        echo $this->url('planreview', array(
-                                            'action' => 'edit',
-                                            'id' => $dbRow->getId()
-                                        ));
-                                        ?>">Edit</a>
-                                    <a
-                                        href="<?php
-                                        echo $this->url('planreview', array(
-                                            'action' => 'delete',
-                                            'id' => $dbRow->getId()
-                                        ));
-                                        ?>">Del</a>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                            ?>">
+                                New revision register</a> 
+                        </p>
+                        <table id="datatable" class="display table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Status</th>                
+                                    <th>Analyst</th>
+                                    <th>Register</th>
+                                    <th>&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($dbArray->getRevisions() as $dbRow) : ?>
+                                    <tr>
+                                        <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
+                                        <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>
+                                        <td><?php echo $this->escapeHtml($dbRow->getStatus()); ?></td>
+                                        <td><?php echo $this->escapeHtml($dbRow->getAnalyst()); ?></td>
+                                        <td><?php echo $this->escapeHtml($dbRow->getFormatedDate()); ?></td>
+                                        <td><a
+                                                href="<?php
+                                                echo $this->url('planreview', array(
+                                                    'action' => 'edit',
+                                                    'id' => $dbRow->getId()
+                                                ));
+                                                ?>">Edit</a>
+                                            <a
+                                                href="<?php
+                                                echo $this->url('planreview', array(
+                                                    'action' => 'delete',
+                                                    'id' => $dbRow->getId()
+                                                ));
+                                                ?>">Del</a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
             </div>
 
         </div>
     </div>
-
-
 </section>
+
 
 <script>
 
     $(document).ready(function () {
-        var table = $('#datatable').DataTable({
+        var table = $('.table').DataTable({
             "lengthChange": false,
             "pagingType": "simple",
             "pageLength": 10,

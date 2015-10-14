@@ -11,309 +11,318 @@ echo $this->headScript()
             $this->headTitle('SIGERI - ' . $title);
             ?>
 
-            <h2><?php echo $this->escapeHtml($title); ?></h2>
-            <?php echo $this->data2 ?>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3><?php echo $this->escapeHtml($title); ?></h3>
+                </div>
+                <div class="panel-body">
+                    <?php echo $this->data2 ?>
 
-            <div class="areachart">
-                <label><input type="checkbox" id="show_label" checked="true"> Show labels</label>
-                <svg id="matrix"></svg>
+                    <div class="areachart">
+                        <label><input type="checkbox" id="show_label" checked="true"> Show labels</label>
+                        <svg id="matrix"></svg>
 
-                <style>
-                    .axis text {
-                        font-size: 0.9em sans-serif;
-                    }
+                        <style>
+                            .axis text {
+                                font-size: 0.9em sans-serif;
+                            }
 
-                    .axis path, .axis line {
-                        fill: none;
-                        stroke: #000;
-                        shape-rendering: crispEdges;
-                    }
+                            .axis path, .axis line {
+                                fill: none;
+                                stroke: #000;
+                                shape-rendering: crispEdges;
+                            }
 
-                    .circle {
-                        stroke: #000;
-                        stroke-opacity: 1;
-                        fill-opacity: 1;
-                    }
-                    text {
-                        font-size: 0.9em;
-                    }
+                            .circle {
+                                stroke: #000;
+                                stroke-opacity: 1;
+                                fill-opacity: 1;
+                            }
+                            text {
+                                font-size: 0.9em;
+                            }
 
-                    .tooltip {   
-                        position: absolute;           
-                        text-align: left;           
-                        //width: 80px;                  
-                        //height: 35px;                 
-                        padding: 10px;             
-                        font: 11px sans-serif;        
-                        background: white;   
-                        border: 0px;      
-                        border-radius: 3px;           
-                        pointer-events: none;
-                        box-shadow: 1px 1px 2px #CCC;
+                            .tooltip {   
+                                position: absolute;           
+                                text-align: left;           
+                                //width: 80px;                  
+                                //height: 35px;                 
+                                padding: 10px;             
+                                font: 11px sans-serif;        
+                                background: white;   
+                                border: 0px;      
+                                border-radius: 3px;           
+                                pointer-events: none;
+                                box-shadow: 1px 1px 2px #CCC;
 
-                    }
-                    label {
-                        width: 100%;
-                        text-align: right;
-                        //position: absolute;
-                        top: 20px;
-                        right: 15px;
-                        border: 0;
-                        padding: 0;
-                    }
+                            }
+                            label {
+                                width: 100%;
+                                text-align: right;
+                                //position: absolute;
+                                top: 20px;
+                                right: 15px;
+                                border: 0;
+                                padding: 0;
+                            }
 
-                    .areachart {
-                        border: solid 1px #ccc;
-                        /* position: absolute; */
-                        width: 740px;
-                        padding: 9px;
-                        border-radius: 5px;
-                        /* display: block; */
-                    }
+/*                            .areachart {
+                                border: solid 1px #ccc;
+                                 position: absolute; 
+                                width: 720px;
+                                padding: 9px;
+                                border-radius: 5px;
+                                 display: block; 
+                            }*/
 
-                </style>
+                        </style>
 
-                <script type="text/javascript">
-                    var margin = {top: 20, right: 20, bottom: 30, left: 40},
-                    width = 720 - margin.left - margin.right,
-                            height = 500 - margin.top - margin.bottom;
+                        <script type="text/javascript">
+                            var margin = {top: 20, right: 20, bottom: 30, left: 40},
+                            width = 720 - margin.left - margin.right,
+                                    height = 500 - margin.top - margin.bottom;
 
-                    var radius = 5,
-                            padding = 1,
-                            alpha_X = 1;
+                            var radius = 5,
+                                    padding = 1,
+                                    alpha_X = 1;
 
-                    var color = d3.scale.category10();
+                            var color = d3.scale.category10();
 
-                    var svg = d3.select("#matrix")
-                            .attr("width", width + margin.left + margin.right)
-                            .attr("height", height + margin.top + margin.bottom)
-                            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                            var svg = d3.select("#matrix")
+                                    .attr("width", width + margin.left + margin.right)
+                                    .attr("height", height + margin.top + margin.bottom)
+                                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-                    var force = d3.layout.force()
-                            .charge(-50)
-                            .gravity(0)
-                            .chargeDistance(20)
-                            .size([width, height]);
+                            var force = d3.layout.force()
+                                    .charge(-50)
+                                    .gravity(0)
+                                    .chargeDistance(20)
+                                    .size([width, height]);
 
-                    //                var gradient = svg.append("radialGradient")
-                    //                        .attr("cx", "0%")
-                    //                        .attr("cy", "100%")
-                    //                        .attr("r", "100%")
-                    //                        .attr("id", "gradient")
-                    //                        .attr("spreadMethod", "pad")
-                    //                        .attr("gradientUnits", "userSpaceOnUse")
-                    //                        ;
-
-                    var gradient = svg.append("linearGradient")
-                            .attr("y1", "100%")
-                            .attr("y2", "0%")
-                            .attr("x1", "0%")
-                            .attr("x2", "100%")
-                            .attr("id", "gradient")
-                            .attr("spreadMethod", "pad")
+                            //                var gradient = svg.append("radialGradient")
+                            //                        .attr("cx", "0%")
+                            //                        .attr("cy", "100%")
+                            //                        .attr("r", "100%")
+                            //                        .attr("id", "gradient")
+                            //                        .attr("spreadMethod", "pad")
                             //                        .attr("gradientUnits", "userSpaceOnUse")
-                            ;
+                            //                        ;
 
-                    gradient
-                            .append("stop")
-                            .attr("offset", "0%")
-                            .attr("stop-color", "#0F0");
-
-                    gradient
-                            .append("stop")
-                            .attr("offset", "50%")
-                            .attr("stop-color", "#FF0");
-
-                    gradient
-                            .append("stop")
-                            .attr("offset", "100%")
-                            .attr("stop-color", "#F00");
-
-                    svg.append("svg:rect")
-                            .attr("width", width + margin.left + margin.right)
-                            .attr("height", height + margin.top + margin.bottom)
-                            .style("fill", "url(#gradient)");
-
-                    d3.json("jsonData", function (data) {
-
-                        var maxX = d3.max(data, function (d) {
-                            return d.impact;
-                        });
-
-                        var maxY = d3.max(data, function (d) {
-                            return d.probability;
-                        });
-
-                        var xPos = d3.scale.linear()
-                                .domain([0, maxX])
-                                .range([0, width]);
-
-                        var yPos = d3.scale.linear()
-                                .domain([0, maxY])
-                                .range([height, 0]);
-
-
-                        // Axis 
-                        var xAxis = d3.svg.axis()
-                                .scale(xPos)
-                                .orient("bottom");
-
-                        var yAxis = d3.svg.axis()
-                                .scale(yPos)
-                                .orient("left");
-
-                        svg.append("g")
-                                .attr("transform", "translate(" + margin.left + "," + (height + margin.top) + ")")
-                                .attr("class", "axis")
-                                .call(xAxis)
-                                .append("text")
-                                .attr("x", width)
-                                .attr("dy", "-1em")
-                                .style("text-anchor", "end")
-                                .text("Probability");
-                        ;
-
-                        svg.append("g")
-                                .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-                                .attr("class", "axis")
-                                .call(yAxis)
-                                .append("text")
-                                .attr("transform", "rotate(-90)")
-                                .attr("y", 8)
-                                .attr("dy", "1em")
-                                .style("text-anchor", "end")
-                                .text("Impact");
-
-                        // Tip Text
-                        var tooltip = d3.select("body").append("div")
-                                .attr("class", "tooltip");
-
-
-                        var text = svg.selectAll("text.node")
-                                .data(data).enter()
-                                .append("svg:text")
-                                .text(function (d) {
-                                    return d.name;
-                                })
-                                //                            .style("opacity", 0.5)
-                                ;
-
-                        // Controls
-                        // var control = svg.append()
-
-
-                        var node = svg.selectAll("circle.node")
-                                .data(data).enter()
-                                .append("a")
-                                .attr("xlink:href", function (d) {
-                                    return "/risk/edit/" + d.id;
-                                })
-                                .append("svg:circle")
-                                .attr("r", function (d) {
-                                    return radius;
-                                })
-                                .attr("class", "circle")
-                                .attr("fill", function (d) {
-                                    return color(d.impact);
-                                })
-                                //                            .style("opacity", 0.5)
-                                .call(force.drag)
-                                .on("mouseover", function (d) {
-                                    tooltip.transition()
-                                            .duration(200)
-                                            .style("opacity", 1);
-                                    tooltip.html(
-                                            "Risk: " + d.name +
-                                            "</br>Impact: " + d.impact +
-                                            "<br/>Probability: " + d.probability)
-                                            .style("left", (d3.event.pageX + radius * 2) + "px")
-                                            .style("top", (d3.event.pageY - 28) + "px");
-                                })
-                                .on("mouseout", function (d) {
-                                    tooltip.transition()
-                                            .duration(500)
-                                            .style("opacity", 0);
-                                })
-                                ;
-
-                        force
-                                .nodes(data)
-                                .on("tick", tick)
-                                .start();
-
-
-                        // Set initial positions
-                        data.forEach(function (d) {
-                            d.x = xPos(d.probability) - radius;
-                            d.y = yPos(d.impact) + radius;
-                            //d.color = color(d.impact);
-                            d.radius = radius;
-                        });
-
-                        function tick(e) {
-                            node.each(moveTowardDataPosition(e.alpha));
-                            node.each(collide(e.alpha));
-                            node
-                                    .attr("cx", function (d) {
-                                        return d.x + margin.left;
-                                    })
-                                    .attr("cy", function (d) {
-                                        return d.y + margin.top;
-                                    })
+                            var gradient = svg.append("linearGradient")
+                                    .attr("y1", "100%")
+                                    .attr("y2", "0%")
+                                    .attr("x1", "0%")
+                                    .attr("x2", "100%")
+                                    .attr("id", "gradient")
+                                    .attr("spreadMethod", "pad")
+                                    //                        .attr("gradientUnits", "userSpaceOnUse")
                                     ;
-                            text
-                                    .attr("x", function (d) {
-                                        return d.x + 3 + radius + margin.left;
-                                    })
-                                    .attr("y", function (d) {
-                                        return d.y + radius + margin.top;
-                                    });
-                        }
 
-                        function moveTowardDataPosition(alpha) {
-                            return function (d) {
-                                d.x += (xPos(d.probability) - d.x) * alpha_X * alpha;
-                                d.y += (yPos(d.impact) - d.y) * alpha_X * alpha;
-                            };
-                        }
+                            gradient
+                                    .append("stop")
+                                    .attr("offset", "0%")
+                                    .attr("stop-color", "#0F0");
 
-                        function collide(alpha) {
-                            var quadtree = d3.geom.quadtree(data);
-                            return function (d) {
-                                var r = d.radius + r + padding,
-                                        nx1 = d.x - r,
-                                        nx2 = d.x + r,
-                                        ny1 = d.y - r,
-                                        ny2 = d.y + r;
-                                quadtree.visit(function (quad, x1, y1, x2, y2) {
-                                    if (quad.point && (quad.point !== d)) {
-                                        var x = d.x - quad.point.x,
-                                                y = d.y - quad.point.y,
-                                                l = Math.sqrt(x * x + y * y),
-                                                r = d.radius + quad.point.radius + (d.color !== quad.point.color) * padding;
-                                        if (l < r) {
-                                            l = (l - r) / l * alpha;
-                                            d.x -= x *= l;
-                                            d.y -= y *= l;
-                                            quad.point.x += x;
-                                            quad.point.y += y;
-                                        }
-                                    }
-                                    return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+                            gradient
+                                    .append("stop")
+                                    .attr("offset", "50%")
+                                    .attr("stop-color", "#FF0");
+
+                            gradient
+                                    .append("stop")
+                                    .attr("offset", "100%")
+                                    .attr("stop-color", "#F00");
+
+                            svg.append("svg:rect")
+                                    .attr("width", width + margin.left + margin.right)
+                                    .attr("height", height + margin.top + margin.bottom)
+                                    .style("fill", "url(#gradient)");
+
+                            d3.json("jsonData", function (data) {
+
+                                var maxX = d3.max(data, function (d) {
+                                    return d.impact;
                                 });
-                            };
-                        }
 
-                        d3.select("#show_label").on("change", function () {
-                            opacity = this.checked ? 1 : 0;
-                            text
-                                    .transition()
-                                    .duration(750)
-                                    .attr("opacity", opacity);
-                        });
+                                var maxY = d3.max(data, function (d) {
+                                    return d.probability;
+                                });
 
-                    });
+                                var xPos = d3.scale.linear()
+                                        .domain([0, maxX])
+                                        .range([0, width]);
 
-                </script>
+                                var yPos = d3.scale.linear()
+                                        .domain([0, maxY])
+                                        .range([height, 0]);
+
+
+                                // Axis 
+                                var xAxis = d3.svg.axis()
+                                        .scale(xPos)
+                                        .orient("bottom");
+
+                                var yAxis = d3.svg.axis()
+                                        .scale(yPos)
+                                        .orient("left");
+
+                                svg.append("g")
+                                        .attr("transform", "translate(" + margin.left + "," + (height + margin.top) + ")")
+                                        .attr("class", "axis")
+                                        .call(xAxis)
+                                        .append("text")
+                                        .attr("x", width)
+                                        .attr("dy", "-1em")
+                                        .style("text-anchor", "end")
+                                        .text("Probability");
+                                ;
+
+                                svg.append("g")
+                                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                                        .attr("class", "axis")
+                                        .call(yAxis)
+                                        .append("text")
+                                        .attr("transform", "rotate(-90)")
+                                        .attr("y", 8)
+                                        .attr("dy", "1em")
+                                        .style("text-anchor", "end")
+                                        .text("Impact");
+
+                                // Tip Text
+                                var tooltip = d3.select("body").append("div")
+                                        .attr("class", "tooltip");
+
+
+                                var text = svg.selectAll("text.node")
+                                        .data(data).enter()
+                                        .append("svg:text")
+                                        .text(function (d) {
+                                            return d.name;
+                                        })
+                                        //                            .style("opacity", 0.5)
+                                        ;
+
+                                // Controls
+                                // var control = svg.append()
+
+
+                                var node = svg.selectAll("circle.node")
+                                        .data(data).enter()
+                                        .append("a")
+                                        .attr("xlink:href", function (d) {
+                                            return "/risk/edit/" + d.id;
+                                        })
+                                        .append("svg:circle")
+                                        .attr("r", function (d) {
+                                            return radius;
+                                        })
+                                        .attr("class", "circle")
+                                        .attr("fill", function (d) {
+                                            return color(d.impact);
+                                        })
+                                        //                            .style("opacity", 0.5)
+                                        .call(force.drag)
+                                        .on("mouseover", function (d) {
+                                            tooltip.transition()
+                                                    .duration(200)
+                                                    .style("opacity", 1);
+                                            tooltip.html(
+                                                    "Risk: " + d.name +
+                                                    "</br>Impact: " + d.impact +
+                                                    "<br/>Probability: " + d.probability)
+                                                    .style("left", (d3.event.pageX + radius * 2) + "px")
+                                                    .style("top", (d3.event.pageY - 28) + "px");
+                                        })
+                                        .on("mouseout", function (d) {
+                                            tooltip.transition()
+                                                    .duration(500)
+                                                    .style("opacity", 0);
+                                        })
+                                        ;
+
+                                force
+                                        .nodes(data)
+                                        .on("tick", tick)
+                                        .start();
+
+
+                                // Set initial positions
+                                data.forEach(function (d) {
+                                    d.x = xPos(d.probability) - radius;
+                                    d.y = yPos(d.impact) + radius;
+                                    //d.color = color(d.impact);
+                                    d.radius = radius;
+                                });
+
+                                function tick(e) {
+                                    node.each(moveTowardDataPosition(e.alpha));
+                                    node.each(collide(e.alpha));
+                                    node
+                                            .attr("cx", function (d) {
+                                                return d.x + margin.left;
+                                            })
+                                            .attr("cy", function (d) {
+                                                return d.y + margin.top;
+                                            })
+                                            ;
+                                    text
+                                            .attr("x", function (d) {
+                                                return d.x + 3 + radius + margin.left;
+                                            })
+                                            .attr("y", function (d) {
+                                                return d.y + radius + margin.top;
+                                            });
+                                }
+
+                                function moveTowardDataPosition(alpha) {
+                                    return function (d) {
+                                        d.x += (xPos(d.probability) - d.x) * alpha_X * alpha;
+                                        d.y += (yPos(d.impact) - d.y) * alpha_X * alpha;
+                                    };
+                                }
+
+                                function collide(alpha) {
+                                    var quadtree = d3.geom.quadtree(data);
+                                    return function (d) {
+                                        var r = d.radius + r + padding,
+                                                nx1 = d.x - r,
+                                                nx2 = d.x + r,
+                                                ny1 = d.y - r,
+                                                ny2 = d.y + r;
+                                        quadtree.visit(function (quad, x1, y1, x2, y2) {
+                                            if (quad.point && (quad.point !== d)) {
+                                                var x = d.x - quad.point.x,
+                                                        y = d.y - quad.point.y,
+                                                        l = Math.sqrt(x * x + y * y),
+                                                        r = d.radius + quad.point.radius + (d.color !== quad.point.color) * padding;
+                                                if (l < r) {
+                                                    l = (l - r) / l * alpha;
+                                                    d.x -= x *= l;
+                                                    d.y -= y *= l;
+                                                    quad.point.x += x;
+                                                    quad.point.y += y;
+                                                }
+                                            }
+                                            return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+                                        });
+                                    };
+                                }
+
+                                d3.select("#show_label").on("change", function () {
+                                    opacity = this.checked ? 1 : 0;
+                                    text
+                                            .transition()
+                                            .duration(750)
+                                            .attr("opacity", opacity);
+                                });
+
+                            });
+
+                        </script>
+                    </div>
+                </div>
             </div>
+             </div>
+    </div>
+</section>
 

@@ -121,7 +121,8 @@ class PlanController extends AbstractActionController {
         return array(
             'title' => TITLE,
             'id' => $id,
-            'form' => $form
+            'form' => $form,
+            'dbArray' => $dbArray
         );
     }
 
@@ -205,9 +206,9 @@ class PlanController extends AbstractActionController {
     public function indexAction() {
         return new ViewModel ();
     }
-    
+
     public function viewAction() {
-        
+
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
             return $this->redirect()->toRoute(ROUTER, array(
@@ -232,7 +233,7 @@ class PlanController extends AbstractActionController {
                         'action' => 'list'
             ));
         }
-        
+
         return new ViewModel(array(
             'title' => TITLE,
             'router' => ROUTER,

@@ -23,6 +23,8 @@ return array(
         'invokables' => array(
             'Risk' => 'Risk\Controller\RiskController',
             'RiskType' => 'Risk\Controller\RiskTypeController',
+            'RiskStatus' => 'Risk\Controller\RiskStatusController',
+            'RiskReview' => 'Risk\Controller\RiskReviewController',
             'RiskManager' => 'Risk\Controller\RiskManagerController',
             
             'Impact' => 'Risk\Controller\ImpactController',
@@ -72,6 +74,34 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'RiskType',
+                        'action' => 'index'
+                    )
+                )
+            ),
+            'riskstatus' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/riskstatus[/][:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'RiskStatus',
+                        'action' => 'index'
+                    )
+                )
+            ),
+            'riskreview' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/riskreview[/][:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'RiskReview',
                         'action' => 'index'
                     )
                 )
