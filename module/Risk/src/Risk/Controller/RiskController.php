@@ -133,7 +133,7 @@ class RiskController extends AbstractActionController {
         $hydrator = new DoctrineHydrator($this->getEntityManager(), ENTITY);
         $form->setHydrator($hydrator);
         $form->get('submit')->setAttribute('value', 'Add');
-
+        
         $form->bind($addObject);
 
         $request = $this->getRequest();

@@ -64,10 +64,10 @@ class Plan extends \Risk\Entity\Plan implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'id', 'name', 'status', 'strategy', 'effort', 'analyst', 'description', 'annotations', 'documents', 'date', 'revisions', 'submit');
+            return array('__isInitialized__', 'id', 'name', 'strategy', 'effort', 'analyst', 'description', 'annotations', 'documents', 'status', 'date', 'revisions', 'submit');
         }
 
-        return array('__isInitialized__', 'id', 'name', 'status', 'strategy', 'effort', 'analyst', 'description', 'annotations', 'documents', 'date', 'revisions', 'submit');
+        return array('__isInitialized__', 'id', 'name', 'strategy', 'effort', 'analyst', 'description', 'annotations', 'documents', 'status', 'date', 'revisions', 'submit');
     }
 
     /**

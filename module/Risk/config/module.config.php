@@ -40,12 +40,19 @@ return array(
             'ThreatType' => 'Risk\Controller\ThreatTypeController',
             
             'Control' => 'Risk\Controller\ControlController',
+            'ControlType' => 'Risk\Controller\ControlTypeController',
+            'ControlStatus' => 'Risk\Controller\ControlStatusController',
+            'ControlReview' => 'Risk\Controller\ControlReviewController',
             
             'Plan' => 'Risk\Controller\PlanController',
             'PlanStatus' => 'Risk\Controller\PlanStatusController',
             'PlanStrategy' => 'Risk\Controller\PlanStrategyController',
             'PlanEffort' => 'Risk\Controller\PlanEffortController',
             'PlanReview' => 'Risk\Controller\PlanReviewController',
+            
+            'Compliance' => 'Risk\Controller\ComplianceController',
+            'ComplianceType' => 'Risk\Controller\ComplianceTypeController',
+            'ComplianceRule' => 'Risk\Controller\ComplianceRuleController',
         )
     ),
     'router' => array(
@@ -260,6 +267,48 @@ return array(
                     )
                 )
             ),
+            'controltype' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/controltype[/][:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'ControlType',
+                        'action' => 'index'
+                    )
+                )
+            ),
+            'controlstatus' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/controlstatus[/][:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'ControlStatus',
+                        'action' => 'index'
+                    )
+                )
+            ),
+            'controlreview' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/controlreview[/][:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'ControlReview',
+                        'action' => 'index'
+                    )
+                )
+            ),
             'plan' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -326,6 +375,48 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'PlanReview',
+                        'action' => 'index'
+                    )
+                )
+            ),
+            'compliance' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/compliance[/][:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Compliance',
+                        'action' => 'index'
+                    )
+                )
+            ),
+            'compliancetype' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/compliancetype[/][:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'ComplianceType',
+                        'action' => 'index'
+                    )
+                )
+            ),
+            'compliancerule' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/compliancerule[/][:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'ComplianceRule',
                         'action' => 'index'
                     )
                 )

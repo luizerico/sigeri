@@ -56,6 +56,36 @@ class Risk {
     protected $status;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Risk\Entity\RiskType")
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
+     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
+     * @Annotation\Required(true)
+     * @Annotation\Filter({"name":"StripTags"})
+     * @Annotation\Options({"label":"Type", "empty_option":"Please select..."})
+     * @Annotation\Attributes({"style":"width:100%"})
+     *
+     * @var \Risk\Entity\RiskType
+     * @access protected
+     */
+    protected $type;
+
+//    /**
+//     * @ORM\ManyToOne(targetEntity="Risk\Entity\RiskMethod")
+//     * @ORM\JoinColumn(name="method_id", referencedColumnName="id")
+//     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
+//     * @Annotation\Required(true)
+//     * @Annotation\Filter({"name":"StripTags"})
+//     * @Annotation\Options({"label":"Method", "empty_option":"Please select..."})
+//     * @Annotation\Attributes({"style":"width:100%"})
+//     *
+//     * @var string
+//     * @access protected
+//     *
+//     * @var type 
+//     */   
+//    protected $method;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Risk\Entity\Probability")
      * @ORM\JoinColumn(name="probability_id", referencedColumnName="id")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
@@ -82,20 +112,6 @@ class Risk {
      * @access protected
      */
     protected $impact;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Risk\Entity\RiskType")
-     * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
-     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Required(true)
-     * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Type", "empty_option":"Please select..."})
-     * @Annotation\Attributes({"style":"width:100%"})
-     *
-     * @var \Risk\Entity\RiskType
-     * @access protected
-     */
-    protected $type;
 
     /**
      * @ORM\ManyToOne(targetEntity="User\Entity\User")
@@ -127,7 +143,7 @@ class Risk {
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Type("Zend\Form\Element\TextArea")
      * @Annotation\Required(false)
      * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
      * @Annotation\Options({"label":"Description"})
@@ -140,7 +156,7 @@ class Risk {
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Type("Zend\Form\Element\TextArea")
      * @Annotation\Required(false)
      * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
      * @Annotation\Options({"label":"Annotations"})
@@ -153,7 +169,7 @@ class Risk {
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Type("Zend\Form\Element\TextArea")
      * @Annotation\Required(false)
      * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
      * @Annotation\Options({"label":"Impact Detail"})
@@ -264,9 +280,9 @@ class Risk {
 
     public function setName($name) {
         $this->name = $name;
-        return $this;      
+        return $this;
     }
-    
+
     public function getStatus() {
         return $this->status;
     }

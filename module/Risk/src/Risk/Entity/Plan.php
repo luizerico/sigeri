@@ -42,20 +42,6 @@ class Plan {
     protected $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Risk\Entity\PlanStatus")
-     * @ORM\JoinColumn(name="status_id", referencedColumnName="id")
-     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Required(true)
-     * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Status", "empty_option":"Please select..."})
-     * @Annotation\Attributes({"style":"width:100%"})
-     *
-     * @var string
-     * @access protected
-     */
-    protected $status;
-    
-    /**
      * @ORM\ManyToOne(targetEntity="Risk\Entity\PlanStrategy")
      * @ORM\JoinColumn(name="strategy_id", referencedColumnName="id")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
@@ -137,12 +123,26 @@ class Plan {
     protected $documents;
     
     /**
+     * @ORM\ManyToOne(targetEntity="Risk\Entity\PlanStatus")
+     * @ORM\JoinColumn(name="status_id", referencedColumnName="id")
+     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
+     * @Annotation\Required(true)
+     * @Annotation\Filter({"name":"StripTags"})
+     * @Annotation\Options({"label":"Status", "empty_option":"Please select..."})
+     * @Annotation\Attributes({"style":"width:100%"})
+     *
+     * @var string
+     * @access protected
+     */
+    protected $status;
+    
+    /**
      * @ORM\Column(type="date")
      * @Annotation\Type("Zend\Form\Element\Date")
      * @Annotation\Required(false)
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Validator({"name":"StringLength"})
-     * @Annotation\Options({"label":"Registered"})
+     * @Annotation\Options({"label":"Date"})
      * @Annotation\Attributes({"style":"width:50%"})
      *
      * @var string
