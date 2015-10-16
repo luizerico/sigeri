@@ -10,10 +10,12 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="method")
  * @Annotation\Hydrator("Zend\Stdlib\Hydrator\ObjectProperty")
  * @Annotation\Name("Method")
+ * @Annotation\Type("fieldset")
  * 
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @ORM\DiscriminatorMap({"cvss" = "MethodCvss", "owasp" = "MethodOwasp"})
+ * 
  */
 class Method {
 
@@ -28,18 +30,9 @@ class Method {
      * @access protected
      */
     protected $id;
-         
-
+    
     /**
-     * @ORM\ManyToOne(targetEntity="Risk\Entity\Risk", inversedBy="revisions")
-     * @ORM\JoinColumn(name="risk_id", referencedColumnName="id")
-     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Required(false)
-     * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Risk", "empty_option":"Please select..."})  
-     *
-     * @var string
-     * @access protected
+     * @ORM\OneToOne(targetEntity="Risk\Entity\Risk", mappedBy="method", cascade={"persist"})  
      */
     protected $risk;
 
@@ -54,12 +47,12 @@ class Method {
      */
     protected $value;
 
-    /**
-     * @Annotation\Type("Zend\Form\Element\Submit")
-     * @Annotation\Attributes({"value":"Submit"})
-     * @Annotation\Attributes({"style":"width:150px", "class":"btn btn-default"})
-     */
-    protected $submit;
+//    /**
+//     * @Annotation\Type("Zend\Form\Element\Submit")
+//     * @Annotation\Attributes({"value":"Submit"})
+//     * @Annotation\Attributes({"style":"width:150px", "class":"btn btn-default"})
+//     */
+//    protected $submit;
 
     public function exchangeArray($data) {
         $this->id = (isset($data ['id'])) ? $data ['id'] : null;
@@ -69,7 +62,7 @@ class Method {
     }
 
     public function __toString() {
-        return sprintf('%s', $this->getDescription());
+        return sprintf('%s', $this->getValue());
     }
 
     public function getId() {

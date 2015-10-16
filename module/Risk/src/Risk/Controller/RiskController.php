@@ -7,6 +7,7 @@ define('ROUTER', 'risk');
 define('ENTITY', 'Risk\Entity\Risk');
 
 use Risk\Entity\Risk;
+use Risk\Entity\Method;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Doctrine\ORM\EntityManager;
@@ -14,6 +15,7 @@ use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use Exception;
 use DoctrineORMModule\Form\Annotation\AnnotationBuilder as DoctrineAnnotationBuilder;
 use Zend\View\Model\JsonModel;
+use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 class RiskController extends AbstractActionController {
     /*
@@ -66,7 +68,7 @@ class RiskController extends AbstractActionController {
         ));
         return $viewModel->setTemplate('risk/risk/columnchart.phtml');
     }
-    
+
     public function chartAction() {
         return new ViewModel();
     }
@@ -132,15 +134,34 @@ class RiskController extends AbstractActionController {
         $form = $builder->createForm($addObject);
         $hydrator = new DoctrineHydrator($this->getEntityManager(), ENTITY);
         $form->setHydrator($hydrator);
-        $form->get('submit')->setAttribute('value', 'Add');
         
+        
+$form->add(new \Zend\Form\Element\Csrf('security'));
+        $form->add(new \Zend\Form\Element\Submit('submit', array(
+                'value' => 'Save')));
+        $form->get('submit')->setAttribute('value', 'Add');
+
+        $formfieldset = $builder->createForm(new Method());
+        $formfieldset->setName('methodfieldset');
+        $formfieldset->setUseAsBaseFieldset(true);
+        $formfieldset->setHydrator(new DoctrineHydrator($this->getEntityManager(), 'Risk\Entity\Method'));
+
+        $form->add($formfieldset);
+
+
+        
+        
+
         $form->bind($addObject);
+        //
 
         $request = $this->getRequest();
         if ($request->isPost()) {
             $form->setData($request->getPost());
             if ($form->isValid()) {
+                echo $form->getData();
                 $addObject->exchangeArray($hydrator->extract($form->getData()));
+                var_dump($form->getData());
                 $this->getEntityManager()->persist($addObject);
                 $this->getEntityManager()->flush();
                 return $this->redirect()->toRoute(ROUTER, array(
@@ -233,6 +254,8 @@ class RiskController extends AbstractActionController {
         $hydrator = new DoctrineHydrator($this->getEntityManager(), ENTITY);
         $form->setHydrator($hydrator);
 
+
+
         $id = (int) $this->params()->fromRoute('id', 0);
 
         if (!$id) {
@@ -266,6 +289,13 @@ class RiskController extends AbstractActionController {
         $form->bind($dbArray);
         $form->get('submit')->setAttribute('value', 'Edit');
 
+
+        $formfieldset = $builder->createForm(new Method());
+        $formfieldset->setName('method');
+        $formfieldset->setUseAsBaseFieldset(true);
+        $form->add($formfieldset);
+
+
         /*
          * Check if request is a post from edit form and
          * extract the data using de hydrator and
@@ -284,6 +314,8 @@ class RiskController extends AbstractActionController {
                 return $this->redirect()->toRoute(ROUTER, array(
                             'action' => 'list'
                 ));
+            } else {
+                echo $request;
             }
         }
 
@@ -382,7 +414,7 @@ class RiskController extends AbstractActionController {
     public function indexAction() {
         return new ViewModel ();
     }
-    
+
     public function viewAction() {
 
         $id = (int) $this->params()->fromRoute('id', 0);
@@ -416,7 +448,5 @@ class RiskController extends AbstractActionController {
             'dbArray' => $dbArray
         ));
     }
-
-    
 
 }

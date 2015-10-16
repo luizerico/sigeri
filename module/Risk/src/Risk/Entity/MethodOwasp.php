@@ -19,7 +19,7 @@ class MethodOwasp extends Method {
      * @Annotation\Required(false)
      * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
      * @Annotation\Options({"label":"Description"})
-     * @Annotation\Attributes({"style":"width:100%", "class":"ckeditor"})
+     * @Annotation\Attributes({"style":"width:100%"})
      *
      * @var string
      * @access protected
@@ -39,13 +39,7 @@ class MethodOwasp extends Method {
      * @access protected
      */
     protected $date;
-
-    /**
-     * @Annotation\Type("Zend\Form\Element\Submit")
-     * @Annotation\Attributes({"value":"Submit"})
-     * @Annotation\Attributes({"style":"width:150px", "class":"btn btn-default"})
-     */
-    protected $submit;
+    
 
     public function exchangeArray($data) {
         $this->description = (isset($data ['description'])) ? $data ['description'] : null;

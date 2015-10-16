@@ -69,6 +69,13 @@ class Risk {
      */
     protected $type;
 
+    /**
+     * @ORM\OneToOne(targetEntity="Risk\Entity\Method", inversedBy="risk", cascade={"persist"})
+     * @ORM\JoinColumn(name="method_id", referencedColumnName="id", unique=false, nullable=true)
+     * @Annotation\Required(false)
+     */
+    protected $method;
+
 //    /**
 //     * @ORM\ManyToOne(targetEntity="Risk\Entity\RiskMethod")
 //     * @ORM\JoinColumn(name="method_id", referencedColumnName="id")
@@ -76,13 +83,13 @@ class Risk {
 //     * @Annotation\Required(true)
 //     * @Annotation\Filter({"name":"StripTags"})
 //     * @Annotation\Options({"label":"Method", "empty_option":"Please select..."})
-//     * @Annotation\Attributes({"style":"width:100%"})
+//     * @Annotation\Attributes({"style":"width:100%", "id":"method"})
 //     *
 //     * @var string
 //     * @access protected
 //     *
 //     * @var type 
-//     */   
+//     */
 //    protected $method;
 
     /**
@@ -234,13 +241,14 @@ class Risk {
      * @Annotation\Attributes({"value":"Submit"})
      * @Annotation\Attributes({"style":"width:150px", "class":"btn btn-default"})
      */
-    protected $submit;
+//    protected $submit;
 
     public function __construct() {
         $this->revisions = new ArrayCollection();
         $this->documents = new ArrayCollection();
         $this->controls = new ArrayCollection();
         $this->regulations = new ArrayCollection();
+        $this->method = new Method();
     }
 
     public function exchangeArray($data) {
@@ -259,6 +267,8 @@ class Risk {
         $this->documents = (isset($data ['documents'])) ? $data ['documents'] : null;
         $this->controls = (isset($data ['controls'])) ? $data ['controls'] : null;
         $this->regulations = (isset($data ['regulations'])) ? $data ['regulations'] : null;
+
+        $this->method = (isset($data ['method'])) ? $data ['method'] : null;
     }
 
     public function __toString() {
@@ -432,6 +442,7 @@ class Risk {
         return $this->regulations;
     }
 
+    // TEMP FUNCTIONS
     public function setControls($controls) {
         $this->controls = $controls;
         return $this;
@@ -440,6 +451,15 @@ class Risk {
     public function setRegulations($regulations) {
         $this->regulations = $regulations;
         return $this;
+    }
+
+    public function setMethod(\Risk\Entity\Method $method) {
+        $this->method = $method->exchangeArray($method);
+        return $this;
+    }
+
+    public function getMethod() {
+        return $this->method;
     }
 
 }

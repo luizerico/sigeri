@@ -44,8 +44,16 @@ class MethodOwaspController extends AbstractActionController {
         $form = $builder->createForm($addObject);
         $hydrator = new DoctrineHydrator($this->getEntityManager(), ENTITY);
         $form->setHydrator($hydrator);
-        $form->get('submit')->setAttribute('value', 'Add');
-
+        
+        $form->add(array(
+            'name' => 'submit',
+            'attributes' => array(
+                'type' => 'submit',
+                'value' => 'Add',
+                'id' => 'submit',
+            ),
+        ));
+        //$form->get('submit')->setAttribute('value', 'Add');
         $form->bind($addObject);
 
         $request = $this->getRequest();
@@ -73,6 +81,16 @@ class MethodOwaspController extends AbstractActionController {
         $form = $builder->createForm($editObject);
         $hydrator = new DoctrineHydrator($this->getEntityManager(), ENTITY);
         $form->setHydrator($hydrator);
+        
+        $form->add(array(
+            'name' => 'submit',
+            'attributes' => array(
+                'type' => 'submit',
+                'value' => 'Edit',
+                'id' => 'submit',
+            ),
+        ));
+        //$form->get('submit')->setAttribute('value', 'Edit');
 
         $id = (int) $this->params()->fromRoute('id', 0);
 
@@ -98,15 +116,9 @@ class MethodOwaspController extends AbstractActionController {
                         'action' => 'list'
             ));
         }
-
-        /*
-         * bind to the form and
-         * change the Submit value button to edit
-         */
-
+                
         $form->bind($dbArray);
-        $form->get('submit')->setAttribute('value', 'Edit');
-
+        
         /*
          * Check if request is a post from edit form and
          * extract the data using de hydrator and

@@ -176,6 +176,17 @@ class PlanEffort extends \Risk\Entity\PlanEffort implements \Doctrine\ORM\Proxy\
     /**
      * {@inheritDoc}
      */
+    public function exchangeArray($data)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'exchangeArray', array($data));
+
+        return parent::exchangeArray($data);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function __toString()
     {
 
@@ -274,17 +285,6 @@ class PlanEffort extends \Risk\Entity\PlanEffort implements \Doctrine\ORM\Proxy\
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setDescription', array($description));
 
         return parent::setDescription($description);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function exchangeArray($data)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'exchangeArray', array($data));
-
-        return parent::exchangeArray($data);
     }
 
 }

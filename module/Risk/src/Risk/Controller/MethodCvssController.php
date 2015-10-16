@@ -44,7 +44,16 @@ class MethodCvssController extends AbstractActionController {
         $form = $builder->createForm($addObject);
         $hydrator = new DoctrineHydrator($this->getEntityManager(), ENTITY);
         $form->setHydrator($hydrator);
-        $form->get('submit')->setAttribute('value', 'Add');
+
+        $form->add(array(
+            'name' => 'submit',
+            'attributes' => array(
+                'type' => 'submit',
+                'value' => 'Add',
+                'id' => 'submit',
+            ),
+        ));
+        //$form->get('submit')->setAttribute('value', 'Add');
 
         $form->bind($addObject);
 
@@ -105,7 +114,15 @@ class MethodCvssController extends AbstractActionController {
          */
 
         $form->bind($dbArray);
-        $form->get('submit')->setAttribute('value', 'Edit');
+        $form->add(array(
+            'name' => 'submit',
+            'attributes' => array(
+                'type' => 'submit',
+                'value' => 'Edit',
+                'id' => 'submit',
+            ),
+        ));
+        //$form->get('submit')->setAttribute('value', 'Edit');
 
         /*
          * Check if request is a post from edit form and
@@ -129,7 +146,7 @@ class MethodCvssController extends AbstractActionController {
         return array(
             'title' => TITLE,
             'id' => $id,
-            'form' => $form, 
+            'form' => $form,
             'dbArray' => $dbArray
         );
     }
@@ -230,7 +247,7 @@ class MethodCvssController extends AbstractActionController {
                         'action' => 'list'
             ));
         }
-        
+
         return new ViewModel(array(
             'title' => TITLE,
             'router' => ROUTER,

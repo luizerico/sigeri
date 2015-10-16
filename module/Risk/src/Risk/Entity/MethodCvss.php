@@ -11,6 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @Annotation\Hydrator("Zend\Stdlib\Hydrator\ObjectProperty")
  * @Annotation\Name("MethodCvss")
  * 
+ * @Annotation\Type("fieldset")
+ * 
  */
 class MethodCvss extends Method {
 
@@ -39,6 +41,10 @@ class MethodCvss extends Method {
     public function exchangeArray($data) {
         $this->likelihood = (isset($data ['likelihood'])) ? $data ['likelihood'] : null;
         $this->impact = (isset($data ['impact'])) ? $data ['impact'] : null;
+    }
+    
+    public function __toString() {
+        return sprintf('%s','CVSS');
     }
 
     public function getImpact() {
