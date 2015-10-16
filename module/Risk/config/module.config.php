@@ -53,6 +53,10 @@ return array(
             'Compliance' => 'Risk\Controller\ComplianceController',
             'ComplianceType' => 'Risk\Controller\ComplianceTypeController',
             'ComplianceRule' => 'Risk\Controller\ComplianceRuleController',
+            
+            'Method' => 'Risk\Controller\MethodController',
+            'MethodCvss' => 'Risk\Controller\MethodCvssController',
+            'MethodOwasp' => 'Risk\Controller\MethodOwaspController',
         )
     ),
     'router' => array(
@@ -417,6 +421,48 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'ComplianceRule',
+                        'action' => 'index'
+                    )
+                )
+            ),
+            'method' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/method[/][:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Method',
+                        'action' => 'index'
+                    )
+                )
+            ),
+            'methodcvss' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/methodcvss[/][:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'MethodCvss',
+                        'action' => 'index'
+                    )
+                )
+            ),
+            'methodowasp' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/methodowasp[/][:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'MethodOwasp',
                         'action' => 'index'
                     )
                 )

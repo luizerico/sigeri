@@ -7,11 +7,15 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="planeffort")
+ * @ORM\Table(name="method")
  * @Annotation\Hydrator("Zend\Stdlib\Hydrator\ObjectProperty")
- * @Annotation\Name("PlanEffort")
+ * @Annotation\Name("Method")
+ * 
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({"cvss" = "MethodCvss", "owasp" = "MethodOwasp"})
  */
-class PlanEffort {
+class Method {
 
     /**
      * @ORM\Id
@@ -19,25 +23,25 @@ class PlanEffort {
      * @ORM\GeneratedValue(strategy="AUTO")
      * @Annotation\Options({"label":"Id:"})
      * @Annotation\Exclude()
-     * 
+     *
      * @var integer
      * @access protected
      */
     protected $id;
+         
 
     /**
-     * @ORM\Column(type="string")
-     * @Annotation\Type("Zend\Form\Element\Text")
-     * @Annotation\Required(true)
+     * @ORM\ManyToOne(targetEntity="Risk\Entity\Risk", inversedBy="revisions")
+     * @ORM\JoinColumn(name="risk_id", referencedColumnName="id")
+     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
+     * @Annotation\Required(false)
      * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Validator({"name":"StringLength", "options":{"min":"3"}})
-     * @Annotation\Options({"label":"Effort"})
-     * @Annotation\Attributes({"style":"width:100%"}) // Define the size in html code
+     * @Annotation\Options({"label":"Risk", "empty_option":"Please select..."})  
      *
      * @var string
      * @access protected
      */
-    protected $name;
+    protected $risk;
 
     /**
      * @ORM\Column(type="integer")
@@ -51,33 +55,21 @@ class PlanEffort {
     protected $value;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
-     * @Annotation\Type("Zend\Form\Element\Text")
-     * @Annotation\Required(false)
-     * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
-     * @Annotation\Options({"label":"Description:"})
-     * 
-     * @var string
-     * @access protected
-     */
-    protected $description;
-
-    /**
      * @Annotation\Type("Zend\Form\Element\Submit")
      * @Annotation\Attributes({"value":"Submit"})
+     * @Annotation\Attributes({"style":"width:150px", "class":"btn btn-default"})
      */
     protected $submit;
 
     public function exchangeArray($data) {
         $this->id = (isset($data ['id'])) ? $data ['id'] : null;
-        $this->name = (isset($data ['name'])) ? $data ['name'] : null;
-        $this->value = (isset($data ['value'])) ? $data ['value'] : null;
-        $this->description = (isset($data ['description'])) ? $data ['description'] : null;
+        $this->risk = (isset($data ['risk'])) ? $data ['risk'] : null;
+        $this->value = (isset ( $data ['value'] )) ? $data ['value'] : null;
+        $this->discr = (isset ( $data ['discr'] )) ? $data ['discr'] : null;
     }
 
     public function __toString() {
-        return sprintf('%s - %s', $this->getValue(), $this->getName());
+        return sprintf('%s', $this->getDescription());
     }
 
     public function getId() {
@@ -89,12 +81,12 @@ class PlanEffort {
         return $this;
     }
 
-    public function getName() {
-        return $this->name;
+    public function getRisk() {
+        return $this->risk;
     }
 
-    public function setName($name) {
-        $this->name = $name;
+    public function setRisk(\Risk\Entity\Risk $risk) {
+        $this->risk = $risk;
         return $this;
     }
 
@@ -106,13 +98,13 @@ class PlanEffort {
         $this->value = $value;
         return $this;
     }
-
-    public function getDescription() {
-        return $this->description;
+    
+    public function getDiscr() {
+        return $this->discr;
     }
 
-    public function setDescription($description) {
-        $this->description = $description;
+    public function setDiscr($discr) {
+        $this->discr = $discr;
         return $this;
     }
 
