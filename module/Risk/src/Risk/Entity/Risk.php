@@ -182,7 +182,7 @@ class Risk {
 
     /**
      * @ORM\Column(type="string")
-     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Type("Zend\Form\Element\TextArea")
      * @Annotation\Required(false)
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Options({"label":"Control Regulation"})
