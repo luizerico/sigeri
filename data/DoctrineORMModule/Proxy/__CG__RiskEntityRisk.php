@@ -64,10 +64,10 @@ class Risk extends \Risk\Entity\Risk implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'id', 'name', 'status', 'type', 'method', 'probability', 'impact', 'analyst', 'date', 'description', 'annotations', 'detimpact', 'regulations', 'controls', 'documents', 'revisions', 'submit');
+            return array('__isInitialized__', 'id', 'name', 'status', 'type', 'method', 'probability', 'impact', 'analyst', 'date', 'description', 'annotations', 'detimpact', 'regulations', 'controls', 'documents', 'revisions');
         }
 
-        return array('__isInitialized__', 'id', 'name', 'status', 'type', 'method', 'probability', 'impact', 'analyst', 'date', 'description', 'annotations', 'detimpact', 'regulations', 'controls', 'documents', 'revisions', 'submit');
+        return array('__isInitialized__', 'id', 'name', 'status', 'type', 'method', 'probability', 'impact', 'analyst', 'date', 'description', 'annotations', 'detimpact', 'regulations', 'controls', 'documents', 'revisions');
     }
 
     /**
@@ -554,28 +554,6 @@ class Risk extends \Risk\Entity\Risk implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function addRegulations(\Doctrine\Common\Collections\Collection $regulations)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addRegulations', array($regulations));
-
-        return parent::addRegulations($regulations);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function removeRegulations(\Doctrine\Common\Collections\Collection $regulations)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeRegulations', array($regulations));
-
-        return parent::removeRegulations($regulations);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getRegulations()
     {
 
@@ -604,17 +582,6 @@ class Risk extends \Risk\Entity\Risk implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRegulations', array($regulations));
 
         return parent::setRegulations($regulations);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setMethod(\Risk\Entity\Method $method)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMethod', array($method));
-
-        return parent::setMethod($method);
     }
 
     /**

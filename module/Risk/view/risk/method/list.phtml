@@ -9,15 +9,20 @@
             <h3><?php echo $this->escapeHtml($title); ?></h3>
         </div>
         <div class="panel-body">  
-            <p>
-                <a href="<?php echo $this->url($this->router, array('action' => 'add')); ?>">Add
-                    new register</a> 
-            </p>
+            <div class="form-group" style="padding-right:15px; padding-left: 15px;">
+                <select id="method" class="form-control">
+                    <option value="methodclassic">Add Classic Calculation</option>
+                    <option value="methodowasp">Add OWASP Calculation</option>
+                    <option value="methodcvss">Add CVSS Calculation</option>
+                    <option value="methodoctave">Add Octave Calculation</option>
+                </select>
+            </div>
 
             <table id="datatable" class="display table">
                 <thead>
                     <tr>
                         <th>ID</th>
+                        <th>Method</th> 
                         <th>Risk</th> 
                         <th>Value</th> 
                         <th>&nbsp;</th>
@@ -27,25 +32,26 @@
                     <?php foreach ($dbArray as $dbRow) : ?>
                         <tr>
                             <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
+                            <td><?php echo strtoupper($this->escapeHtml($dbRow->getMethod())); ?></td>
                             <td><?php echo $this->escapeHtml($dbRow->getRisk()); ?></td>
                             <td><?php echo $this->escapeHtml($dbRow->getValue()); ?></td>  
                             <td><a
                                     href="<?php
-                                    echo $this->url($this->router, array(
+                                    echo $this->url('method' . $dbRow->getMethod(), array(
                                         'action' => 'view',
                                         'id' => $dbRow->getId()
                                     ));
                                     ?>">View </a>
                                 <a
                                     href="<?php
-                                    echo $this->url($this->router, array(
+                                    echo $this->url('method' . $dbRow->getMethod(), array(
                                         'action' => 'edit',
                                         'id' => $dbRow->getId()
                                     ));
                                     ?>">Edit</a>
                                 <a
                                     href="<?php
-                                    echo $this->url($this->router, array(
+                                    echo $this->url('method', array(
                                         'action' => 'delete',
                                         'id' => $dbRow->getId()
                                     ));
@@ -68,4 +74,11 @@
         });
 
     });
+    
+    $(document).ready(function () {
+        $('select#method').on('click', function () {
+            $(location).attr('href', '/' + $(this).val() + '/add');
+        });
+    });
+
 </script>

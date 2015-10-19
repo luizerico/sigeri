@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="method")
  * @Annotation\Hydrator("Zend\Stdlib\Hydrator\ObjectProperty")
  * @Annotation\Name("Method")
- * @Annotation\Type("fieldset")
  * 
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
@@ -30,9 +29,17 @@ class Method {
      * @access protected
      */
     protected $id;
-    
+
     /**
-     * @ORM\OneToOne(targetEntity="Risk\Entity\Risk", mappedBy="method", cascade={"persist"})  
+     * @ORM\ManyToOne(targetEntity="Risk\Entity\Risk", inversedBy="revisions")
+     * @ORM\JoinColumn(name="risk_id", referencedColumnName="id")
+     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
+     * @Annotation\Required(false)
+     * @Annotation\Filter({"name":"StripTags"})
+     * @Annotation\Options({"label":"Risk", "empty_option":"Please select..."})  
+     *
+     * @var string
+     * @access protected
      */
     protected $risk;
 
@@ -47,18 +54,18 @@ class Method {
      */
     protected $value;
 
-//    /**
-//     * @Annotation\Type("Zend\Form\Element\Submit")
-//     * @Annotation\Attributes({"value":"Submit"})
-//     * @Annotation\Attributes({"style":"width:150px", "class":"btn btn-default"})
-//     */
-//    protected $submit;
+    /**
+     * @Annotation\Type("Zend\Form\Element\Submit")
+     * @Annotation\Attributes({"value":"Submit"})
+     * @Annotation\Attributes({"style":"width:150px", "class":"btn btn-default"})
+     */
+    protected $submit;
 
     public function exchangeArray($data) {
         $this->id = (isset($data ['id'])) ? $data ['id'] : null;
         $this->risk = (isset($data ['risk'])) ? $data ['risk'] : null;
-        $this->value = (isset ( $data ['value'] )) ? $data ['value'] : null;
-        $this->discr = (isset ( $data ['discr'] )) ? $data ['discr'] : null;
+        $this->value = (isset($data ['value'])) ? $data ['value'] : null;
+        $this->discr = (isset($data ['discr'])) ? $data ['discr'] : null;
     }
 
     public function __toString() {
@@ -91,14 +98,18 @@ class Method {
         $this->value = $value;
         return $this;
     }
-    
-    public function getDiscr() {
-        return $this->discr;
-    }
 
-    public function setDiscr($discr) {
-        $this->discr = $discr;
-        return $this;
+    public function getMethod() {
+        switch (get_class($this)) {
+            case "Risk\Entity\MethodCvss":
+                return "cvss";
+            case "Risk\Entity\MethodOwasp":
+                return "owasp";
+            case "Risk\Entity\Method":
+                return "classic";
+            default :
+                return 'What is this?';
+        }
     }
 
 }

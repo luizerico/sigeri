@@ -25,7 +25,7 @@
                     echo $this->form()->openTag($form);
 
                     foreach ($form as $element) :
-                        if (!(in_array($element->getAttribute('name'), array('method', 'submit', 'description', 'documents')))) {
+                        if (!(in_array($element->getAttribute('name'), array('submit')))) {
                             ?>
 
                             <div class="form-group <?php

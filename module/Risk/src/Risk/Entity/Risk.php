@@ -68,13 +68,25 @@ class Risk {
      * @access protected
      */
     protected $type;
-
+    
     /**
-     * @ORM\OneToOne(targetEntity="Risk\Entity\Method", inversedBy="risk", cascade={"persist"})
-     * @ORM\JoinColumn(name="method_id", referencedColumnName="id", unique=false, nullable=true)
+     * @ORM\OneToMany(targetEntity="Risk\Entity\Method", mappedBy="risk")
+     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Required(false)
+     * @Annotation\Filter({"name":"StripTags"})
+     * @Annotation\Options({"label":"Method"})
+     *
+     * @var \Risk\Entity\Method
+     * @access protected
      */
     protected $method;
+
+//    /**
+//     * @ORM\OneToOne(targetEntity="Risk\Entity\Method", inversedBy="risk", cascade={"persist"})
+//     * @ORM\JoinColumn(name="method_id", referencedColumnName="id", unique=false, nullable=true)
+//     * @Annotation\Required(false)
+//     */
+//    protected $method;
 
 //    /**
 //     * @ORM\ManyToOne(targetEntity="Risk\Entity\RiskMethod")
@@ -248,7 +260,6 @@ class Risk {
         $this->documents = new ArrayCollection();
         $this->controls = new ArrayCollection();
         $this->regulations = new ArrayCollection();
-        $this->method = new Method();
     }
 
     public function exchangeArray($data) {
@@ -426,17 +437,17 @@ class Risk {
         return $this->controls;
     }
 
-    public function addRegulations(Collection $regulations) {
-        foreach ($regulations as $regulation) {
-            $this->regulations->add($regulation);
-        }
-    }
-
-    public function removeRegulations(Collection $regulations) {
-        foreach ($regulations as $regulation) {
-            $this->regulations->removeElement($regulation);
-        }
-    }
+//    public function addRegulations(Collection $regulations) {
+//        foreach ($regulations as $regulation) {
+//            $this->regulations->add($regulation);
+//        }
+//    }
+//
+//    public function removeRegulations(Collection $regulations) {
+//        foreach ($regulations as $regulation) {
+//            $this->regulations->removeElement($regulation);
+//        }
+//    }
 
     public function getRegulations() {
         return $this->regulations;
@@ -453,10 +464,17 @@ class Risk {
         return $this;
     }
 
-    public function setMethod(\Risk\Entity\Method $method) {
-        $this->method = $method->exchangeArray($method);
-        return $this;
-    }
+//    public function addMethod(Collection $methods) {
+//        foreach ($methods as $method) {
+//            $this->method->add($method);
+//        }
+//    }
+//
+//    public function removeMethod(Collection $methods) {
+//        foreach ($methods as $method) {
+//            $this->method->removeElement($method);
+//        }
+//    }
 
     public function getMethod() {
         return $this->method;

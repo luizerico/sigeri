@@ -136,32 +136,25 @@ class RiskController extends AbstractActionController {
         $form->setHydrator($hydrator);
         
         
-$form->add(new \Zend\Form\Element\Csrf('security'));
+        $form->add(new \Zend\Form\Element\Csrf('security'));
         $form->add(new \Zend\Form\Element\Submit('submit', array(
-                'value' => 'Save')));
+            'value' => 'Save')));
         $form->get('submit')->setAttribute('value', 'Add');
 
-        $formfieldset = $builder->createForm(new Method());
-        $formfieldset->setName('methodfieldset');
-        $formfieldset->setUseAsBaseFieldset(true);
-        $formfieldset->setHydrator(new DoctrineHydrator($this->getEntityManager(), 'Risk\Entity\Method'));
-
-        $form->add($formfieldset);
-
-
-        
-        
+//        $formfieldset = $builder->createForm(new Method());
+//        $formfieldset->setName('methodfieldset');
+//        $formfieldset->setUseAsBaseFieldset(true);
+//        $formfieldset->setHydrator(new DoctrineHydrator($this->getEntityManager(), 'Risk\Entity\Method'));
+//
+//        $form->add($formfieldset);
 
         $form->bind($addObject);
-        //
 
         $request = $this->getRequest();
         if ($request->isPost()) {
             $form->setData($request->getPost());
             if ($form->isValid()) {
-                echo $form->getData();
                 $addObject->exchangeArray($hydrator->extract($form->getData()));
-                var_dump($form->getData());
                 $this->getEntityManager()->persist($addObject);
                 $this->getEntityManager()->flush();
                 return $this->redirect()->toRoute(ROUTER, array(
@@ -285,16 +278,20 @@ $form->add(new \Zend\Form\Element\Csrf('security'));
          * bind to the form and
          * change the Submit value button to edit
          */
+        
+        $form->add(new \Zend\Form\Element\Csrf('security'));
+        $form->add(new \Zend\Form\Element\Submit('submit', array(
+            'value' => 'Save')));
+        $form->get('submit')->setAttribute('value', 'Add');
 
         $form->bind($dbArray);
         $form->get('submit')->setAttribute('value', 'Edit');
 
-
-        $formfieldset = $builder->createForm(new Method());
-        $formfieldset->setName('method');
-        $formfieldset->setUseAsBaseFieldset(true);
-        $form->add($formfieldset);
-
+//
+//        $formfieldset = $builder->createForm(new Method());
+//        $formfieldset->setName('method');
+//        $formfieldset->setUseAsBaseFieldset(true);
+//        $form->add($formfieldset);
 
         /*
          * Check if request is a post from edit form and

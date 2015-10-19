@@ -11,8 +11,10 @@
         </div>
         <div class="panel-body">  
             <p>Are you sure that you want to delete?</p>
-            <label>Name:</label> <?php echo $this->escapeHtml($dbArray->getName()); ?> <br>
-            <label>Description:</label> <?php echo $this->escapeHtml($dbArray->getDescription()); ?>
+            <label>ID:</label> <?php echo $this->escapeHtml($dbArray->getId()); ?> <br>
+            <label>Method:</label> <?php echo $this->escapeHtml($dbArray->getMethod()); ?> <br>
+            <label>Value:</label> <?php echo $this->escapeHtml($dbArray->getValue()); ?> <br>
+            <label>Risk:</label> <?php echo $this->escapeHtml($dbArray->getRisk()); ?>
             </p>
             </p>
             <?php

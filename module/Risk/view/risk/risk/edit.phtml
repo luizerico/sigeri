@@ -1,12 +1,12 @@
 <section class="edit">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-10">
             <?php
             $title = 'Edit ' . $this->title;
             $this->headTitle('SIGERI - ' . $title);
             ?>
 
-            <div class="panel panel-default">
+            <div class="panel panel-default" style="margin: 0px; padding:0px;">
                 <div class="panel-heading">
                     <h3><?php echo $this->escapeHtml($title); ?></h3>
                 </div>
@@ -25,7 +25,7 @@
                     echo $this->form()->openTag($form);
 
                     foreach ($form as $element) :
-                        if (!(in_array($element->getAttribute('name'), array('method', 'submit', 'description', 'detimpact', 'annotations', 'controls', 'regulations', 'documents')))) {
+                        if (!(in_array($element->getAttribute('name'), array('submit', 'description', 'detimpact', 'annotations', 'controls', 'regulations', 'documents')))) {
                             ?>
 
                             <div class="form-group <?php
@@ -56,49 +56,7 @@
                             <?php
                         }
                     endforeach;
-                    ?>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <b>Method</b>
-                        </div>
-                        <div class="panel-body">
-
-                            <?php
-                            if ((in_array($element->getAttribute('name'), array('method')))) {
-                                foreach ($form->get('method') as $element) :
-                                    ?>
-                                    <div class="form-group">
-                                        <div class="form-group <?php
-                                        if ($this->formElementErrors($element))
-                                            echo "error"
-                                            ?>">
-                                            <label class="col-sm-2 control-label"><?php echo $element->getLabel() ?></label>
-                                            <div class="col-sm-10">
-                                                <?php
-                                                //echo $element->getAttribute('type');
-                                                if ($element->getAttribute('type') != 'submit') {
-                                                    $element->setAttribute('class', 'form-control ' . $element->getAttribute('class'));
-                                                } else {
-                                                    $element->setAttribute('class', 'btn btn-primary');
-                                                    $element->setAttribute('style', 'width:150px');
-                                                };
-
-                                                //if (!$element->hasAttribute('class'))
-                                                //	$element->setAttribute('class', 'form-control');
-                                                echo $this->formElement($element);
-                                                if ($this->formElementErrors($element))
-                                                    
-                                                    ?>
-                                                <span class="help-inline"><?php echo $this->formElementErrors($element) ?></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <?php
-                                endforeach;
-                            }
-                            ?>
-                        </div>
-                    </div>
+                    ?>                                    
 
                     <br>
                     <ul class = "nav nav-tabs nav-justified" style = "color:#000;font-weight: bold;">
@@ -108,40 +66,41 @@
                         <li><a data-toggle = "tab" href = "#controls">Controls</a></li>
                         <li><a data-toggle = "tab" href = "#regulations">Regulations</a></li>
                         <li><a data-toggle = "tab" href = "#documents">Documents</a></li>
+                        <li><a data-toggle = "tab" href = "#method">Method</a></li>
                         <li><a data-toggle = "tab" href = "#revisions">Revisions</a></li>
                     </ul>
                     <div class = "panel" style = "padding-top:5px;">
                         <div class = "tab-content ">
                             <div id = "description" class = "tab-pane fade in active">
-<?php echo $this->formElement($form->get('description'));
-?>
+                                <?php echo $this->formElement($form->get('description'));
+                                ?>
                             </div>
                             <div id = "notes" class = "tab-pane fade in">
-<?php echo $this->formElement($form->get('annotations'));
-?>
+                                <?php echo $this->formElement($form->get('annotations'));
+                                ?>
                             </div>
                             <div id = "detimpact" class = "tab-pane fade in">
-<?php echo $this->formElement($form->get('detimpact'));
-?>
+                                <?php echo $this->formElement($form->get('detimpact'));
+                                ?>
                             </div>
                             <div id = "documents" class = "tab-pane fade in">
-<?php echo $this->formElement($form->get('documents'));
-?>
+                                <?php echo $this->formElement($form->get('documents'));
+                                ?>
                             </div>   
                             <div id = "controls" class = "tab-pane fade in">
-<?php echo $this->formElement($form->get('controls'));
-?>
+                                <?php echo $this->formElement($form->get('controls'));
+                                ?>
                             </div> 
                             <div id = "regulations" class = "tab-pane fade in">
-<?php echo $this->formElement($form->get('regulations'));
-?>
+                                <?php echo $this->formElement($form->get('regulations'));
+                                ?>
                             </div> 
                             <div id = "revisions" class = "tab-pane fade in">
                                 <p>
                                     <a href="<?php
-                                       echo $this->url('riskreview', array('action' => 'add'), array('query' => array('risk_id' => $dbArray->getId()))
-                                       );
-                                       ?>">
+                                    echo $this->url('riskreview', array('action' => 'add'), array('query' => array('risk_id' => $dbArray->getId()))
+                                    );
+                                    ?>">
                                         New revision register</a> 
                                 </p>
                                 <table id="datatable" class="display table">
@@ -156,7 +115,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-<?php foreach ($dbArray->getRevisions() as $dbRow) : ?>
+                                        <?php foreach ($dbArray->getRevisions() as $dbRow) : ?>
                                             <tr>
                                                 <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
                                                 <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>
@@ -179,15 +138,67 @@
                                                         ?>">Del</a>
                                                 </td>
                                             </tr>
-<?php endforeach; ?>
+                                        <?php endforeach; ?>
                                     </tbody>
                                 </table>
 
 
                             </div>
+                            <div id = "method" class = "tab-pane fade in">
+                                <div class="form-group" style="padding-right:15px; padding-left: 15px;">
+                                    <select id="method" class="form-control">
+                                        <option value="methodclassic">Add Classic Calculation</option>
+                                        <option value="methodowasp">Add OWASP Calculation</option>
+                                        <option value="methodcvss">Add CVSS Calculation</option>
+                                        <option value="methodoctave">Add Octave Calculation</option>
+                                    </select>
+                                </div>
+
+                                <table id="datatable" class="display table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Method</th>
+                                            <th>Value</th>                
+                                            <th>&nbsp;</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($dbArray->getMethod() as $dbRow) : ?>
+                                            <tr>
+                                                <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
+                                                <td><?php echo strtoupper($this->escapeHtml($dbRow->getMethod())); ?></td>
+                                                <td><?php echo $this->escapeHtml($dbRow->getValue()); ?></td>
+                                                <td><a
+                                                        href="<?php
+                                                        echo $this->url('method'.$dbRow->getMethod(), array(
+                                                            'action' => 'view',
+                                                            'id' => $dbRow->getId()
+                                                        ));
+                                                        ?>">View</a>
+                                                    <a
+                                                        href="<?php
+                                                        echo $this->url('method'.$dbRow->getMethod(), array(
+                                                            'action' => 'edit',
+                                                            'id' => $dbRow->getId()
+                                                        ));
+                                                        ?>">Edit</a>
+                                                    <a
+                                                        href="<?php
+                                                        echo $this->url('method'.$dbRow->getMethod(), array(
+                                                            'action' => 'delete',
+                                                            'id' => $dbRow->getId()
+                                                        ));
+                                                        ?>">Del</a>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                            <?php $element = $this->form->get('submit'); ?>
+                    <?php $element = $this->form->get('submit'); ?>
                     <div class="form-group" style="text-align:right;">
                         <div class="col-sm-12">
                             <?php
@@ -213,13 +224,9 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $('select#method').on('change', function () {
-            $.ajax({
-                url: "/risk/jsonData",
-                type: "POST",
-                data: {},
-                cache: false,
-                success: alert(this)
-            });
+        $('select#method').on('click', function () {
+            $(location).attr('href', '/' + $(this).val() + '/add?risk_id=' + <?php echo $dbArray->getId(); ?> + '');
         });
-    });</script>
+    });
+
+</script>
