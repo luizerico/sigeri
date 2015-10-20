@@ -23,7 +23,74 @@
                     $form->prepare();
 
                     echo $this->form()->openTag($form);
+                    ?>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Base Score
+                        </div>
+                        <div class="panel-body">
+                            <?php
+                            foreach ($form as $element) :
+                                if ((in_array($element->getAttribute('name'), array('attackvector',
+                                            'atackcomplexity',
+                                            'privilegerequired',
+                                            'userinteraction',
+                                            'confidentiality',
+                                            'integrity',
+                                            'availability')))) {
+                                    ?>
+                                    <div class="col-md-offset-2 col-md-4 form-group">
+                                        <label class=""><?php echo $element->getLabel() ?></label>
+                                        <div class="">
+                                            <?php
+                                            $element->setAttribute('class', 'form-control ' . $element->getAttribute('class'));
+                                            echo $this->formElement($element);
+                                            if ($this->formElementErrors($element))
+                                                
+                                                ?>
+                                            <span class="help-inline"><?php echo $this->formElementErrors($element) ?></span>
+                                        </div>
+                                    </div>
+                                    <?php
+                                }
+                            endforeach;
+                            ?>
 
+                        </div>
+                    </div>
+                        <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Temporal Score
+                        </div>
+                        <div class="panel-body">
+                            <?php
+                            foreach ($form as $element) :
+                                if ((in_array($element->getAttribute('name'), array(
+                                            'exploitability',
+                                            'remediationlevel',
+                                            'reportconfidence')))) {
+                                    ?>
+                                    <div class="col-md-offset-2 col-md-4 form-group">
+                                        <label class=""><?php echo $element->getLabel() ?></label>
+                                        <div class="">
+                                            <?php
+                                            $element->setAttribute('class', 'form-control ' . $element->getAttribute('class'));
+                                            echo $this->formElement($element);
+                                            if ($this->formElementErrors($element))
+                                                
+                                                ?>
+                                            <span class="help-inline"><?php echo $this->formElementErrors($element) ?></span>
+                                        </div>
+                                    </div>
+                                    <?php
+                                }
+                            endforeach;
+                            ?>
+
+                        </div>
+                    </div>
+
+                    <?php
                     foreach ($form as $element) :
                         if (!(in_array($element->getAttribute('name'), array('method', 'submit', 'description', 'documents')))) {
                             ?>

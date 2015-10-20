@@ -188,7 +188,7 @@ class MethodOwasp extends Method {
      * @Annotation\Attributes({"value":"10"})
      */
     protected $intrusiondetection;
-    
+
     /**
      * @ORM\Column(type="integer")
      * @Annotation\Type("Zend\Form\Element\Select")
@@ -210,7 +210,7 @@ class MethodOwasp extends Method {
      * @Annotation\Attributes({"value":"10"})
      */
     protected $lossconfidentiality;
-    
+
     /**
      * @ORM\Column(type="integer")
      * @Annotation\Type("Zend\Form\Element\Select")
@@ -232,7 +232,7 @@ class MethodOwasp extends Method {
      * @Annotation\Attributes({"value":"10"})
      */
     protected $lossintegrity;
-    
+
     /**
      * @ORM\Column(type="integer")
      * @Annotation\Type("Zend\Form\Element\Select")
@@ -254,7 +254,7 @@ class MethodOwasp extends Method {
      * @Annotation\Attributes({"value":"10"})
      */
     protected $lossavailability;
-    
+
     /**
      * @ORM\Column(type="integer")
      * @Annotation\Type("Zend\Form\Element\Select")
@@ -276,7 +276,7 @@ class MethodOwasp extends Method {
      * @Annotation\Attributes({"value":"10"})
      */
     protected $lossaccountability;
-    
+
     /**
      * @ORM\Column(type="integer")
      * @Annotation\Type("Zend\Form\Element\Select")
@@ -298,7 +298,7 @@ class MethodOwasp extends Method {
      * @Annotation\Attributes({"value":"10"})
      */
     protected $financialdamage;
-    
+
     /**
      * @ORM\Column(type="integer")
      * @Annotation\Type("Zend\Form\Element\Select")
@@ -320,7 +320,7 @@ class MethodOwasp extends Method {
      * @Annotation\Attributes({"value":"10"})
      */
     protected $reputationdamage;
-    
+
     /**
      * @ORM\Column(type="integer")
      * @Annotation\Type("Zend\Form\Element\Select")
@@ -342,7 +342,7 @@ class MethodOwasp extends Method {
      * @Annotation\Attributes({"value":"10"})
      */
     protected $noncompliance;
-    
+
     /**
      * @ORM\Column(type="integer")
      * @Annotation\Type("Zend\Form\Element\Select")
@@ -383,15 +383,140 @@ class MethodOwasp extends Method {
         $this->noncompliance = (isset($data ['noncompliance'])) ? $data ['noncompliance'] : null;
         $this->privacyviolation = (isset($data ['privacyviolation'])) ? $data ['privacyviolation'] : null;
     }
-    
-    public function getImpact() {
-        return $this->impact;
+
+    public function getSkilllevel() {
+        return $this->skilllevel;
     }
 
-    public function setImpact($impact) {
-        $this->impact = $impact;
+    public function setSkilllevel($skilllevel) {
+        $this->skilllevel = $skilllevel;
         return $this;
     }
-    
+
+    public function getMotive() {
+        return $this->motive;
+    }
+
+    public function setMotive($motive) {
+        $this->motive = $motive;
+        return $this;
+    }
+
+    public function getOpportunity() {
+        return $this->opportunity;
+    }
+
+    public function setOpportunity($opportunity) {
+        $this->opportunity = $opportunity;
+        return $this;
+    }
+
+    public function getSize() {
+        return $this->size;
+    }
+
+    public function setSize($size) {
+        $this->size = $size;
+        return $this;
+    }
+
+    public function getEasediscovery() {
+        return $this->easediscovery;
+    }
+
+    public function setEasediscovery($easediscovery) {
+        $this->easediscovery = $easediscovery;
+        return $this;
+    }
+
+    public function getAwareness() {
+        return $this->awareness;
+    }
+
+    public function setAwareness($awareness) {
+        $this->awareness = $awareness;
+        return $this;
+    }
+
+    public function getIntrusiondetection() {
+        return $this->intrusiondetection;
+    }
+
+    public function setIntrusiondetection($intrusiondetection) {
+        $this->intrusiondetection = $intrusiondetection;
+        return $this;
+    }
+
+    public function getLossconfidentiality() {
+        return $this->lossconfidentiality;
+    }
+
+    public function setLossconfidentiality($lossconfidentiality) {
+        $this->lossconfidentiality = $lossconfidentiality;
+        return $this;
+    }
+
+    public function getLossintegrity() {
+        return $this->lossintegrity;
+    }
+
+    public function setLossintegrity($lossintegrity) {
+        $this->lossintegrity = $lossintegrity;
+        return $this;
+    }
+
+    public function getLossavailability() {
+        return $this->lossavailability;
+    }
+
+    public function setLossavailability($lossavailability) {
+        $this->lossavailability = $lossavailability;
+        return $this;
+    }
+
+    public function getLossaccountability() {
+        return $this->lossaccountability;
+    }
+
+    public function setLossaccountability($lossaccountability) {
+        $this->lossaccountability = $lossaccountability;
+        return $this;
+    }
+
+    public function getFinancialdamage() {
+        return $this->financialdamage;
+    }
+
+    public function setFinancialdamage($financialdamage) {
+        $this->financialdamage = $financialdamage;
+        return $this;
+    }
+
+    public function getReputationdamage() {
+        return $this->reputationdamage;
+    }
+
+    public function setReputationdamage($reputationdamage) {
+        $this->reputationdamage = $reputationdamage;
+        return $this;
+    }
+
+    public function getNoncompliance() {
+        return $this->noncompliance;
+    }
+
+    public function setNoncompliance($noncompliance) {
+        $this->noncompliance = $noncompliance;
+        return $this;
+    }
+
+    public function getPrivacyviolation() {
+        return $this->privacyviolation;
+    }
+
+    public function setPrivacyviolation($privacyviolation) {
+        $this->privacyviolation = $privacyviolation;
+        return $this;
+    }
 
 }
