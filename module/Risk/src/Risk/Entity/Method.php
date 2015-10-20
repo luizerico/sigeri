@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * 
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"cvss" = "MethodCvss", "owasp" = "MethodOwasp"})
+ * @ORM\DiscriminatorMap({"method"="Method" ,"cvss" = "MethodCvss", "owasp" = "MethodOwasp"})
  * 
  */
 class Method {
@@ -44,12 +44,11 @@ class Method {
     protected $risk;
 
     /**
-     * @ORM\Column(type="integer")
-     * @Annotation\Type("Zend\Form\Element\Number")
+     * @ORM\Column(type="float")
+     * @Annotation\Type("Zend\Form\Element\Text")
      * @Annotation\Required(true)
      * @Annotation\Options({"label":"Value:"})
-     * 
-     * @var integer
+     *   
      * @access protected
      */
     protected $value;

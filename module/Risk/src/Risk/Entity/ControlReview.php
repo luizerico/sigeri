@@ -94,7 +94,7 @@ class ControlReview {
 
     /**
      * @ORM\Column(type="date")
-     * @Annotation\Type("Zend\Form\Element\Date")
+     * @Annotation\Type("Zend\Form\Element\DateTime")
      * @Annotation\Required(false)
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Validator({"name":"StringLength"})

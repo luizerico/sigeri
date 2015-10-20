@@ -43,7 +43,7 @@ class Compliance {
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Annotation\Type("Zend\Form\Element\TextArea")
+     * @Annotation\Type("Zend\Form\Element\Textarea")
      * @Annotation\Required(false)
      * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
      * @Annotation\Options({"label":"Description"})

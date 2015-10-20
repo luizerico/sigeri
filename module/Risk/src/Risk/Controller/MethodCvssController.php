@@ -135,6 +135,7 @@ class MethodCvssController extends AbstractActionController {
         if ($request->isPost()) {
             $form->setData($request->getPost());
             if ($form->isValid()) {
+                var_dump($request->getPost());
                 $editObject->exchangeArray($hydrator->extract($form->getData()));
                 $this->getEntityManager()->flush();
                 return $this->redirect()->toRoute(ROUTER, array(

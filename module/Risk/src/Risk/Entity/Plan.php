@@ -85,7 +85,7 @@ class Plan {
     
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Annotation\Type("Zend\Form\Element\TextArea")
+     * @Annotation\Type("Zend\Form\Element\Textarea")
      * @Annotation\Required(false)
      * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
      * @Annotation\Options({"label":"Description"})
@@ -98,7 +98,7 @@ class Plan {
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Annotation\Type("Zend\Form\Element\TextArea")
+     * @Annotation\Type("Zend\Form\Element\Textarea")
      * @Annotation\Required(false)
      * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
      * @Annotation\Options({"label":"Annotations"})
@@ -138,7 +138,7 @@ class Plan {
     
     /**
      * @ORM\Column(type="date")
-     * @Annotation\Type("Zend\Form\Element\Date")
+     * @Annotation\Type("Zend\Form\Element\DateTime")
      * @Annotation\Required(false)
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Validator({"name":"StringLength"})

@@ -131,7 +131,7 @@ class RiskController extends AbstractActionController {
          */
         $addObject = new Risk ();
         $builder = new DoctrineAnnotationBuilder($this->getEntityManager());
-        $form = $builder->createForm($addObject);
+        $form = $builder->createForm($addObject); 
         $hydrator = new DoctrineHydrator($this->getEntityManager(), ENTITY);
         $form->setHydrator($hydrator);
         
