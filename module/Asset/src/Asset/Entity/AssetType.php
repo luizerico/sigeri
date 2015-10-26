@@ -2,7 +2,6 @@
 namespace Asset\Entity;
 
 use Zend\Form\Annotation;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -56,7 +55,17 @@ class AssetType {
 	 */
 	protected $submit;
 	
-	public function getId() {
+	public function exchangeArray($data) {
+		$this->id = (isset ( $data ['id'] )) ? $data ['id'] : null;
+		$this->name = (isset ( $data ['name'] )) ? $data ['name'] : null;
+		$this->description = (isset ( $data ['description'] )) ? $data ['description'] : null;
+	}
+	
+	public function __toString(){
+		return sprintf('%s', $this->getName());
+	}
+        
+        public function getId() {
 		return $this->id;
 	}
 	public function setId($id) {
@@ -76,14 +85,5 @@ class AssetType {
 	public function setDescription($description) {
 		$this->description = $description;
 		return $this;
-	}
-	public function exchangeArray($data) {
-		$this->id = (isset ( $data ['id'] )) ? $data ['id'] : null;
-		$this->name = (isset ( $data ['name'] )) ? $data ['name'] : null;
-		$this->description = (isset ( $data ['description'] )) ? $data ['description'] : null;
-	}
-	
-	public function __toString(){
-		return sprintf('%s', $this->getName());
-	}
+	}	
 }

@@ -32,7 +32,7 @@ class Asset {
      * @Annotation\Type("Zend\Form\Element\Text")
      * @Annotation\Required(true)
      * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
+     * @Annotation\Validator({"name":"StringLength", "options":{"min":"3"}})
      * @Annotation\Options({"label":"Name:"})
      *
      * @var string
@@ -42,11 +42,12 @@ class Asset {
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Type("Zend\Form\Element\Textarea")
      * @Annotation\Required(false)
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
-     * @Annotation\Options({"label":"Description:"})
+     * @Annotation\Options({"label":"Description:"}) 
+     * @Annotation\Attributes({"style":"width:100%", "class":"ckeditor"})
      *
      * @var string
      * @access protected
@@ -60,7 +61,7 @@ class Asset {
      * @Annotation\Required(true)
      * @Annotation\Attributes({"element.style":"width:100px"})
      * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Type:"})
+     * @Annotation\Options({"label":"Type:", "empty_option":"Please select..."})
      *
      * @var \Asset\Entity\AssetType
      * @access protected
@@ -73,7 +74,7 @@ class Asset {
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Required(false)
      * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Analyst:"})
+     * @Annotation\Options({"label":"Analyst:", "empty_option":"Please select..."})
      *
      * @var \User\Entity\User
      * @access protected
@@ -86,7 +87,7 @@ class Asset {
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Required(false)
      * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Unit:"})
+     * @Annotation\Options({"label":"Unit:", "empty_option":"Please select..."})
      *
      * @var \User\Entity\Unit
      * @access protected
@@ -99,7 +100,7 @@ class Asset {
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Required(false)
      * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Location"})
+     * @Annotation\Options({"label":"Location", "empty_option":"Please select..."})
      *
      * @var \User\Entity\Unit
      * @access protected
@@ -123,7 +124,6 @@ class Asset {
      * @ORM\ManyToMany(targetEntity="Risk\Entity\Vulnerability")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Required(false)
-     * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Options({"label":"Vulnerabilities"})
      * @Annotation\Attributes({"multiple":"multiple"})
      *
@@ -136,7 +136,6 @@ class Asset {
      * @ORM\ManyToMany(targetEntity="Risk\Entity\Threat")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Required(false)
-     * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Options({"label":"Threaties"})
      * @Annotation\Attributes({"multiple":"multiple"})
      *
@@ -149,7 +148,6 @@ class Asset {
      * @ORM\ManyToMany(targetEntity="Risk\Entity\Plan")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Required(false)
-     * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Options({"label":"Plans"})
      * @Annotation\Attributes({"multiple":"multiple"})
      *
@@ -162,7 +160,6 @@ class Asset {
      * @ORM\ManyToMany(targetEntity="Asset\Entity\Asset")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Required(false)
-     * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Options({"label":"Dependencies:"})
      * @Annotation\Attributes({"multiple":"multiple"})
      *
