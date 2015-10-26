@@ -7,7 +7,6 @@ define('ROUTER', 'risk');
 define('ENTITY', 'Risk\Entity\Risk');
 
 use Risk\Entity\Risk;
-use Risk\Entity\Method;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Doctrine\ORM\EntityManager;
@@ -15,7 +14,6 @@ use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use Exception;
 use DoctrineORMModule\Form\Annotation\AnnotationBuilder as DoctrineAnnotationBuilder;
 use Zend\View\Model\JsonModel;
-use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
 
 class RiskController extends AbstractActionController {
     /*

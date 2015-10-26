@@ -92,6 +92,7 @@ class GenericController extends AbstractActionController {
         if ($request->isPost()) {
             $form->setData($request->getPost());
             if ($form->isValid()) {
+                
                 $this->object->exchangeArray($hydrator->extract($form->getData()));
                 $this->getEntityManager()->flush();
                 return $this->redirect()->toRoute(ROUTER, array(

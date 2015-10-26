@@ -176,6 +176,28 @@ class AssetType extends \Asset\Entity\AssetType implements \Doctrine\ORM\Proxy\P
     /**
      * {@inheritDoc}
      */
+    public function exchangeArray($data)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'exchangeArray', array($data));
+
+        return parent::exchangeArray($data);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function __toString()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, '__toString', array());
+
+        return parent::__toString();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getId()
     {
         if ($this->__isInitialized__ === false) {
@@ -241,28 +263,6 @@ class AssetType extends \Asset\Entity\AssetType implements \Doctrine\ORM\Proxy\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setDescription', array($description));
 
         return parent::setDescription($description);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function exchangeArray($data)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'exchangeArray', array($data));
-
-        return parent::exchangeArray($data);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function __toString()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, '__toString', array());
-
-        return parent::__toString();
     }
 
 }
