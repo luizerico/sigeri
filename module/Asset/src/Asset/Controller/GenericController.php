@@ -38,6 +38,9 @@ class GenericController extends AbstractActionController {
         $form->get('submit')->setAttribute('value', 'Add');
 
         $form->bind($this->object);
+        
+        // Get the asset informations send by the import code
+        $form->populateValues(array('name'=>$this->params()->fromQuery('assetname'))); 
 
         $request = $this->getRequest();
         if ($request->isPost()) {

@@ -1,6 +1,6 @@
 <section class="list">
     <?php
-    $title = 'Zabbix Hosts ';
+    $title = 'LDAP Hosts ';
     $this->headTitle('SIGERI - ' . $title);
     ?>
 
@@ -12,7 +12,8 @@
             <table id="datatable" class="display table">
                 <thead>
                     <tr>
-                        <th>Name</th>                  
+                        <th>Name</th>
+                        <th>Description</th>
                         <th>&nbsp;</th>
                     </tr>
                 </thead>
@@ -20,14 +21,14 @@
                     <?php foreach ($return as $asset) : ?>                    
                         <tr>
                     <form method='post' class='ajaxform'>
-                        <td><?php echo $asset['asset'];?></td>                           
+                        <td><?php echo $asset['asset'];?></td>
+                        <td><?php echo $asset['descr'];?></td>
                         <td>
                             <?php
                             if ($asset['exist'] === 'true') {
                                 echo "<input disabled='true' class='btn btn-primary' type='button' value='Added'>";
                             } else {
-                                echo "<input class='btn btn-primary' type='button' value='Add...' on.click=\"alert('teste')\">";
-                                //echo "<a href='/asset/add?assetname=". $asset['asset']  ."' target='_blank'><input class='btn btn-primary' type='button' value='Add...'></a>";
+                                echo "<a href='/asset/add?assetname=". $asset['asset']  ."' target='_blank'><input class='btn btn-primary' type='button' value='Add...'></a>";
                             }
                             ?>
 
