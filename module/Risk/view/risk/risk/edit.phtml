@@ -145,6 +145,7 @@
 
                             </div>
                             <div id = "method" class = "tab-pane fade in">
+                                <!-- HTML and script to redirect to another page based on the select -->
                                 <div class="form-group" style="padding-right:15px; padding-left: 15px;">
                                     <select id="method" class="form-control">
                                         <option value="methodclassic">Add Classic Calculation</option>
@@ -153,7 +154,16 @@
                                         <option value="methodoctave">Add Octave Calculation</option>
                                     </select>
                                 </div>
+                                <script type="text/javascript">
+                                    $(document).ready(function () {
+                                        $('select#method').on('click', function () {
+                                            $(location).attr('href', '/' + $(this).val() + '/add?risk_id=' + <?php echo $dbArray->getId(); ?> + '');
+                                        });
+                                    });
 
+                                </script>
+                                <!-- HTML and script to redirect to another page based on the select -->
+                                
                                 <table id="datatable" class="display table">
                                     <thead>
                                         <tr>
@@ -171,21 +181,21 @@
                                                 <td><?php echo $this->escapeHtml($dbRow->getValue()); ?></td>
                                                 <td><a
                                                         href="<?php
-                                                        echo $this->url('method'.$dbRow->getMethod(), array(
+                                                        echo $this->url('method' . $dbRow->getMethod(), array(
                                                             'action' => 'view',
                                                             'id' => $dbRow->getId()
                                                         ));
                                                         ?>">View</a>
                                                     <a
                                                         href="<?php
-                                                        echo $this->url('method'.$dbRow->getMethod(), array(
+                                                        echo $this->url('method' . $dbRow->getMethod(), array(
                                                             'action' => 'edit',
                                                             'id' => $dbRow->getId()
                                                         ));
                                                         ?>">Edit</a>
                                                     <a
                                                         href="<?php
-                                                        echo $this->url('method'.$dbRow->getMethod(), array(
+                                                        echo $this->url('method' . $dbRow->getMethod(), array(
                                                             'action' => 'delete',
                                                             'id' => $dbRow->getId()
                                                         ));
@@ -222,11 +232,3 @@
     </div>
 </section>
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('select#method').on('click', function () {
-            $(location).attr('href', '/' + $(this).val() + '/add?risk_id=' + <?php echo $dbArray->getId(); ?> + '');
-        });
-    });
-
-</script>

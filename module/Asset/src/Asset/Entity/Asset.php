@@ -12,6 +12,14 @@ use Doctrine\Common\Collections\Collection;
  * @ORM\Table(name="asset")
  * @Annotation\Hydrator("Zend\Stdlib\Hydrator\ObjectProperty")
  * @Annotation\Name("Asset")
+ * 
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({"asset"="Asset" ,
+ *                          "serverasset" = "ServerAsset", 
+ *                          "locationasset" = "LocationAsset", 
+ *                          "serviceasset"="ServiceAsset",
+ *                          "processasset" = "ProcessAsset"})
  */
 class Asset {
 
@@ -44,7 +52,6 @@ class Asset {
      * @ORM\Column(type="text", nullable=true)
      * @Annotation\Type("Zend\Form\Element\Textarea")
      * @Annotation\Required(false)
-     * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
      * @Annotation\Options({"label":"Description:"}) 
      * @Annotation\Attributes({"style":"width:100%", "class":"ckeditor"})
@@ -95,17 +102,16 @@ class Asset {
     protected $unit;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User\Entity\Unit")
-     * @ORM\JoinColumn(name="unit_id", referencedColumnName="id")
+     * @ORM\ManyToMany(targetEntity="Asset\Entity\AssetGroup")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Required(false)
      * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Location", "empty_option":"Please select..."})
+     * @Annotation\Options({"label":"Groups:"})
+     * @Annotation\Attributes({"multiple":"multiple"})
      *
-     * @var \User\Entity\Unit
      * @access protected
      */
-    protected $location;
+    protected $groups;
 
     /**
      * @ORM\ManyToMany(targetEntity="Risk\Entity\Risk")
@@ -143,7 +149,7 @@ class Asset {
      * @access protected
      */
     protected $threaties;
-    
+
     /**
      * @ORM\ManyToMany(targetEntity="Risk\Entity\Plan")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
@@ -205,11 +211,13 @@ class Asset {
     protected $submit;
 
     public function __construct() {
+        $this->groups = new ArrayCollection();
         $this->risks = new ArrayCollection();
         $this->dependencies = new ArrayCollection();
         $this->documents = new ArrayCollection();
         $this->vulnerabilities = new ArrayCollection();
         $this->threaties = new ArrayCollection();
+        $this->plans = new ArrayCollection();
     }
 
     public function exchangeArray($data) {
@@ -219,13 +227,13 @@ class Asset {
         $this->type = (isset($data ['type'])) ? $data ['type'] : null;
         $this->manager = (isset($data ['manager'])) ? $data ['manager'] : null;
         $this->analyst = (isset($data ['analyst'])) ? $data ['analyst'] : null;
+        $this->groups = (isset($data ['groups'])) ? $data ['groups'] : null;
         $this->risks = (isset($data ['risks'])) ? $data ['risks'] : null;
         $this->vulnerabilities = (isset($data ['vulnerabilities'])) ? $data ['vulnerabilities'] : null;
         $this->threaties = (isset($data ['threaties'])) ? $data ['threaties'] : null;
         $this->dependencies = (isset($data ['dependencies'])) ? $data ['dependencies'] : null;
         $this->documents = (isset($data ['documents'])) ? $data ['documents'] : null;
-
-        $this->location = (isset($data ['location'])) ? $data ['location'] : null;
+        $this->plans = (isset($data ['plans'])) ? $data ['plans'] : null;
     }
 
     public function __toString() {
@@ -294,6 +302,22 @@ class Asset {
       $this->relevance = $relevance;
       return $this;
       } */
+
+    public function addGroups(Collection $groups) {
+        foreach ($groups as $group) {
+            $this->groups->add($group);
+        }
+    }
+
+    public function removeGroups(Collection $groups) {
+        foreach ($groups as $group) {
+            $this->groups->removeElement($group);
+        }
+    }
+
+    public function getGroups() {
+        return $this->groups;
+    }
 
     public function addRisks(Collection $risks) {
         foreach ($risks as $risk) {
@@ -375,13 +399,37 @@ class Asset {
         return $this->documents;
     }
 
-    public function getLocation() {
-        return $this->location;
+    public function addPlans(Collection $plans) {
+        foreach ($plans as $plan) {
+            $this->plans->add($plan);
+        }
     }
 
-    public function setLocation($location) {
-        $this->location = $location;
-        return $this;
+    public function removePlans(Collection $plans) {
+        foreach ($plans as $plan) {
+            $this->plans->removeElement($plan);
+        }
+    }
+
+    public function getPlans() {
+        return $this->plans;
+    }
+
+    public function getDescr() {
+        switch (get_class($this)) {
+            case "Asset\Entity\ServerAsset":
+                return "server";
+            case "Asset\Entity\ServiceAsset":
+                return "service";
+            case "Asset\Entity\ProcessAsset":
+                return "process";
+            case "Asset\Entity\LocationAsset":
+                return "location";
+            case "Asset\Entity\Asset":
+                return "Asset";
+            default :
+                return 'What is this?';
+        }
     }
 
 }

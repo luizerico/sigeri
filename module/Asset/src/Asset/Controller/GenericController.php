@@ -2,7 +2,6 @@
 
 namespace Asset\Controller;
 
-use Asset\Entity\Asset;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Doctrine\ORM\EntityManager;

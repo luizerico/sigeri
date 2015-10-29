@@ -176,6 +176,17 @@ class ThreatLevel extends \Risk\Entity\ThreatLevel implements \Doctrine\ORM\Prox
     /**
      * {@inheritDoc}
      */
+    public function exchangeArray($data)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'exchangeArray', array($data));
+
+        return parent::exchangeArray($data);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function __toString()
     {
 
@@ -252,17 +263,6 @@ class ThreatLevel extends \Risk\Entity\ThreatLevel implements \Doctrine\ORM\Prox
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setDescription', array($description));
 
         return parent::setDescription($description);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function exchangeArray($data)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'exchangeArray', array($data));
-
-        return parent::exchangeArray($data);
     }
 
 }

@@ -1,6 +1,6 @@
 <section class="add">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-10">
             <?php
             $title = 'Edit ' . $this->title;
             $this->headTitle('SIGERI - ' . $title);
@@ -32,7 +32,8 @@
                                     'threaties',
                                     'plans',
                                     'dependencies',
-                                    'documents')))) {
+                                    'documents',
+                                    'groups')))) {
                             ?>
 
                             <div class="form-group <?php
@@ -67,6 +68,7 @@
                     <br>
                     <ul class = "nav nav-tabs nav-justified" style = "color:#000;font-weight: bold;">
                         <li class = "active"><a data-toggle = "tab" href = "#description">Description</a></li>
+                        <li><a data-toggle = "tab" href = "#groups">Groups</a></li>
                         <li><a data-toggle = "tab" href = "#risks">Risks</a></li>
                         <li><a data-toggle = "tab" href = "#vulnerabilities">Vulnerabilities</a></li>
                         <li><a data-toggle = "tab" href = "#threaties">Threaties</a></li>
@@ -79,6 +81,10 @@
                         <div class = "tab-content ">
                             <div id = "description" class = "tab-pane fade in active">
                                 <?php echo $this->formElement($form->get('description'));
+                                ?>
+                            </div>
+                            <div id = "groups" class = "tab-pane fade in">
+                                <?php echo $this->formElement($form->get('groups'));
                                 ?>
                             </div>
                             <div id = "risks" class = "tab-pane fade in">

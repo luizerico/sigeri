@@ -41,7 +41,10 @@ return array(
         'invokables' => array(
             'Asset' => 'Asset\Controller\AssetController',
             'AssetType' => 'Asset\Controller\AssetTypeController',
-            'AssetManager' => 'Asset\Controller\AssetManagerController'
+            'AssetGroup' => 'Asset\Controller\AssetGroupController',
+            'ServerAsset' => 'Asset\Controller\ServerAssetController',
+            'ServiceAsset' => 'Asset\Controller\ServiceAssetController',
+            'ProcessAsset' => 'Asset\Controller\ProcessAssetController',
         )
     ),
     'router' => array(
@@ -74,20 +77,62 @@ return array(
                     )
                 )
             ),
-        /* 'assetmanager' => array (
-          'type' => 'Segment',
-          'options' => array (
-          'route' => '/assetmanager[/][:action[/:id]]',
-          'constraints' => array (
-          'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-          'id' => '[0-9]+'
-          ),
-          'defaults' => array (
-          'controller' => 'AssetManager',
-          'action' => 'index'
-          )
-          )
-          ) */
+            'assetgroup' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/assetgroup[/][:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'AssetGroup',
+                        'action' => 'index'
+                    )
+                )
+            ),
+            'serverasset' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/serverasset[/][:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'ServerAsset',
+                        'action' => 'index'
+                    )
+                )
+            ),
+            'serviceasset' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/serviceasset[/][:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'ServiceAsset',
+                        'action' => 'index'
+                    )
+                )
+            ),
+            'processasset' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/processasset[/][:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'ProcessAsset',
+                        'action' => 'index'
+                    )
+                )
+            )
         )
     )
     ,

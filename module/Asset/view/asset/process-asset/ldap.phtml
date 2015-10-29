@@ -1,0 +1,52 @@
+<section class="list">
+    <?php
+    $title = 'LDAP Hosts ';
+    $this->headTitle('SIGERI - ' . $title);
+    ?>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3><?php echo $this->escapeHtml($title); ?></h3>
+        </div>
+        <div class="panel-body">
+            <table id="datatable" class="display table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($return as $asset) : ?>                    
+                        <tr>
+                    <form method='post' class='ajaxform'>
+                        <td><?php echo $asset['asset'];?></td>
+                        <td><?php echo $asset['descr'];?></td>
+                        <td>
+                            <?php
+                            if ($asset['exist'] === 'true') {
+                                echo "<input disabled='true' class='btn btn-primary' type='button' value='Added'>";
+                            } else {
+                                echo "<a href='/asset/add?assetname=". $asset['asset']  ."' target='_blank'><input class='btn btn-primary' type='button' value='Add...'></a>";
+                            }
+                            ?>
+
+                        </td>
+                    </form>
+                    </tr>
+
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+<script>
+
+    $(document).ready(function () {
+        var table = $('#datatable').DataTable({
+            "pageLength": 20,
+        });
+    });
+</script>
