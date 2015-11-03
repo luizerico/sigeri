@@ -1,0 +1,86 @@
+<section class="list">
+    <?php
+    $title = 'Zabbix Hosts ';
+    $this->headTitle('SIGERI - ' . $title);
+    ?>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3><?php echo $this->escapeHtml($title); ?></h3>
+        </div>
+        <div class="panel-body">
+            <table id="datatable" class="display table">
+                <thead>
+                    <tr>
+                        <th>Name</th>                  
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($return as $asset) : ?>                    
+                        <tr>
+                    <form method='post' class='ajaxform'>
+                        <td><?php echo $asset['asset']; ?></td>                           
+                        <td>
+                            <?php
+                            if ($asset['exist'] === 'true') {
+                                echo "<input disabled='true' class='btn btn-primary' type='button' value='Added'>";
+                            } else {
+                                // As the list will load slowly when there are many register, I prefer use a 
+                                // new window or a modal to add new assets. The idea is changing this in the future...
+                                //echo "<input class='btn btn-primary add-new' type='button' data-id='" . $asset['asset'] . "' value='Add...' )'>";
+                                echo "<a href='/asset/add?assetname=". $asset['asset']  ."' target='_blank'><input class='btn btn-primary' type='button' value='Add...'></a>";
+                            }
+                            ?>
+
+                        </td>
+                    </form>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style='width:960px;'>
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                <iframe id='frame' src='' width="100%" height="500" frameborder="0" allowtransparency="true"></iframe>  
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+<script>
+
+    $(document).ready(function () {
+        var table = $('#datatable').DataTable({
+            "pageLength": 20,
+        });
+    });
+    
+    
+    // Need to be corrected in the future 
+    // Save changes doesn't work as expected
+    $(document).ready(function () {
+        $(".add-new").click(function () { // Click to only happen on announce links
+            $('#frame').attr('src', '/asset/add?assetname='+ $(this).data('id'));
+            $('#myModal').modal('show');
+        });
+    });
+
+</script>

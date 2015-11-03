@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <!-- Meta, title, CSS, favicons, etc. -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>SIGERI </title>
+
+        <!-- Bootstrap core CSS -->
+        <?php
+        echo $this->headLink()
+                // css to the dashboard...      
+                ->prependStylesheet($this->basePath() . '/dash/css/custom.css')                 
+                ->prependStylesheet($this->basePath() . '/datatables/css/jquery.dataTables.min.css')
+                ->prependStylesheet($this->basePath() . '/dash/fonts/css/font-awesome.min.css')
+                ->prependStylesheet($this->basePath() . '/dash/css/animate.min.css')
+                ->prependStylesheet($this->basePath() . '/dash/css/maps/jquery-jvectormap-2.0.1.css')
+                ->prependStylesheet($this->basePath() . '/dash/css/icheck/flat/green.css')
+                ->prependStylesheet($this->basePath() . '/dash/css/floatexamples.css')
+                ->prependStylesheet($this->basePath() . '/multiselect/css/multi-select.css')
+                ->prependStylesheet($this->basePath() . '/css/style.css')
+                ->prependStylesheet($this->basePath() . '/css/bootstrap-theme.min.css')
+                ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css')
+        ?>
+
+        <!-- Scripts -->
+        <?php
+        echo $this->headScript()
+                ->prependFile($this->basePath() . '/dash/js/custom.js')
+                ->prependFile($this->basePath() . '/datatables/js/jquery.dataTables.min.js')                
+                ->prependFile($this->basePath() . '/dash/js/nicescroll/jquery.nicescroll.min.js')
+                ->prependFile($this->basePath() . '/dash/js/nprogress.js')
+                ->prependFile($this->basePath() . '/dash/js/skycons/skycons.js')
+                ->prependFile($this->basePath() . '/ckeditor/ckeditor.js')
+                ->prependFile($this->basePath() . '/multiselect/js/jquery.multi-select.js')
+                ->prependFile($this->basePath() . '/multiselect/js/jquery.quicksearch.js')
+                ->prependFile($this->basePath() . '/js/bootstrap.min.js')
+                ->prependFile($this->basePath() . '/js/jquery.min.js')
+                ->prependFile($this->basePath() . '/js/respond.min.js', 'text/javascript', array(
+                    'conditional' => 'lt IE 9'
+                ))->prependFile($this->basePath() . '/js/html5shiv.js', 'text/javascript', array(
+            'conditional' => 'lt IE 9'));
+        ?>  
+    </head>
+
+
+    <body class="nav-md">
+
+        <div class="container body">
+
+
+            <div class="main_container">
+
+                <div class="col-md-3 left_col">
+                    <div class="left_col scroll-view">
+
+                        <div class="navbar nav_title" style="border: 0;">
+                            <a href="/" class="site_title"><i class="fa fa-paw"></i> <span>SIGERI</span></a>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <!--                         menu prile quick info 
+                                                <div class="profile">
+                                                    <div class="profile_pic">
+                                                        <img src="/img/img.jpg" alt="..." class="img-circle profile_img">
+                                                    </div>
+                                                    <div class="profile_info">
+                                                        <span>Welcome,</span>
+                                                        <h2>Anthony Fernando</h2>
+                                                    </div>
+                                                </div>
+                                                 /menu prile quick info -->
+
+                        <br />
+
+                        <!-- sidebar menu -->
+                        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+
+                            <div class="menu_section">
+                                <br/>
+                                <ul class="nav side-menu">
+                                    <li><a><i class="fa fa-home"></i> Assets <span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu" style="display: none">
+                                            <li><a href="/asset/list">Assets</a></li>
+                                            <li><a href="/assettype/list">Asset Types</a></li>
+                                            <li><a href="/assetgroup/list">Asset Groups</a></li>
+                                            <li><a href="/vulnerability/list">Vulnerabilities</a></li>
+                                            <li><a href="/vulnerabilitytype/list">Vulnerability Type</a></li>
+                                            <li><a href="/vulnerabilitylevel/list">Vulnerability Level</a></li>
+                                            <li><a href="/threat/list">Threat</a></li>
+                                            <li><a href="/threattype/list">Threat Type</a></li>
+                                            <li><a href="/threatlevel/list">Threat Level</a></li>
+                                            <li><a href="/threatsource/list">Threat Source</a></li>
+                                            <li><a href="#">Asset Reports</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a><i class="fa fa-edit"></i> Risks <span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu" style="display: none">
+                                            <li><a href="/risk/list">Risks</a></li>
+                                            <li><a href="/risktype/list">Risk Types</a></li>
+                                            <li><a href="/riskstatus/list">Risk Status</a></li>
+                                            <li><a href="/riskreview/list">Risk Reviews</a></li>
+                                            <li><a href="/impact/list">Impact</a></li>
+                                            <li><a href="/probability/list">Probability</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a><i class="fa fa-edit"></i> Controls <span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu" style="display: none">
+                                            <li><a href="/control/list">Controls</a></li>                                    
+                                            <li><a href="/controltype/list">Control Types</a></li>
+                                            <li><a href="/controlstatus/list">Control Status</a></li>
+                                            <li><a href="/controlreview/list">Control Reviews</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a><i class="fa fa-edit"></i> Compliance <span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu" style="display: none">
+                                            <li><a href="/compliance/list">Compliance</a></li>                                    
+                                            <li><a href="/compliancetype/list">Compliance Types</a></li>
+                                            <li><a href="/compliancerule/list">Compliance Rules</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a><i class="fa fa-desktop"></i> Plans <span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu" style="display: none">
+                                            <li><a href="/plan/list">Plans</a></li>
+                                            <li><a href="/planreview/list">Plan Reviews</a></li> 
+                                            <li><a href="/planstatus/list">Plan Status</a></li> 
+                                            <li><a href="/planstrategy/list">Plan Strategies</a></li> 
+                                            <li><a href="/planeffort/list">Plan Efforts</a></li> 
+                                            <li class="divider"></li>
+                                            <li><a href="#">Calendar</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a><i class="fa fa-table"></i> Graphs <span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu" style="display: none">
+                                            <li><a href="/risk/xychart">Risk XYChart</a></li>
+                                            <li><a href="/risk/barchart">Risk BarChart</a></li>
+                                            <li><a href="/risk/columnchart">Risk ColumnChart</a></li>
+                                        </ul>
+                                    </li>                                    
+                                </ul>
+                                <ul class="nav side-menu">
+                                    <li><a><i class="fa fa-bar-chart-o"></i> Settings <span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu" style="display: none">
+                                            <li><a href="/user/list">Users</a></li>
+                                            <li><a href="/group/list">Groups</a></li>
+                                            <li><a href="/unit/list">Unit</a></li>
+                                            <li><a href="/document/list">Documents</a></li>
+                                            <li><a href="/folder/list">Folders</a></li>
+                                            <li><a href="/asset/zabbix">Import from Zabbix</a></li>
+                                            <li><a href="/asset/ldap">Import from LDAP</a></li>
+                                        </ul>
+                                    </li>
+
+                                </ul>
+                            </div>
+
+                        </div>
+                        <!-- /sidebar menu -->
+
+                        <!-- /menu footer buttons -->
+                        <div class="sidebar-footer hidden-small">
+                            <a data-toggle="tooltip" data-placement="top" title="Settings">
+                                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                            </a>
+                            <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+                                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+                            </a>
+                            <a data-toggle="tooltip" data-placement="top" title="Lock">
+                                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+                            </a>
+                            <a data-toggle="tooltip" data-placement="top" title="Logout">
+                                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                        <!-- /menu footer buttons -->
+                    </div>
+                </div>
+
+                <!-- top navigation -->
+                <div class="top_nav">
+
+                    <div class="nav_menu">
+                        <nav class="" role="navigation">
+                            <div class="nav toggle">
+                                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                            </div>
+
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="">
+                                    <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <img src="/img/img.jpg" alt="">John Doe
+                                        <span class=" fa fa-angle-down"></span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
+                                        <li><a href="javascript:;">  Profile</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">
+                                                <span class="badge bg-red pull-right">50%</span>
+                                                <span>Settings</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">Help</a>
+                                        </li>
+                                        <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li role="presentation" class="dropdown">
+                                    <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa fa-envelope-o"></i>
+                                        <span class="badge bg-green">6</span>
+                                    </a>
+                                    <ul id="menu1" class="dropdown-menu list-unstyled msg_list animated fadeInDown" role="menu">
+                                        <li>
+                                            <a>
+                                                <span class="image">
+                                                    <img src="/img/img.jpg" alt="Profile Image" />
+                                                </span>
+                                                <span>
+                                                    <span>John Smith</span>
+                                                    <span class="time">3 mins ago</span>
+                                                </span>
+                                                <span class="message">
+                                                    Film festivals used to be do-or-die moments for movie makers. They were where... 
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a>
+                                                <span class="image">
+                                                    <img src="/img/img.jpg" alt="Profile Image" />
+                                                </span>
+                                                <span>
+                                                    <span>John Smith</span>
+                                                    <span class="time">3 mins ago</span>
+                                                </span>
+                                                <span class="message">
+                                                    Film festivals used to be do-or-die moments for movie makers. They were where... 
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a>
+                                                <span class="image">
+                                                    <img src="/img/img.jpg" alt="Profile Image" />
+                                                </span>
+                                                <span>
+                                                    <span>John Smith</span>
+                                                    <span class="time">3 mins ago</span>
+                                                </span>
+                                                <span class="message">
+                                                    Film festivals used to be do-or-die moments for movie makers. They were where... 
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a>
+                                                <span class="image">
+                                                    <img src="/img/img.jpg" alt="Profile Image" />
+                                                </span>
+                                                <span>
+                                                    <span>John Smith</span>
+                                                    <span class="time">3 mins ago</span>
+                                                </span>
+                                                <span class="message">
+                                                    Film festivals used to be do-or-die moments for movie makers. They were where... 
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <div class="text-center">
+                                                <a>
+                                                    <strong><a href="inbox.html">See All Alerts</strong>
+                                                    <i class="fa fa-angle-right"></i>
+                                                </a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </nav>
+                    </div>
+
+                </div>
+                <!-- /top navigation -->
+
+
+                <!-- page content -->
+                <div class="right_col" role="main">                 
+
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <?php echo $this->content; ?>
+                        </div>
+
+                    </div>
+                    <br />
+
+                    <!-- footer content -->
+
+                    <footer>
+                        <div class="">
+                            <p class="pull-right">
+                                SIGERI - Developed by <a>Luiz Érico</a>. | rev. 2015.0.0.1
+                            </p>
+                        </div>
+                        <div class="clearfix"></div>
+                    </footer>
+                    <!-- /footer content -->
+                </div>
+                <!-- /page content -->
+
+            </div>
+
+        </div>
+
+        <div id="custom_notifications" class="custom-notifications dsp_none">
+            <ul class="list-unstyled notifications clearfix" data-tabbed_notifications="notif-group">
+            </ul>
+            <div class="clearfix"></div>
+            <div id="notif-group" class="tabbed_notifications"></div>
+        </div>
+        <script>
+            var icons = new Skycons({
+                "color": "#73879C"
+            }),
+                    list = [
+                        "clear-day", "clear-night", "partly-cloudy-day",
+                        "partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
+                        "fog"
+                    ],
+                    i;
+
+            for (i = list.length; i--; )
+                icons.set(list[i], list[i]);
+
+            icons.play();
+        </script>
+
+
+        <script>
+            var demo1 = $('select[multiple="multiple"]').multiSelect({
+                keepOrder: true,
+                selectableHeader: "<input type='text' class='search-input' autocomplete='off' placeholder='try \"12\"'>",
+                selectionHeader: "<input type='text' class='search-input' autocomplete='off' placeholder='try \"4\"'>",
+                afterInit: function (ms) {
+                    var that = this,
+                            $selectableSearch = that.$selectableUl.prev(),
+                            $selectionSearch = that.$selectionUl.prev(),
+                            selectableSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selectable:not(.ms-selected)',
+                            selectionSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selection.ms-selected';
+
+                    that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+                            .on('keydown', function (e) {
+                                if (e.which === 40) {
+                                    that.$selectableUl.focus();
+                                    return false;
+                                }
+                            });
+
+                    that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+                            .on('keydown', function (e) {
+                                if (e.which == 40) {
+                                    that.$selectionUl.focus();
+                                    return false;
+                                }
+                            });
+                },
+                afterSelect: function () {
+                    this.qs1.cache();
+                    this.qs2.cache();
+                },
+                afterDeselect: function () {
+                    this.qs1.cache();
+                    this.qs2.cache();
+                }
+            });
+        </script>
+
+    </body>
+
+
+</html>

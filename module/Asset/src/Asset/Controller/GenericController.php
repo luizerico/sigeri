@@ -6,13 +6,14 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Doctrine\ORM\EntityManager;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
-use Exception;
 use DoctrineORMModule\Form\Annotation\AnnotationBuilder as DoctrineAnnotationBuilder;
+use Exception;
 
 class GenericController extends AbstractActionController {
 
     protected $em;
     protected $object;
+    protected $entity, $route, $title;
 
     public function __construct() {
         $this->view->addScriptPath("../Asset/view/asset/generic/");
@@ -32,14 +33,14 @@ class GenericController extends AbstractActionController {
     public function addAction() {
         $builder = new DoctrineAnnotationBuilder($this->getEntityManager());
         $form = $builder->createForm($this->object);
-        $hydrator = new DoctrineHydrator($this->getEntityManager(), ENTITY);
+        $hydrator = new DoctrineHydrator($this->getEntityManager(), $this->entity);
         $form->setHydrator($hydrator);
         $form->get('submit')->setAttribute('value', 'Add');
 
         $form->bind($this->object);
-        
+
         // Get the asset informations send by the import code
-        $form->populateValues(array('name'=>$this->params()->fromQuery('assetname'))); 
+        $form->populateValues(array('name' => $this->params()->fromQuery('assetname')));
 
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -48,15 +49,15 @@ class GenericController extends AbstractActionController {
                 $this->object->exchangeArray($hydrator->extract($form->getData()));
                 $this->getEntityManager()->persist($this->object);
                 $this->getEntityManager()->flush();
-                return $this->redirect()->toRoute(ROUTER, array(
+                return $this->redirect()->toRoute($this->route, array(
                             'action' => 'list'
                 ));
             }
         }
 
         return array(
-            'title' => TITLE,
-            'router' => ROUTER,
+            'title' => $this->title,
+            'router' => $this->route,
             'form' => $form
         );
     }
@@ -64,25 +65,25 @@ class GenericController extends AbstractActionController {
     public function editAction() {
         $builder = new DoctrineAnnotationBuilder($this->getEntityManager());
         $form = $builder->createForm($this->object);
-        $hydrator = new DoctrineHydrator($this->getEntityManager(), ENTITY);
+        $hydrator = new DoctrineHydrator($this->getEntityManager(), $this->entity);
         $form->setHydrator($hydrator);
 
         $id = (int) $this->params()->fromRoute('id', 0);
 
         if (!$id) {
-            return $this->Redirect()->toRoute(ROUTER, array(
+            return $this->Redirect()->toRoute($this->route, array(
                         'action' => 'list'
             ));
         }
 
         try {
-            $ORMRepository = $this->getEntityManager()->getRepository(ENTITY);
+            $ORMRepository = $this->getEntityManager()->getRepository($this->entity);
             $dbArray = $ORMRepository->find($id);
             if (!$dbArray) {
                 throw new Exception('Id invalido.');
             }
         } catch (Exception $ex) {
-            return $this->redirect()->toRoute(ROUTER, array(
+            return $this->redirect()->toRoute($this->route, array(
                         'action' => 'list'
             ));
         }
@@ -94,30 +95,30 @@ class GenericController extends AbstractActionController {
         if ($request->isPost()) {
             $form->setData($request->getPost());
             if ($form->isValid()) {
-                
+
                 $this->object->exchangeArray($hydrator->extract($form->getData()));
                 $this->getEntityManager()->flush();
-                return $this->redirect()->toRoute(ROUTER, array(
+                return $this->redirect()->toRoute($this->route, array(
                             'action' => 'list'
                 ));
             }
         }
 
         return array(
-            'title' => TITLE,
-            'router' => ROUTER,
+            'title' => $this->title,
+            'router' => $this->route,
             'id' => $id,
             'form' => $form
         );
     }
 
     public function listAction() {
-        $ORMRepository = $this->getEntityManager()->getRepository(ENTITY);
+        $ORMRepository = $this->getEntityManager()->getRepository($this->entity);
         $dbArray = $ORMRepository->findAll();
 
         return new ViewModel(array(
-            'title' => TITLE,
-            'router' => ROUTER,
+            'title' => $this->title,
+            'router' => $this->route,
             'dbArray' => $dbArray
         ));
 
@@ -133,20 +134,20 @@ class GenericController extends AbstractActionController {
     public function deleteAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute(ROUTER, array(
+            return $this->redirect()->toRoute($this->route, array(
                         'action' => 'list'
             ));
         }
 
         try {
             $ORMRepository = $this->getEntityManager();
-            $dbArray = $ORMRepository->getRepository(ENTITY)->find($id);
+            $dbArray = $ORMRepository->getRepository($this->entity)->find($id);
 
             if (!$dbArray) {
                 throw new Exception('Id invalido.');
             }
         } catch (Exception $ex) {
-            return $this->redirect()->toRoute(ROUTER, array(
+            return $this->redirect()->toRoute($this->route, array(
                         'action' => 'list'
             ));
         }
@@ -161,21 +162,21 @@ class GenericController extends AbstractActionController {
                 $ORMRepository->flush();
             }
 
-            return $this->redirect()->toRoute(ROUTER, array(
+            return $this->redirect()->toRoute($this->route, array(
                         'action' => 'list'
             ));
         }
 
         return array(
-            'title' => TITLE,
-            'router' => ROUTER,
+            'title' => $this->title,
+            'router' => $this->route,
             'id' => $id,
-            'dbArray' => $this->getEntityManager()->getRepository(ENTITY)->find($id)
+            'dbArray' => $this->getEntityManager()->getRepository($this->entity)->find($id)
         );
     }
 
     public function IndexAction() {
-        return $this->redirect()->toRoute(ROUTER, array(
+        return $this->redirect()->toRoute($this->route, array(
                     'action' => 'list'
         ));
     }
@@ -183,26 +184,26 @@ class GenericController extends AbstractActionController {
     public function viewAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute(ROUTER, array(
+            return $this->redirect()->toRoute($this->route, array(
                         'action' => 'list'
             ));
         }
 
         try {
             $ORMRepository = $this->getEntityManager();
-            $dbArray = $ORMRepository->getRepository(ENTITY)->find($id);
+            $dbArray = $ORMRepository->getRepository($this->entity)->find($id);
             if (!$dbArray) {
                 throw new Exception('Id invalido.');
             }
         } catch (Exception $ex) {
-            return $this->redirect()->toRoute(ROUTER, array(
+            return $this->redirect()->toRoute($this->route, array(
                         'action' => 'list'
             ));
         }
 
         return new ViewModel(array(
-            'title' => TITLE,
-            'router' => ROUTER,
+            'title' => $this->title,
+            'router' => $this->route,
             'dbArray' => $dbArray
         ));
     }

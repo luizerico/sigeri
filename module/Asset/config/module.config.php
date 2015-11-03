@@ -45,6 +45,7 @@ return array(
             'ServerAsset' => 'Asset\Controller\ServerAssetController',
             'ServiceAsset' => 'Asset\Controller\ServiceAssetController',
             'ProcessAsset' => 'Asset\Controller\ProcessAssetController',
+            'LocationAsset' => 'Asset\Controller\LocationAssetController',
         )
     ),
     'router' => array(
@@ -129,6 +130,20 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'ProcessAsset',
+                        'action' => 'index'
+                    )
+                )
+            ),
+            'locationasset' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/locationasset[/][:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'LocationAsset',
                         'action' => 'index'
                     )
                 )

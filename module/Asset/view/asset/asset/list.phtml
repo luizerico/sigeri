@@ -24,7 +24,6 @@
                         $(location).attr('href', '/' + $(this).val() + '/add');
                     });
                 });
-
             </script>
             <!-- HTML and script to redirect to another page based on the select -->
 
@@ -33,7 +32,7 @@
         new register</a> 
 </p>-->
 
-            <table id="datatable" class="display table">
+            <table id="datatable" class="table table-striped responsive-utilities jambo_table bulk_action">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -89,11 +88,9 @@
     </div>
 </section>
 <script>
-
     $(document).ready(function () {
         var table = $('#datatable').DataTable({
             "pageLength": 20,
         });
-
     });
 </script>
