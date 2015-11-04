@@ -4,6 +4,7 @@ namespace Asset\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Zend\View\Model\JsonModel;
 use Doctrine\ORM\EntityManager;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use DoctrineORMModule\Form\Annotation\AnnotationBuilder as DoctrineAnnotationBuilder;
@@ -207,5 +208,39 @@ class GenericController extends AbstractActionController {
             'dbArray' => $dbArray
         ));
     }
+    
+    public function countAction($where = '') {
+        $dql = 'SELECT COUNT(rows) FROM ' . $this->entity . ' rows ' . $where;
+
+        $q = $this->getEntityManager()->createQuery($dql);
+        $count = $q->getSingleScalarResult();
+        $result = array("rowCount" => $count);
+        return new JsonModel($result);
+    }
+
+    public function consultAction() {
+        $where = $this->params()->fromQuery('where');
+        $orderby = $this->params()->fromQuery('orderby');
+        $limit = $this->params()->fromQuery('limit');
+
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('row')->from($this->entity, 'row');
+        
+        if(isset($limit)){
+            $qb->setMaxResults($limit);
+        }
+        
+        if(isset($where)){
+            $qb->andWhere('row.'. $where);
+        }
+        
+        if(isset($orderby)){
+            $qb->addOrderBy('row.'.$orderby, $order = 'DESC');
+        }
+                
+        $rows = $qb->getQuery()->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_SCALAR);
+        $result = array("rows" => $rows);
+        return new JsonModel($result);
+    }   
 
 }

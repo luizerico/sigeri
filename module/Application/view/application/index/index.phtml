@@ -1,43 +1,82 @@
 <div class="row top_tiles">
     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-        <div class="tile-stats">
-            <div class="icon"><i class="fa fa-caret-square-o-right"></i>
+        <a href="/risk/list" class="dashlink">
+            <div class="tile-stats">
+                <div class="icon"><i class="fa fa-exclamation-triangle"></i>
+                </div>
+                <div id="riskcount" class="count">
+                    <script>
+                        $.getJSON(
+                                "/risk/count",
+                                function (jsonData) {
+                                    $("#riskcount").text(jsonData.rowCount);
+                                }
+                        );</script>
+                </div>
+                <h3>Risks</h3>
+                <p>Registered Risks.</p>
             </div>
-            <div class="count">179</div>
-
-            <h3>Risks</h3>
-            <p>Registered Risks.</p>
-        </div>
+        </a>
     </div>
     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-        <div class="tile-stats">
-            <div class="icon"><i class="fa fa-comments-o"></i>
-            </div>
-            <div class="count">202</div>
+        <a href="/asset/list" class="dashlink">
+            <div class="tile-stats">
+                <div class="icon"><i class="fa fa-building"></i>
+                </div>
+                <div id="assetcount" class="count">
+                    <script>
+                        $.getJSON(
+                                "/asset/count",
+                                function (jsonData) {
+                                    $("#assetcount").text(jsonData.rowCount);
+                                }
+                        );</script>
+                </div>
 
-            <h3>Assets</h3>
-            <p>Registered Matriz Assets.</p>
-        </div>
+                <h3>Assets</h3>
+                <p>Registered Matriz Assets.</p>
+            </div>
+        </a>
     </div>
     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-        <div class="tile-stats">
-            <div class="icon"><i class="fa fa-sort-amount-desc"></i>
-            </div>
-            <div class="count">57</div>
+        <a href="/control/list" class="dashlink">
+            <div class="tile-stats">
+                <div class="icon"><i class="fa fa-check-square-o"></i>
+                </div>
+                <div id="controlcount" class="count">
+                    <script>
+                        $.getJSON(
+                                "/control/count",
+                                function (jsonData) {
+                                    $("#controlcount").text(jsonData.rowCount);
+                                }
+                        );</script>
+                </div>
 
-            <h3>Controls</h3>
-            <p>Applied Controls.</p>
-        </div>
+                <h3>Controls</h3>
+                <p>Applied Controls.</p>
+            </div>
+        </a>
     </div>
     <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
-        <div class="tile-stats">
-            <div class="icon"><i class="fa fa-check-square-o"></i>
-            </div>
-            <div class="count">39</div>
+        <a href="/plan/list" class="dashlink">
+            <div class="tile-stats">
+                <div class="icon"><i class="fa fa-file-text"></i>
+                </div>
+                <div id="plancount" class="count">
+                    <script>
+                        $.getJSON(
+                                "/plan/count",
+                                function (jsonData) {
+                                    $("#plancount").text(jsonData.rowCount);
+                                }
+                        );</script>
+                </div>
 
-            <h3>Plans</h3>
-            <p>Documented Control Risk Plans.</p>
-        </div>
+                <h3>Plans</h3>
+                <p>Control Risk Plans.</p>
+            </div>
+        </a>
     </div>
 </div>
 
@@ -47,19 +86,330 @@
     <div class="col-md-12">
         <div class="x_panel">
             <div class="x_title">
-                <h2>Transaction Summary <small>Weekly progress</small></h2>
-                <div class="filter">
-                    <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                        <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
-                    </div>
-                </div>
+                <h2>Risk Map <small> Global </small></h2>
+
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
                 <div class="col-md-9 col-sm-12 col-xs-12">
                     <div class="demo-container" style="height:280px">
-                        <div id="placeholder33x" class="demo-placeholder"></div>
+                        <style>
+                            .axis text {
+                                font-size: 0.9em sans-serif;
+                            }
+
+                            .axis path, .axis line {
+                                fill: none;
+                                stroke: #000;
+                                shape-rendering: crispEdges;
+                            }
+
+                            .circle {
+                                stroke: #000;
+                                stroke-opacity: 1;
+                                fill-opacity: 1;
+                            }
+                            text {
+                                font-size: 0.9em;
+                            }
+
+                            .tooltip {   
+                                position: absolute;           
+                                text-align: left;           
+                                //width: 80px;                  
+                                //height: 35px;                 
+                                padding: 10px;             
+                                font: 11px sans-serif;        
+                                background: white;   
+                                border: 0px;      
+                                border-radius: 3px;           
+                                pointer-events: none;
+                                box-shadow: 1px 1px 2px #CCC;
+
+                            }
+                            label {
+                                width: 100%;
+                                text-align: right;
+                                //position: absolute;
+                                top: 20px;
+                                right: 15px;
+                                border: 0;
+                                padding: 0;
+                            }
+
+                            /*                            .areachart {
+                                                            border: solid 1px #ccc;
+                                                             position: absolute; 
+                                                            width: 720px;
+                                                            padding: 9px;
+                                                            border-radius: 5px;
+                                                             display: block; 
+                                                        }*/
+
+                        </style>
+
+                        <div class="areachart">
+                            <svg id="matrix" ></svg>
+
+                            <script type="text/javascript">
+                                d3.select(window).on('resize', resize);
+                                resize();
+
+                                function resize() {
+                                    d3.select("#matrix").selectAll("*").remove();
+
+                                    console.log("remove");
+                                    drawGraph();
+                                }
+
+                                function drawGraph() {
+                                    var margin = {top: 20, right: 20, bottom: 30, left: 40},
+                                    width = $(".demo-container").width() - margin.left - margin.right,
+                                            height = $(".demo-container").height() - margin.top - margin.bottom;
+
+                                    var radius = 5,
+                                            padding = 1,
+                                            alpha_X = 1;
+
+                                    // temporary colors
+                                    var color = d3.scale.category20c();
+
+                                    var viewBox = "0 0 " + width + " " + height;
+                                    var svg = d3.select("#matrix")
+                                            .attr("width", width + margin.left + margin.right)
+                                            .attr("height", height + margin.top + margin.bottom)
+                                            .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                                            ;
+
+                                    var force = d3.layout.force()
+                                            .charge(-50)
+                                            .gravity(0)
+                                            .chargeDistance(20)
+                                            .size([width, height]);
+
+                                    //                var gradient = svg.append("radialGradient")
+                                    //                        .attr("cx", "0%")
+                                    //                        .attr("cy", "100%")
+                                    //                        .attr("r", "100%")
+                                    //                        .attr("id", "gradient")
+                                    //                        .attr("spreadMethod", "pad")
+                                    //                        .attr("gradientUnits", "userSpaceOnUse")
+                                    //                        ;
+
+                                    var gradient = svg.append("linearGradient")
+                                            .attr("y1", "100%")
+                                            .attr("y2", "0%")
+                                            .attr("x1", "0%")
+                                            .attr("x2", "100%")
+                                            .attr("id", "gradient")
+                                            .attr("spreadMethod", "pad")
+                                            //                        .attr("gradientUnits", "userSpaceOnUse")
+                                            ;
+
+                                    gradient
+                                            .append("stop")
+                                            .attr("offset", "0%")
+                                            .attr("stop-color", "#8FA");
+
+                                    gradient
+                                            .append("stop")
+                                            .attr("offset", "45%")
+                                            .attr("stop-color", "#FF8");
+
+                                    gradient
+                                            .append("stop")
+                                            .attr("offset", "90%")
+                                            .attr("stop-color", "#F99");
+
+                                    svg.append("svg:rect")
+                                            .attr("width", width + margin.left + margin.right)
+                                            .attr("height", height + margin.top + margin.bottom)
+                                            .style("fill", "url(#gradient)")
+                                            ;
+
+                                    d3.json("risk/jsonRiskData", function (data) {
+
+                                        var maxX = d3.max(data, function (d) {
+                                            return d.probability;
+                                        });
+
+                                        var maxY = d3.max(data, function (d) {
+                                            return d.impact;
+                                        });
+
+                                        var xPos = d3.scale.linear()
+                                                .domain([0, maxX])
+                                                .range([0, width]);
+
+                                        var yPos = d3.scale.linear()
+                                                .domain([0, maxY])
+                                                .range([height, 0]);
+
+
+                                        // Axis 
+                                        var xAxis = d3.svg.axis()
+                                                .scale(xPos)
+                                                .orient("bottom");
+
+                                        var yAxis = d3.svg.axis()
+                                                .scale(yPos)
+                                                .orient("left");
+
+                                        svg.append("g")
+                                                .attr("transform", "translate(" + margin.left + "," + (height + margin.top) + ")")
+                                                .attr("class", "axis")
+                                                .call(xAxis)
+                                                .append("text")
+                                                .attr("x", width)
+                                                .attr("dy", "-1em")
+                                                .style("text-anchor", "end")
+                                                .text("Probability");
+                                        ;
+
+                                        svg.append("g")
+                                                .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                                                .attr("class", "axis")
+                                                .call(yAxis)
+                                                .append("text")
+                                                .attr("transform", "rotate(-90)")
+                                                .attr("y", 8)
+                                                .attr("dy", "1em")
+                                                .style("text-anchor", "end")
+                                                .text("Impact");
+
+                                        // Tip Text
+                                        var tooltip = d3.select("body").append("div")
+                                                .attr("class", "tooltip");
+
+
+                                        var text = svg.selectAll("text.node")
+                                                .data(data).enter()
+                                                .append("svg:text")
+                                                .text(function (d) {
+                                                    return d.name;
+                                                })
+                                                //                            .style("opacity", 0.5)
+                                                ;
+
+                                        // Controls
+                                        // var control = svg.append()
+
+                                        var node = svg.selectAll("circle.node")
+                                                .data(data).enter()
+                                                .append("a")
+                                                .attr("xlink:href", function (d) {
+                                                    return "/risk/edit/" + d.id;
+                                                })
+                                                .append("svg:circle")
+                                                .attr("r", function (d) {
+                                                    return radius;
+                                                })
+                                                .attr("class", "circle")
+                                                .attr("fill", function (d) {
+                                                    return color(d.impact * d.probability);
+                                                })
+                                                //                            .style("opacity", 0.5)
+                                                .call(force.drag)
+                                                .on("mouseover", function (d) {
+                                                    tooltip.transition()
+                                                            .duration(200)
+                                                            .style("opacity", 1);
+                                                    tooltip.html(
+                                                            "Risk: " + d.name +
+                                                            "</br>Impact: " + d.impact +
+                                                            "<br/>Probability: " + d.probability)
+                                                            .style("left", (d3.event.pageX + radius * 2) + "px")
+                                                            .style("top", (d3.event.pageY - 28) + "px");
+                                                })
+                                                .on("mouseout", function (d) {
+                                                    tooltip.transition()
+                                                            .duration(500)
+                                                            .style("opacity", 0);
+                                                })
+                                                ;
+
+                                        force
+                                                .nodes(data)
+                                                .on("tick", tick)
+                                                .start();
+
+
+                                        // Set initial positions
+                                        data.forEach(function (d) {
+                                            d.x = xPos(d.probability) - radius;
+                                            d.y = yPos(d.impact) + radius;
+                                            //d.color = color(d.impact);
+                                            d.radius = radius;
+                                        });
+
+                                        function tick(e) {
+                                            node.each(moveTowardDataPosition(e.alpha));
+                                            node.each(collide(e.alpha));
+                                            node
+                                                    .attr("cx", function (d) {
+                                                        return d.x + margin.left;
+                                                    })
+                                                    .attr("cy", function (d) {
+                                                        return d.y + margin.top;
+                                                    })
+                                                    ;
+                                            text
+                                                    .attr("x", function (d) {
+                                                        return d.x + 3 + radius + margin.left;
+                                                    })
+                                                    .attr("y", function (d) {
+                                                        return d.y + radius + margin.top;
+                                                    });
+                                        }
+
+                                        function moveTowardDataPosition(alpha) {
+                                            return function (d) {
+                                                d.x += (xPos(d.probability) - d.x) * alpha_X * alpha;
+                                                d.y += (yPos(d.impact) - d.y) * alpha_X * alpha;
+                                            };
+                                        }
+
+                                        function collide(alpha) {
+                                            var quadtree = d3.geom.quadtree(data);
+                                            return function (d) {
+                                                var r = d.radius + r + padding,
+                                                        nx1 = d.x - r,
+                                                        nx2 = d.x + r,
+                                                        ny1 = d.y - r,
+                                                        ny2 = d.y + r;
+                                                quadtree.visit(function (quad, x1, y1, x2, y2) {
+                                                    if (quad.point && (quad.point !== d)) {
+                                                        var x = d.x - quad.point.x,
+                                                                y = d.y - quad.point.y,
+                                                                l = Math.sqrt(x * x + y * y),
+                                                                r = d.radius + quad.point.radius + (d.color !== quad.point.color) * padding;
+                                                        if (l < r) {
+                                                            l = (l - r) / l * alpha;
+                                                            d.x -= x *= l;
+                                                            d.y -= y *= l;
+                                                            quad.point.x += x;
+                                                            quad.point.y += y;
+                                                        }
+                                                    }
+                                                    return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+                                                });
+                                            };
+                                        }
+
+                                        d3.select("#show_label").on("change", function () {
+                                            opacity = this.checked ? 1 : 0;
+                                            text
+                                                    .transition()
+                                                    .duration(750)
+                                                    .attr("opacity", opacity);
+                                        });
+
+                                    });
+                                }
+
+
+                            </script>
+                        </div>
                     </div>
                     <div class="tiles">
                         <div class="col-md-4 tile">
@@ -90,12 +440,12 @@
                 <div class="col-md-3 col-sm-12 col-xs-12">
                     <div>
                         <div class="x_title">
-                            <h2>Top Profiles</h2>
+                            <h2>Top 5 Risks</h2>
                             <ul class="nav navbar-right panel_toolbox">
                                 <li><a href="#"><i class="fa fa-chevron-up"></i></a>
                                 </li>
                                 <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" ><i class="fa fa-wrench"></i></a>
                                     <ul class="dropdown-menu" role="menu">
                                         <li><a href="#">Settings 1</a>
                                         </li>
@@ -108,62 +458,29 @@
                             </ul>
                             <div class="clearfix"></div>
                         </div>
-                        <ul class="list-unstyled top_profiles scroll-view">
-                            <li class="media event">
-                                <a class="pull-left border-aero profile_thumb">
-                                    <i class="fa fa-user aero"></i>
-                                </a>
-                                <div class="media-body">
-                                    <a class="title" href="#">Ms. Mary Jane</a>
-                                    <p><strong>$2300. </strong> Agent Avarage Sales </p>
-                                    <p> <small>12 Sales Today</small>
-                                    </p>
-                                </div>
-                            </li>
-                            <li class="media event">
-                                <a class="pull-left border-green profile_thumb">
-                                    <i class="fa fa-user green"></i>
-                                </a>
-                                <div class="media-body">
-                                    <a class="title" href="#">Ms. Mary Jane</a>
-                                    <p><strong>$2300. </strong> Agent Avarage Sales </p>
-                                    <p> <small>12 Sales Today</small>
-                                    </p>
-                                </div>
-                            </li>
-                            <li class="media event">
-                                <a class="pull-left border-blue profile_thumb">
-                                    <i class="fa fa-user blue"></i>
-                                </a>
-                                <div class="media-body">
-                                    <a class="title" href="#">Ms. Mary Jane</a>
-                                    <p><strong>$2300. </strong> Agent Avarage Sales </p>
-                                    <p> <small>12 Sales Today</small>
-                                    </p>
-                                </div>
-                            </li>
-                            <li class="media event">
-                                <a class="pull-left border-aero profile_thumb">
-                                    <i class="fa fa-user aero"></i>
-                                </a>
-                                <div class="media-body">
-                                    <a class="title" href="#">Ms. Mary Jane</a>
-                                    <p><strong>$2300. </strong> Agent Avarage Sales </p>
-                                    <p> <small>12 Sales Today</small>
-                                    </p>
-                                </div>
-                            </li>
-                            <li class="media event">
-                                <a class="pull-left border-green profile_thumb">
-                                    <i class="fa fa-user green"></i>
-                                </a>
-                                <div class="media-body">
-                                    <a class="title" href="#">Ms. Mary Jane</a>
-                                    <p><strong>$2300. </strong> Agent Avarage Sales </p>
-                                    <p> <small>12 Sales Today</small>
-                                    </p>
-                                </div>
-                            </li>
+                        <ul class="list-unstyled top_profiles scroll-view" id="toprisk">
+                            <script>
+                                var composer1 = "<li class=\"media event\">\n\
+                                                    <a class=\"pull-left border-aero profile_thumb\">\n\
+                                                        <i class=\"fa fa-exclamation-triangle\"></i>\n\
+                                                    </a><div class=\"media-body\">";
+                                
+                                var composer2 = "</small></p></div></li>";
+                        
+                                $.getJSON(
+                                        "/risk/jsonRiskData?orderby=impact&limit=5", function (result) {
+                                            $.each(result, function (i, field) {
+                                                $("#toprisk").append(composer1 + 
+                                                        "<a class=\"title\" href=\"/risk/view/" + 
+                                                        field.id + "\">" + 
+                                                        field.name + "</a><p><strong>" + 
+                                                        "Risk: " + field.risk + "</strong></p><p><small>" +                                                        
+                                                        "probability: " + field.probability + 
+                                                        " | impact: " + field.impact +
+                                                        composer2);
+                                            });
+                                        });
+                            </script>                            
                         </ul>
                     </div>
                 </div>
@@ -280,7 +597,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div id="world-map-gdp" style="height:230px;"></div>
+                    <!--<div id="world-map-gdp" class="col-md-8 col-sm-12 col-xs-12" style="height:230px;"></div>-->
                 </div>
             </div>
         </div>
@@ -291,22 +608,22 @@
 <script type="text/javascript" src="dash/js/maps/gdp-data.js"></script>
 <script type="text/javascript" src="dash/js/maps/jquery-jvectormap-world-mill-en.js"></script>
 <script type="text/javascript" src="dash/js/maps/jquery-jvectormap-us-aea-en.js"></script>
-<script>
-    $(function () {
-        $('#world-map-gdp').vectorMap({
-            map: 'world_mill_en',
-            backgroundColor: 'transparent',
-            zoomOnScroll: false,
-            series: {
-                regions: [{
-                        values: gdpData,
-                        scale: ['#E6F2F0', '#149B7E'],
-                        normalizeFunction: 'polynomial'
-                    }]
-            },
-            onRegionTipShow: function (e, el, code) {
-                el.html(el.html() + ' (GDP - ' + gdpData[code] + ')');
-            }
-        });
-    });
-</script>
+    <!--<script>
+                                    $(function () {
+                                        $('#world-map-gdp').vectorMap({
+                                            map: 'world_mill_en',
+                                            backgroundColor: 'transparent',
+                                            zoomOnScroll: false,
+                                            series: {
+                                                regions: [{
+                                                        values: gdpData,
+                                                        scale: ['#E6F2F0', '#149B7E'],
+                                                        normalizeFunction: 'polynomial'
+                                                    }]
+                                            },
+                                            onRegionTipShow: function (e, el, code) {
+                                                el.html(el.html() + ' (GDP - ' + gdpData[code] + ')');
+                                            }
+                                        });
+                                    });
+    </script>-->

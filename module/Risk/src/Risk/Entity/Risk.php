@@ -253,7 +253,7 @@ class Risk {
      * @Annotation\Attributes({"value":"Submit"})
      * @Annotation\Attributes({"style":"width:150px", "class":"btn btn-default"})
      */
-//    protected $submit;
+    protected $submit;
 
     public function __construct() {
         $this->revisions = new ArrayCollection();

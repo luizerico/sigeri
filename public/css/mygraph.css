@@ -1,0 +1,64 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Nov 3, 2015, 8:41:28 AM
+    Author     : LuizÉrico
+*/
+
+.axis text {
+    font-size: 0.9em sans-serif;
+}
+
+.axis path, .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.circle {
+    stroke: #000;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+}
+text {
+    font-size: 0.9em;
+}
+
+.tooltip {   
+    position: absolute;           
+    text-align: left;           
+    //width: 80px;                  
+    //height: 35px;                 
+    padding: 10px;             
+    font: 11px sans-serif;        
+    background: white;   
+    border: 0px;      
+    border-radius: 3px;           
+    pointer-events: none;
+    box-shadow: 1px 1px 2px #CCC;
+
+}
+label {
+    width: 100%;
+    text-align: right;
+    //position: absolute;
+    top: 20px;
+    right: 15px;
+    border: 0;
+    padding: 0;
+}
+
+/*.areachart {
+    border: solid 1px #ccc;
+    position: absolute; 
+    width: 720px;
+    padding: 9px;
+    border-radius: 5px;
+    display: block; 
+}*/
+
+
+
