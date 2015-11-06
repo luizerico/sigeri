@@ -12,6 +12,8 @@ class ServiceAssetController extends AssetController {
         $this->entity = 'Asset\Entity\ServiceAsset';
         $this->title = 'Service Asset';
         $this->route = 'asset';
+        
+        //parent::__construct();
     }    
 
 }

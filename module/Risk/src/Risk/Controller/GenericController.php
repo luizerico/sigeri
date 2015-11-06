@@ -17,7 +17,7 @@ class GenericController extends AbstractActionController {
     protected $entity, $route, $title;
 
     public function __construct() {
-        $this->view->addScriptPath("../Asset/view/asset/generic/");
+        //$this->view->addScriptPath("../Asset/view/asset/generic/");
     }
 
     public function setEntityManager(EntityManager $em) {

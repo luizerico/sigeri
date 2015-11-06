@@ -64,10 +64,10 @@ class Risk extends \Risk\Entity\Risk implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'id', 'name', 'status', 'type', 'method', 'probability', 'impact', 'analyst', 'date', 'description', 'annotations', 'detimpact', 'regulations', 'controls', 'documents', 'revisions');
+            return array('__isInitialized__', 'id', 'name', 'status', 'type', 'method', 'probability', 'impact', 'analyst', 'date', 'description', 'annotations', 'detimpact', 'regulations', 'controls', 'documents', 'revisions', 'submit');
         }
 
-        return array('__isInitialized__', 'id', 'name', 'status', 'type', 'method', 'probability', 'impact', 'analyst', 'date', 'description', 'annotations', 'detimpact', 'regulations', 'controls', 'documents', 'revisions');
+        return array('__isInitialized__', 'id', 'name', 'status', 'type', 'method', 'probability', 'impact', 'analyst', 'date', 'description', 'annotations', 'detimpact', 'regulations', 'controls', 'documents', 'revisions', 'submit');
     }
 
     /**

@@ -12,6 +12,8 @@ class ServerAssetController extends AssetController {
         $this->entity = 'Asset\Entity\ServerAsset';
         $this->title = 'Server Asset';
         $this->route = 'asset';
+        
+        //parent::__construct();
     }    
 
 }

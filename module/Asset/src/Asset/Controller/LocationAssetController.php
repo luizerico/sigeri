@@ -11,7 +11,9 @@ class LocationAssetController extends AssetController {
         $this->object = new LocationAsset();
         $this->entity = 'Asset\Entity\LocationAsset';
         $this->title = 'Location Asset';
-        $this->route = 'locationasset';
+        $this->route = 'asset';
+        
+        //parent::__construct();
     }    
 
 }

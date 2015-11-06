@@ -4,6 +4,8 @@ namespace Asset\Entity;
 
 use Zend\Form\Annotation;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @ORM\Entity
@@ -28,19 +30,18 @@ class ServerAsset extends Asset {
     protected $ipaddress;
 
     /**
-     * @ORM\Column(type="string")
-     * @Annotation\Type("Zend\Form\Element\Text")
-     * @Annotation\Required(false)
-     * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Services:"}) 
+     * @ORM\ManyToMany(targetEntity="Asset\Entity\ServiceAsset")
+     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
+     * @Annotation\Options({"label":"Service:"})
+     * @Annotation\Attributes({"multiple":"multiple"})
      *
-     * @var string
+     * @var \Asset\Entity\ServiceAsset
      * @access protected
      */
     protected $services;
 
     public function __construct() {
-        
+         $this->services = new ArrayCollection();
     }
 
     public function exchangeArray($data) {
@@ -61,13 +62,20 @@ class ServerAsset extends Asset {
         return $ipaddress;
     }
 
-    public function getServices() {
-        return $this->services;
+    public function addServices(Collection $services) {
+        foreach ($services as $dependency) {
+            $this->services->add($dependency);
+        }
     }
 
-    public function setServices($services) {
-        $this->services = $services;
-        return $services;
+    public function removeServices(Collection $services) {
+        foreach ($services as $dependency) {
+            $this->services->removeElement($dependency);
+        }
+    }
+
+    public function getServices() {
+        return $this->services;
     }
 
 }

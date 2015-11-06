@@ -12,6 +12,8 @@ class ProcessAssetController extends AssetController {
         $this->entity = 'Asset\Entity\ProcessAsset';
         $this->title = 'Process Asset';
         $this->route = 'asset';
+        
+        //parent::__construct();
     }    
 
 }

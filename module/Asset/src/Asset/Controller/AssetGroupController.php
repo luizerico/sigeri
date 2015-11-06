@@ -12,6 +12,8 @@ class AssetGroupController extends GenericController {
         $this->entity = 'Asset\Entity\AssetGroup';
         $this->title = 'Asset Group';
         $this->route = 'assetgroup';
+        
+        parent::__construct();
     }
 
 }

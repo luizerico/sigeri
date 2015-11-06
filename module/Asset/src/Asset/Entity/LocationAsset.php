@@ -45,30 +45,30 @@ class LocationAsset extends Asset {
     }
 
     public function exchangeArray($data) {
-        $this->ipaddress = (isset($data ['ipaddress'])) ? $data ['ipaddress'] : null;
-        $this->services = (isset($data ['services'])) ? $data ['services'] : null;
+        $this->address = (isset($data ['address'])) ? $data ['address'] : null;
+        $this->geolocation = (isset($data ['geolocation'])) ? $data ['geolocation'] : null;
     }
 
     public function __toString() {
         return sprintf('%s', $this->getName());
     }
 
-    public function getIpaddress() {
-        return $this->ipaddress;
+    public function getAddress() {
+        return $this->address;
     }
 
-    public function setIpaddress($ipaddress) {
-        $this->id = $ipaddress;
-        return $ipaddress;
+    public function setAddress($address) {
+        $this->address = $address;
+        return $address;
     }
 
-    public function getServices() {
-        return $this->services;
+    public function getGeolocation() {
+        return $this->geolocation;
     }
 
-    public function setServices($services) {
-        $this->services = $services;
-        return $services;
+    public function setGeolocation($geolocation) {
+        $this->geolocation = $geolocation;
+        return $geolocation;
     }
 
 }

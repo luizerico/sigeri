@@ -15,14 +15,13 @@ use Doctrine\ORM\Mapping as ORM;
 class ServiceAsset extends Asset {
 
     /**
-     * @ORM\Column(type="string")
-     * @Annotation\Type("Zend\Form\Element\Text")
+     * @ORM\ManyToMany(targetEntity="Asset\Entity\ProcessAsset")
+     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Required(false)
-     * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
-     * @Annotation\Options({"label":"Process:"}) 
+     * @Annotation\Options({"label":"Process:"})
+     * @Annotation\Attributes({"multiple":"multiple"})
      *
-     * @var string
+     * @var \Asset\Entity\ProcessAsset
      * @access protected
      */
     protected $process;
@@ -39,13 +38,20 @@ class ServiceAsset extends Asset {
         return sprintf('%s', $this->getName());
     }   
 
-    public function getProcess() {
-        return $this->process;
+    public function addProcess(Collection $process) {
+        foreach ($process as $dependency) {
+            $this->process->add($dependency);
+        }
     }
 
-    public function setProcess($process) {
-        $this->process = $process;
-        return $process;
+    public function removeProcess(Collection $process) {
+        foreach ($process as $dependency) {
+            $this->process->removeElement($dependency);
+        }
+    }
+
+    public function getProcess() {
+        return $this->process;
     }
 
 }

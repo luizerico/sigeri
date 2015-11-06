@@ -38,7 +38,7 @@ class ThreatLevel {
      * @ORM\Column(type="text", nullable=true)
      * @Annotation\Type("Zend\Form\Element\Text")
      * @Annotation\Required(false)
-     * @Annotation\Validator({"name":"StringLength", "options":{"min":"5", "max":"250"}})
+     * @Annotation\Validator({"name":"StringLength", "options":{"min":"3", "max":"250"}})
      * @Annotation\Options({"label":"Description"})
      * @Annotation\Attributes({"style":"width:100%"})
      *
