@@ -33,6 +33,13 @@
                             <td><a
                                     href="<?php
                                     echo $this->url($this->router, array(
+                                        'action' => 'view',
+                                        'id' => $dbRow->getId()
+                                    ));
+                                    ?>">View</a>
+                                <a
+                                    href="<?php
+                                    echo $this->url($this->router, array(
                                         'action' => 'edit',
                                         'id' => $dbRow->getId()
                                     ));

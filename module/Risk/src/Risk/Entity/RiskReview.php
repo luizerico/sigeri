@@ -36,9 +36,9 @@ class RiskReview {
      *
      * @var string
      * @access protected
-     */    
+     */
     protected $name;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="Risk\Entity\Risk", inversedBy="revisions")
      * @ORM\JoinColumn(name="risk_id", referencedColumnName="id")
@@ -51,7 +51,7 @@ class RiskReview {
      * @access protected
      */
     protected $risk;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="User\Entity\User")
      * @ORM\JoinColumn(name="analyst_id", referencedColumnName="id")
@@ -81,7 +81,7 @@ class RiskReview {
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Type("Zend\Form\Element\Textarea")
      * @Annotation\Required(false)
      * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
      * @Annotation\Options({"label":"Description"})
@@ -112,7 +112,7 @@ class RiskReview {
      * @Annotation\Attributes({"style":"width:150px", "class":"btn btn-default"})
      */
     protected $submit;
-    
+
 //    public function __construct() {        
 //        $this->risks = new ArrayCollection();
 //    }
@@ -188,16 +188,16 @@ class RiskReview {
         $this->date = $date;
         return $this;
     }
-    
+
     public function getRisk() {
         return $this->risk;
     }
-    
+
     public function setRisk(\Risk\Entity\Risk $risk) {
         $this->risk = $risk;
         return $this;
     }
-    
+
 //    This functions are to be used if the field was configured as a manytomany
 //    and are commented because I had the desired results using the onetomany 
 //        
@@ -216,5 +216,4 @@ class RiskReview {
 //    public function getRisks() {
 //        return $this->risks;
 //    }
-
 }

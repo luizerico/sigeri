@@ -369,7 +369,7 @@ class MethodOwasp extends Method {
         $this->skilllevel = (isset($data ['skilllevel'])) ? $data ['skilllevel'] : null;
         $this->motive = (isset($data ['motive'])) ? $data ['motive'] : null;
         $this->opportunity = (isset($data ['opportunity'])) ? $data ['opportunity'] : null;
-        $this->size = (isset($data ['size'])) ? $data ['datsizee'] : null;
+        $this->size = (isset($data ['size'])) ? $data ['size'] : null;
         $this->easediscovery = (isset($data ['easediscovery'])) ? $data ['easediscovery'] : null;
         $this->easeexploit = (isset($data ['easeexploit'])) ? $data ['easeexploit'] : null;
         $this->awareness = (isset($data ['awareness'])) ? $data ['awareness'] : null;
@@ -428,6 +428,16 @@ class MethodOwasp extends Method {
         $this->easediscovery = $easediscovery;
         return $this;
     }
+    
+    public function getEaseexploit() {
+        return $this->easeexploit;
+    }
+
+    public function setEaseexploit($easeexploit) {
+        $this->easeexploit = $easeexploit;
+        return $this;
+    }
+    
 
     public function getAwareness() {
         return $this->awareness;

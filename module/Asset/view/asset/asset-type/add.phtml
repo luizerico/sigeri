@@ -34,7 +34,7 @@
                         <?php
                         //echo $element->getAttribute('type');
                         if ($element->getAttribute('type') != 'submit') {
-                            $element->setAttribute('class', 'form-control');
+                            $element->setAttribute('class', 'form-control ' . $element->getAttribute('class'));
                         } else {
                             $element->setAttribute('class', 'btn btn-primary');
                             $element->setAttribute('style', 'width:150px');

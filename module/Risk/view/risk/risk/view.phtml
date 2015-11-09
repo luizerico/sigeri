@@ -31,8 +31,9 @@
                 <li><a data-toggle="tab" href="#notes">Notes</a></li>
                 <li><a data-toggle="tab" href="#detimpact">Impact</a></li>
                 <li><a data-toggle="tab" href="#controls">Controls</a></li>
-                <li><a data-toggle="tab" href="#regulations">Regulations</a></li>
+                <li><a data-toggle="tab" href="#compliance">compliance</a></li>
                 <li><a data-toggle="tab" href="#documents">Documents</a></li>
+                <li><a data-toggle="tab" href="#methods">Methods</a></li>
                 <li><a data-toggle="tab" href="#revisions">Revisions</a></li>        
             </ul>
             <div class="panel" style="padding-top:5px;">
@@ -48,10 +49,48 @@
                         <p><?php echo $dbArray->getDetimpact(); ?></p>
                     </div>
                     <div id="controls" class="tab-pane fade in">
-                        <p><?php echo $dbArray->getControls(); ?></p>
+                        <p>&nbsp;
+                        </p>
+                        <table id="datatable" class="display table">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($dbArray->getCompliance() as $dbRow) : ?>
+                                    <tr>
+                                        <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
+                                        <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>
+                                        <td><?php echo $this->escapeHtml($dbRow->getDescription()); ?></td>                       
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
                     </div>
-                    <div id="regulations" class="tab-pane fade in">
-                        <p><?php echo $dbArray->getRegulations(); ?></p>
+                    <div id="compliance" class="tab-pane fade in">
+                        <p>&nbsp;
+                        </p>
+                        <table id="datatable" class="display table">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($dbArray->getControls() as $dbRow) : ?>
+                                    <tr>
+                                        <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
+                                        <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>
+                                        <td><?php echo $this->escapeHtml($dbRow->getDescription()); ?></td>                         
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
                     </div>
                     <div id="documents" class="tab-pane fade in">
                         <p>&nbsp;
@@ -79,14 +118,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div id="revisions" class="tab-pane fade in">
-                        <p>
-                            <a href="<?php
-                            echo $this->url('riskreview', array('action' => 'add'), array('query' => array('risk_id' => $dbArray->getId()))
-                            );
-                            ?>">
-                                New revision register</a> 
-                        </p>
+                    <div id="revisions" class="tab-pane fade in">                        
                         <table id="datatable" class="display table">
                             <thead>
                                 <tr>
@@ -116,6 +148,49 @@
                                             <a
                                                 href="<?php
                                                 echo $this->url('riskreview', array(
+                                                    'action' => 'delete',
+                                                    'id' => $dbRow->getId()
+                                                ));
+                                                ?>">Del</a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="methods" class="tab-pane fade in">                        
+                        <table id="datatable" class="display table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Method</th>
+                                    <th>Value</th>                
+                                    <th>&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($dbArray->getMethod() as $dbRow) : ?>
+                                    <tr>
+                                        <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
+                                        <td><?php echo strtoupper($this->escapeHtml($dbRow->getMethod())); ?></td>
+                                        <td><?php echo $this->escapeHtml($dbRow->getValue()); ?></td>
+                                        <td><a
+                                                href="<?php
+                                                echo $this->url('method' . $dbRow->getMethod(), array(
+                                                    'action' => 'view',
+                                                    'id' => $dbRow->getId()
+                                                ));
+                                                ?>">View</a>
+                                            <a
+                                                href="<?php
+                                                echo $this->url('method' . $dbRow->getMethod(), array(
+                                                    'action' => 'edit',
+                                                    'id' => $dbRow->getId()
+                                                ));
+                                                ?>">Edit</a>
+                                            <a
+                                                href="<?php
+                                                echo $this->url('method' . $dbRow->getMethod(), array(
                                                     'action' => 'delete',
                                                     'id' => $dbRow->getId()
                                                 ));

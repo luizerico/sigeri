@@ -2,19 +2,13 @@
 
 namespace Risk\Controller;
 
-//define('TITLE', 'Risk');
-//define('ROUTER', 'risk');
-//define('ENTITY', 'Risk\Entity\Risk');
-
 use Risk\Entity\Risk;
 use Risk\Controller\GenericController;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
-//use Zend\Mvc\Controller\AbstractActionController;
-//use Doctrine\ORM\EntityManager;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
-use Exception;
 use DoctrineORMModule\Form\Annotation\AnnotationBuilder as DoctrineAnnotationBuilder;
+use Exception;
 
 class RiskController extends GenericController {
 
@@ -23,6 +17,8 @@ class RiskController extends GenericController {
         $this->entity = 'Risk\Entity\Risk';
         $this->title = 'Risk';
         $this->route = 'risk';
+        
+        parent::__construct();
     }
 
     /*
@@ -56,21 +52,21 @@ class RiskController extends GenericController {
 
     public function xychartAction() {
         $viewModel = new ViewModel(array(
-            'title' => TITLE,
+            'title' => $this->title,
         ));
         return $viewModel->setTemplate('risk/risk/xychart.phtml');
     }
 
     public function barchartAction() {
         $viewModel = new ViewModel(array(
-            'title' => TITLE,
+            'title' => $this->title,
         ));
         return $viewModel->setTemplate('risk/risk/barchart.phtml');
     }
 
     public function columnchartAction() {
         $viewModel = new ViewModel(array(
-            'title' => TITLE,
+            'title' => $this->title,
         ));
         return $viewModel->setTemplate('risk/risk/columnchart.phtml');
     }
@@ -176,7 +172,7 @@ class RiskController extends GenericController {
 //        }
 //
 //        return array(
-//            'title' => TITLE,
+//            'title' => $this->title,
 //            'form' => $form
 //        );
 //    }
@@ -289,7 +285,7 @@ class RiskController extends GenericController {
 //         */
 //        return new ViewModel(array(
 //            //'metadados' => $metadados,
-//            'title' => TITLE,
+//            'title' => $this->title,
 //            'router' => ROUTER,
 //            'dbArray' => $dbArray
 //        ));
@@ -341,7 +337,7 @@ class RiskController extends GenericController {
 //        }
 //
 //        return array(
-//            'title' => TITLE,
+//            'title' => $this->title,
 //            'router' => ROUTER,
 //            'id' => $id,
 //            'dbArray' => $this->getEntityManager()->getRepository(ENTITY)->find($id)
@@ -379,7 +375,7 @@ class RiskController extends GenericController {
 //        }
 //
 //        return new ViewModel(array(
-//            'title' => TITLE,
+//            'title' => $this->title,
 //            'router' => ROUTER,
 //            'dbArray' => $dbArray
 //        ));

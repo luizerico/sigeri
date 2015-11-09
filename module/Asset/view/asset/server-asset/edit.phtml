@@ -77,8 +77,6 @@
             <br>
             <ul class = "nav nav-tabs nav-justified" style = "color:#000;font-weight: bold;">
                 <li class = "active"><a data-toggle = "tab" href = "#description">Description</a></li>
-                <li><a data-toggle = "tab" href = "#services">Services</a></li>
-                <li><a data-toggle = "tab" href = "#process">Process</a></li>
                 <li><a data-toggle = "tab" href = "#groups">Groups</a></li>
                 <li><a data-toggle = "tab" href = "#risks">Risks</a></li>
                 <li><a data-toggle = "tab" href = "#vulnerabilities">Vulnerabilities</a></li>
@@ -93,13 +91,6 @@
                     <div id = "description" class = "tab-pane fade in active">
                         <?php echo $this->formElement($form->get('description'));
                         ?>
-                    </div>
-                    <div id = "services" class = "tab-pane fade in">
-                        <?php echo $this->formElement($form->get('services'));
-                        ?>
-                    </div>
-                    <div id = "process" class = "tab-pane fade in">
-                        Process
                     </div>
                     <div id = "groups" class = "tab-pane fade in">
                         <?php echo $this->formElement($form->get('groups'));

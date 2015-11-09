@@ -200,25 +200,27 @@ class Risk {
     protected $detimpact;
 
     /**
-     * @ORM\Column(type="string")
-     * @Annotation\Type("Zend\Form\Element\Textarea")
+     * @ORM\ManyToMany(targetEntity="\Risk\Entity\Compliance")
+     * @ORM\JoinColumn(name="compliance_id", referencedColumnName="id")
+     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Required(false)
-     * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Control Regulation"})
+     * @Annotation\Options({"label":"Compliance:"})
+     * @Annotation\Attributes({"multiple":"multiple"})
      *
-     * @var string
+     * @var \Risk\Entity\Control
      * @access protected
-     */
-    protected $regulations;
+     */    
+    protected $compliance;
 
     /**
-     * @ORM\Column(type="string")
-     * @Annotation\Type("Zend\Form\Element\Text")
+     * @ORM\ManyToMany(targetEntity="\Risk\Entity\Control")
+     * @ORM\JoinColumn(name="control_id", referencedColumnName="id")
+     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Required(false)
-     * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Controls"})
+     * @Annotation\Options({"label":"Control:"})
+     * @Annotation\Attributes({"multiple":"multiple"})
      *
-     * @var string
+     * @var \Risk\Entity\Control
      * @access protected
      */
     protected $controls;
@@ -259,7 +261,7 @@ class Risk {
         $this->revisions = new ArrayCollection();
         $this->documents = new ArrayCollection();
         $this->controls = new ArrayCollection();
-        $this->regulations = new ArrayCollection();
+        $this->compliance = new ArrayCollection();
     }
 
     public function exchangeArray($data) {
@@ -277,7 +279,7 @@ class Risk {
         $this->revisions = (isset($data ['revisions'])) ? $data ['revisions'] : null;
         $this->documents = (isset($data ['documents'])) ? $data ['documents'] : null;
         $this->controls = (isset($data ['controls'])) ? $data ['controls'] : null;
-        $this->regulations = (isset($data ['regulations'])) ? $data ['regulations'] : null;
+        $this->compliance = (isset($data ['compliance'])) ? $data ['compliance'] : null;
 
         $this->method = (isset($data ['method'])) ? $data ['method'] : null;
     }
@@ -437,20 +439,20 @@ class Risk {
         return $this->controls;
     }
 
-//    public function addRegulations(Collection $regulations) {
-//        foreach ($regulations as $regulation) {
-//            $this->regulations->add($regulation);
+//    public function addCompliance(Collection $compliance) {
+//        foreach ($compliance as $regulation) {
+//            $this->compliance->add($regulation);
 //        }
 //    }
 //
-//    public function removeRegulations(Collection $regulations) {
-//        foreach ($regulations as $regulation) {
-//            $this->regulations->removeElement($regulation);
+//    public function removeCompliance(Collection $compliance) {
+//        foreach ($compliance as $regulation) {
+//            $this->compliance->removeElement($regulation);
 //        }
 //    }
 
-    public function getRegulations() {
-        return $this->regulations;
+    public function getCompliance() {
+        return $this->compliance;
     }
 
     // TEMP FUNCTIONS
@@ -459,8 +461,8 @@ class Risk {
         return $this;
     }
 
-    public function setRegulations($regulations) {
-        $this->regulations = $regulations;
+    public function setCompliance($compliance) {
+        $this->compliance = $compliance;
         return $this;
     }
 

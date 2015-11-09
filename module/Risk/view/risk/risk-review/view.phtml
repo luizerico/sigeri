@@ -1,6 +1,6 @@
 <section class="list">
     <?php
-    $title = 'Plan: ' . $this->escapeHtml($dbArray->getName());
+    $title = 'Review: ' . $this->escapeHtml($dbArray->getName());
     $this->headTitle('SIGERI - ' . $title);
     ?>
 
@@ -10,7 +10,9 @@
         </div>
         <div class="panel-body">   
 
-            <p><label>ID: </label> <?php echo $this->escapeHtml($dbArray->getId()); ?></p>   
+            <p><label>ID: </label> <?php echo $this->escapeHtml($dbArray->getId()); ?></p>
+            <p><label>Name: </label> <?php echo $this->escapeHtml($dbArray->getName()); ?></p>
+            <p><label>Risk: </label> <?php echo $this->escapeHtml($dbArray->getRisk()); ?></p>
             <p><label>Status: </label> <?php echo $this->escapeHtml($dbArray->getStatus()); ?></p>                
             <p><label>Analyst: </label> <?php echo $this->escapeHtml($dbArray->getAnalyst()); ?></p>
             <p><label>Register: </label> <?php echo $this->escapeHtml($dbArray->getFormatedDate()); ?></p>
@@ -18,64 +20,17 @@
 
 
             <ul class="nav nav-tabs nav-justified" style="color:#000;font-weight: bold;">
-                <li class="active"><a data-toggle="tab" href="#description">Description</a></li>        
-                <li><a data-toggle="tab" href="#revisions">Revisions</a></li>        
+                <li class="active"><a data-toggle="tab" href="#description">Description</a></li>   
             </ul>
             <div class="panel" style="padding-top:5px;">
 
                 <div class="tab-content col-sm-12">
                     <div id="description" class="tab-pane fade in active">
-                        <p><?php echo $this->escapeHtml($dbArray->getDescription()); ?></p>
+                        <p><?php echo $dbArray->getDescription(); ?></p>
                     </div>
 
                     <div id="revisions" class="tab-pane fade in">
-                        <p>
-                            <a href="<?php
-                            echo $this->url('planreview', array('action' => 'add'), array('query' => array('plan_id' => $dbArray->getId()))
-                            );
-                            ?>">
-                                New revision ...register</a> 
-                        </p>
-                        <table id="datatable" class="display table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Status</th>                
-                                    <th>Analyst</th>
-                                    <th>Register</th>
-                                    <th>Description</th>
-                                    <th>&nbsp;</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($dbArray->getPlans() as $dbRow) : ?>
-                                    <tr>
-                                        <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
-                                        <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>
-                                        <td><?php echo $this->escapeHtml($dbRow->getStatus()); ?></td>
-                                        <td><?php echo $this->escapeHtml($dbRow->getAnalyst()); ?></td>
-                                        <td><?php echo $this->escapeHtml($dbRow->getFormatedDate()); ?></td>
-                                        <td><?php echo $this->escapeHtml($dbRow->getDescription()); ?></td>
-                                        <td><a
-                                                href="<?php
-                                                echo $this->url('planreview', array(
-                                                    'action' => 'edit',
-                                                    'id' => $dbRow->getId()
-                                                ));
-                                                ?>">Edit</a>
-                                            <a
-                                                href="<?php
-                                                echo $this->url('planreview', array(
-                                                    'action' => 'delete',
-                                                    'id' => $dbRow->getId()
-                                                ));
-                                                ?>">Del</a>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
+                        
                     </div>
 
                 </div>

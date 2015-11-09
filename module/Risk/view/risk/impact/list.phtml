@@ -25,20 +25,20 @@
                         <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
                         <td><?php echo $this->escapeHtml($dbRow->getValue()); ?></td>
                         <td><?php echo $this->escapeHtml($dbRow->getDescription()); ?></td>
-                        <td><<a
-                                    href="<?php
-                                    echo $this->url($this->router, array(
-                                        'action' => 'edit',
-                                        'id' => $dbRow->getId()
-                                    ));
-                                    ?>">Edit</a>
-                                <a
-                                    href="<?php
-                                    echo $this->url($this->router, array(
-                                        'action' => 'delete',
-                                        'id' => $dbRow->getId()
-                                    ));
-                                    ?>">Delete</a>
+                        <td><a
+                                href="<?php
+                                echo $this->url($this->router, array(
+                                    'action' => 'edit',
+                                    'id' => $dbRow->getId()
+                                ));
+                                ?>">Edit</a>
+                            <a
+                                href="<?php
+                                echo $this->url($this->router, array(
+                                    'action' => 'delete',
+                                    'id' => $dbRow->getId()
+                                ));
+                                ?>">Delete</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

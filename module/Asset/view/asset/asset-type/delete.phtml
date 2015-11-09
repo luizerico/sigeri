@@ -12,7 +12,7 @@
             <p>Are you sure that you want to delete?	
             <p>
                 Asset Type: '<?php echo $this->escapeHtml($dbArray->getName()); ?>' <br>
-                Description: '<?php echo $this->escapeHtml($dbArray->getDescription()); ?>'
+                Description: '<?php echo $dbArray->getDescription(); ?>'
 
                 <?php
                 $url = $this->url($this->router, array(

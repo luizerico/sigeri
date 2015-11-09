@@ -64,10 +64,10 @@ class Risk extends \Risk\Entity\Risk implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'id', 'name', 'status', 'type', 'method', 'probability', 'impact', 'analyst', 'date', 'description', 'annotations', 'detimpact', 'regulations', 'controls', 'documents', 'revisions', 'submit');
+            return array('__isInitialized__', 'id', 'name', 'status', 'type', 'method', 'probability', 'impact', 'analyst', 'date', 'description', 'annotations', 'detimpact', 'compliance', 'controls', 'documents', 'revisions', 'submit');
         }
 
-        return array('__isInitialized__', 'id', 'name', 'status', 'type', 'method', 'probability', 'impact', 'analyst', 'date', 'description', 'annotations', 'detimpact', 'regulations', 'controls', 'documents', 'revisions', 'submit');
+        return array('__isInitialized__', 'id', 'name', 'status', 'type', 'method', 'probability', 'impact', 'analyst', 'date', 'description', 'annotations', 'detimpact', 'compliance', 'controls', 'documents', 'revisions', 'submit');
     }
 
     /**
@@ -554,12 +554,12 @@ class Risk extends \Risk\Entity\Risk implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getRegulations()
+    public function getCompliance()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRegulations', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCompliance', array());
 
-        return parent::getRegulations();
+        return parent::getCompliance();
     }
 
     /**
@@ -576,12 +576,12 @@ class Risk extends \Risk\Entity\Risk implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setRegulations($regulations)
+    public function setCompliance($compliance)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setRegulations', array($regulations));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCompliance', array($compliance));
 
-        return parent::setRegulations($regulations);
+        return parent::setCompliance($compliance);
     }
 
     /**

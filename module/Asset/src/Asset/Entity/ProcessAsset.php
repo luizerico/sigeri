@@ -4,6 +4,8 @@ namespace Asset\Entity;
 
 use Zend\Form\Annotation;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+
 
 /**
  * @ORM\Entity
@@ -60,9 +62,7 @@ class ProcessAsset extends Asset {
     protected $next;
     
     
-
     public function __construct() {
-        
     }
 
     public function exchangeArray($data) {
@@ -82,14 +82,5 @@ class ProcessAsset extends Asset {
         $this->ipaddress = $ipaddress;
         return $ipaddress;
     }
-
-    public function getServices() {
-        return $this->services;
-    }
-
-    public function setServices($services) {
-        $this->services = $services;
-        return $services;
-    }
-
+    
 }
