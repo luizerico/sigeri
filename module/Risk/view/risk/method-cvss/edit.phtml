@@ -1,207 +1,201 @@
 <section class="edit">
-    <div class="row">
-        <div class="col-md-10">
+    <?php
+    $title = 'Edit ' . $this->title;
+    $this->headTitle('SIGERI - ' . $title);
+    ?>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3><?php echo $this->escapeHtml($title); ?></h3>
+        </div>
+        <div class="panel-body">
+
+            <?php if ($this->error): ?>
+                <p class="error">There were one or more issues with your submission. Please correct...</p>
+            <?php endif ?>
+
             <?php
-            $title = 'Edit ' . $this->title;
-            $this->headTitle('SIGERI - ' . $title);
+            $form = $this->form;
+            $form->setAttribute('action', $this->url);
+            $form->setAttribute('class', 'form-horizontal');
+            $form->prepare();
+
+            echo $this->form()->openTag($form);
             ?>
 
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    Risk Value
+                </div>
+                <div class="panel-body">
+                    <?php
+                    foreach ($form as $element) :
+                        if ((in_array($element->getAttribute('name'), array(
+                                    'risk',
+                                    'value'
+                                )))) {
+                            ?>
+                            <div class="form-group <?php
+                            if ($this->formElementErrors($element))
+                                echo "error";
+                            ?>">
+                                <label class="col-sm-2 control-label"><?php echo $element->getLabel() ?></label>
+                                <div class="col-sm-10">
+                                    <?php
+                                    $element->setAttribute('class', 'form-control ' . $element->getAttribute('class'));
+                                    echo $this->formElement($element);
+                                    if ($this->formElementErrors($element))
+                                        
+                                        ?>
+                                    <span class="help-inline"><?php echo $this->formElementErrors($element) ?></span>
+                                </div>
+                            </div>
+                            <?php
+                        }
+                    endforeach;
+                    ?>
 
+                </div>
+            </div>  
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Base Score <span id="basescore" class="label label-danger"> </span>
+                </div>
+                <div class="panel-body">
+                    <?php
+                    foreach ($form as $element) :
+                        if ((in_array($element->getAttribute('name'), array('attackvector',
+                                    'attackcomplexity',
+                                    'privilegerequired',
+                                    'userinteraction',
+                                    'confidentiality',
+                                    'integrity',
+                                    'availability',
+                                    'scope')))) {
+                            ?>
+                            <div class="form-group">
+                                <label class="col-sm-2"><?php echo $element->getLabel() ?></label>
+                                <div class="col-sm-10">
+                                    <div class="btn-group btn-group-justified btn-group-sm" data-toggle="radio">
+                                        <?php
+                                        $element->setOptions(array('label_attributes' => array('class' => 'btn btn-default')));
+                                        $element->setAttribute('class', ' ' . $element->getAttribute('class'));
+                                        echo $this->formElement($element);
+                                        if ($this->formElementErrors($element))
+                                            
+                                            ?>
+                                    </div>
+                                </div>
+                                <span class="help-inline"><?php echo $this->formElementErrors($element) ?></span>
+
+                            </div>
+                            <?php
+                        }
+                    endforeach;
+                    ?>
+
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Temporal Score <span id="temporalscore" class="label label-danger"> </span>
+                </div>
+                <div class="panel-body">
+                    <?php
+                    foreach ($form as $element) :
+                        if ((in_array($element->getAttribute('name'), array(
+                                    'exploitability',
+                                    'remediationlevel',
+                                    'reportconfidence')))) {
+                            ?>
+                            <div class="form-group">
+                                <label class="col-sm-2"><?php echo $element->getLabel() ?></label>
+                                <div class="col-sm-10">
+                                    <div class="btn-group btn-group-justified btn-group-sm" data-toggle="radio">
+                                        <?php
+                                        $element->setOptions(array('label_attributes' => array('class' => 'btn btn-default')));
+                                        $element->setAttribute('class', ' ' . $element->getAttribute('class'));
+                                        echo $this->formElement($element);
+                                        if ($this->formElementErrors($element))
+                                            
+                                            ?>
+                                    </div>
+                                    <span class="help-inline"><?php echo $this->formElementErrors($element) ?></span>
+                                </div>
+                            </div>
+                            <?php
+                        }
+                    endforeach;
+                    ?>
+
+                </div>
+            </div>
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3><?php echo $this->escapeHtml($title); ?></h3>
+                    Environmental Score <span id="environmentalscore" class="label label-danger"> </span>
                 </div>
                 <div class="panel-body">
-
-                    <?php if ($this->error): ?>
-                        <p class="error">There were one or more issues with your submission. Please correct...</p>
-                    <?php endif ?>
-
                     <?php
-                    $form = $this->form;
-                    $form->setAttribute('action', $this->url);
-                    $form->setAttribute('class', 'form-horizontal');
-                    $form->prepare();
-
-                    echo $this->form()->openTag($form);
+                    foreach ($form as $element) :
+                        if ((in_array($element->getAttribute('name'), array(
+                                    'reqconfidentiality',
+                                    'reqintegrity',
+                                    'reqavailability',
+                                    'mattackvector',
+                                    'mattackcomplexity',
+                                    'mprivilegerequired',
+                                    'muserinteraction',
+                                    'mconfidentiality',
+                                    'mintegrity',
+                                    'mavailability',
+                                    'mscope'
+                                )))) {
+                            ?>
+                            <div class="form-group">
+                                <label class="col-sm-3"><?php echo $element->getLabel() ?></label>
+                                <div class="col-sm-9">
+                                    <div class="btn-group btn-group-justified btn-group-sm" data-toggle="radio">
+                                        <?php
+                                        $element->setOptions(array('label_attributes' => array('class' => 'btn btn-default')));
+                                        $element->setAttribute('class', ' ' . $element->getAttribute('class'));
+                                        echo $this->formElement($element);
+                                        if ($this->formElementErrors($element))
+                                            
+                                            ?>
+                                    </div>
+                                    <span class="help-inline"><?php echo $this->formElementErrors($element) ?></span>
+                                </div>
+                            </div>
+                            <?php
+                        }
+                    endforeach;
                     ?>
 
-                    <div class="panel panel-danger">
-                        <div class="panel-heading">
-                            Risk Value
-                        </div>
-                        <div class="panel-body">
-                            <?php
-                            foreach ($form as $element) :
-                                if ((in_array($element->getAttribute('name'), array(
-                                            'risk',
-                                            'value'
-                                        )))) {
-                                    ?>
-                                    <div class="form-group <?php
-                                    if ($this->formElementErrors($element))
-                                        echo "error";
-                                    ?>">
-                                        <label class="col-sm-2 control-label"><?php echo $element->getLabel() ?></label>
-                                        <div class="col-sm-10">
-                                            <?php
-                                            $element->setAttribute('class', 'form-control ' . $element->getAttribute('class'));
-                                            echo $this->formElement($element);
-                                            if ($this->formElementErrors($element))
-                                                
-                                                ?>
-                                            <span class="help-inline"><?php echo $this->formElementErrors($element) ?></span>
-                                        </div>
-                                    </div>
-                                    <?php
-                                }
-                            endforeach;
-                            ?>
-
-                        </div>
-                    </div>  
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Base Score <span id="basescore" class="label label-danger"> </span>
-                        </div>
-                        <div class="panel-body">
-                            <?php
-                            foreach ($form as $element) :
-                                if ((in_array($element->getAttribute('name'), array('attackvector',
-                                            'attackcomplexity',
-                                            'privilegerequired',
-                                            'userinteraction',
-                                            'confidentiality',
-                                            'integrity',
-                                            'availability',
-                                            'scope')))) {
-                                    ?>
-                                    <div class="form-group">
-                                        <label class="col-sm-2"><?php echo $element->getLabel() ?></label>
-                                        <div class="col-sm-10">
-                                            <div class="btn-group btn-group-justified btn-group-sm" data-toggle="radio">
-                                                <?php
-                                                $element->setOptions(array('label_attributes' => array('class' => 'btn btn-default')));
-                                                $element->setAttribute('class', ' ' . $element->getAttribute('class'));
-                                                echo $this->formElement($element);
-                                                if ($this->formElementErrors($element))
-                                                    
-                                                    ?>
-                                            </div>
-                                        </div>
-                                        <span class="help-inline"><?php echo $this->formElementErrors($element) ?></span>
-
-                                    </div>
-                                    <?php
-                                }
-                            endforeach;
-                            ?>
-
-                        </div>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Temporal Score <span id="temporalscore" class="label label-danger"> </span>
-                        </div>
-                        <div class="panel-body">
-                            <?php
-                            foreach ($form as $element) :
-                                if ((in_array($element->getAttribute('name'), array(
-                                            'exploitability',
-                                            'remediationlevel',
-                                            'reportconfidence')))) {
-                                    ?>
-                                    <div class="form-group">
-                                        <label class="col-sm-2"><?php echo $element->getLabel() ?></label>
-                                        <div class="col-sm-10">
-                                            <div class="btn-group btn-group-justified btn-group-sm" data-toggle="radio">
-                                                <?php
-                                                $element->setOptions(array('label_attributes' => array('class' => 'btn btn-default')));
-                                                $element->setAttribute('class', ' ' . $element->getAttribute('class'));
-                                                echo $this->formElement($element);
-                                                if ($this->formElementErrors($element))
-                                                    
-                                                    ?>
-                                            </div>
-                                            <span class="help-inline"><?php echo $this->formElementErrors($element) ?></span>
-                                        </div>
-                                    </div>
-                                    <?php
-                                }
-                            endforeach;
-                            ?>
-
-                        </div>
-                    </div>
-
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Environmental Score <span id="environmentalscore" class="label label-danger"> </span>
-                        </div>
-                        <div class="panel-body">
-                            <?php
-                            foreach ($form as $element) :
-                                if ((in_array($element->getAttribute('name'), array(
-                                            'reqconfidentiality',
-                                            'reqintegrity',
-                                            'reqavailability',
-                                            'mattackvector',
-                                            'mattackcomplexity',
-                                            'mprivilegerequired',
-                                            'muserinteraction',
-                                            'mconfidentiality',
-                                            'mintegrity',
-                                            'mavailability',
-                                            'mscope'
-                                        )))) {
-                                    ?>
-                                    <div class="form-group">
-                                        <label class="col-sm-3"><?php echo $element->getLabel() ?></label>
-                                        <div class="col-sm-9">
-                                            <div class="btn-group btn-group-justified btn-group-sm" data-toggle="radio">
-                                                <?php
-                                                $element->setOptions(array('label_attributes' => array('class' => 'btn btn-default')));
-                                                $element->setAttribute('class', ' ' . $element->getAttribute('class'));
-                                                echo $this->formElement($element);
-                                                if ($this->formElementErrors($element))
-                                                    
-                                                    ?>
-                                            </div>
-                                            <span class="help-inline"><?php echo $this->formElementErrors($element) ?></span>
-                                        </div>
-                                    </div>
-                                    <?php
-                                }
-                            endforeach;
-                            ?>
-
-                        </div>
-                    </div>
-
-
-                    <?php $element = $this->form->get('submit'); ?>
-                    <div class="form-group" style="text-align:right;">
-                        <div class="col-sm-12">
-                            <?php
-                            $element->setAttribute('class', 'btn btn-primary');
-                            $element->setAttribute('style', 'width:150px');
-
-                            echo $this->formElement($element);
-                            ?>
-                        </div>
-                    </div>
-
-                    <?php
-                    echo $this->form()->closeTag($form);
-                    ?>
-                </div>
-                <div class="col-md-4">
                 </div>
             </div>
+            <?php
+            echo $this->formElement($this->form->get('redirecturl'));
+            ?>
+
+            <?php $element = $this->form->get('submit'); ?>
+            <div class="form-group" style="text-align:right;">
+                <div class="col-sm-12">
+                    <?php
+                    $element->setAttribute('class', 'btn btn-primary');
+                    $element->setAttribute('style', 'width:150px');
+
+                    echo $this->formElement($element);
+                    ?>
+                </div>
+            </div>
+
+            <?php
+            echo $this->form()->closeTag($form);
+            ?>
+        </div>
+        <div class="col-md-4">
         </div>
     </div>
-
 </section>
 
 <script type="text/javascript">
@@ -306,10 +300,21 @@
         $("input[name=value]").val(basescore);
     }
 
+//    $("input:radio").bind("click", function () {
+//        calculate();
+//    });
+
     $("input:radio").bind("click", function () {
         calculate();
+        $("span.label").each(function () {
+            var spann = $(this).text();
+            if (spann < 5) {
+                $(this).css('background-color', '#00FF00');
+            } else if (spann < 8) {
+                $(this).css('background-color', '#FFFF00');
+            } else {
+                $(this).css('background-color', '#FF0000');
+            }
+        });
     });
-
-
-
 </script>

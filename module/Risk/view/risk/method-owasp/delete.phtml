@@ -1,6 +1,5 @@
 
 <section class="delete">
-
     <?php
     $title = 'Delete ' . $this->title;
     $this->headTitle('SIGERI - ' . $title);
@@ -11,8 +10,8 @@
         </div>
         <div class="panel-body">  
             <p>Are you sure that you want to delete?</p>
-            <label>Name:</label> <?php echo $this->escapeHtml($dbArray->getName()); ?> <br>
-            <label>Description:</label> <?php echo $this->escapeHtml($dbArray->getDescription()); ?>
+            <label>Value:</label> <?php echo $this->escapeHtml($dbArray->getValue()); ?> <br>
+            <label>Risk:</label> <?php echo $this->escapeHtml($dbArray->getRisk()); ?>
             </p>
             </p>
             <?php

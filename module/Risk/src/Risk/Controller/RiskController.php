@@ -27,7 +27,7 @@ class RiskController extends GenericController {
      *
      * @var Doctrine\ORM\EntityManager $dbArray - common object to send to Views
      *      $addObject - common object to addAction
-     *      $editObject - common object to editAction
+     *      $this->object - common object to editAction
      *     
      */
 
@@ -178,13 +178,10 @@ class RiskController extends GenericController {
 //    }
 //
     public function editAction() {
-        $editObject = new Risk ();
         $builder = new DoctrineAnnotationBuilder($this->getEntityManager());
-        $form = $builder->createForm($editObject);
+        $form = $builder->createForm($this->object);
         $hydrator = new DoctrineHydrator($this->getEntityManager(), $this->entity);
         $form->setHydrator($hydrator);
-
-
 
         $id = (int) $this->params()->fromRoute('id', 0);
 
@@ -242,8 +239,8 @@ class RiskController extends GenericController {
             $form->setData($request->getPost());
             if ($form->isValid()) {
                 // $data = $form->getData ();
-                // $this->getEntityManager()->persist($editObject);
-                $editObject->exchangeArray($hydrator->extract($form->getData()));
+                // $this->getEntityManager()->persist($this->object);
+                $this->object->exchangeArray($hydrator->extract($form->getData()));
                 $this->getEntityManager()->flush();
                 return $this->redirect()->toRoute($this->route, array(
                             'action' => 'list'

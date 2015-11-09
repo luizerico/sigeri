@@ -1,50 +1,47 @@
-<section class="add">
-    <div class="row">
-        <div class="col-md-8">
+<section class="edit">
+    <?php
+    $title = 'Edit ' . $this->title;
+    $this->headTitle('SIGERI - ' . $title);
+    ?>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3><?php echo $this->escapeHtml($title); ?></h3>
+        </div>
+        <div class="panel-body">
+
+            <?php if ($this->error): ?>
+                <p class="error">There were one or more issues with your submission. Please correct...</p>
+            <?php endif ?>
+
             <?php
-            $title = 'Add ' . $this->title;
-            $this->headTitle('SIGERI - ' . $title);
+            $form = $this->form;
+            $form->setAttribute('action', $this->url);
+            $form->setAttribute('class', 'form-horizontal');
+            $form->prepare();
+
+            echo $this->form()->openTag($form);
             ?>
 
-            <div class="panel panel-default">
+            <div class="panel panel-danger">
                 <div class="panel-heading">
-                    <h3><?php echo $this->escapeHtml($title); ?></h3>
+                    Risk Value
                 </div>
                 <div class="panel-body">
-
-                    <?php if ($this->error): ?>
-                        <p class="error">There were one or more issues with your submission. Please correct...</p>
-                    <?php endif ?>
-
                     <?php
-                    $form = $this->form;
-                    $form->setAttribute('action', $this->url);
-                    $form->setAttribute('class', 'form-horizontal');
-                    $form->prepare();
-
-                    echo $this->form()->openTag($form);
-
                     foreach ($form as $element) :
-                        if (!(in_array($element->getAttribute('name'), array('submit', 'description', 'documents')))) {
+                        if ((in_array($element->getAttribute('name'), array(
+                                    'risk',
+                                    'value'
+                                )))) {
                             ?>
-
                             <div class="form-group <?php
                             if ($this->formElementErrors($element))
-                                echo "error"
-                                ?>">
+                                echo "error";
+                            ?>">
                                 <label class="col-sm-2 control-label"><?php echo $element->getLabel() ?></label>
                                 <div class="col-sm-10">
                                     <?php
-                                    //echo $element->getAttribute('type');
-                                    if ($element->getAttribute('type') != 'submit') {
-                                        $element->setAttribute('class', 'form-control ' . $element->getAttribute('class'));
-                                    } else {
-                                        $element->setAttribute('class', 'btn btn-primary');
-                                        $element->setAttribute('style', 'width:150px');
-                                    };
-
-                                    //if (!$element->hasAttribute('class'))
-                                    //	$element->setAttribute('class', 'form-control');
+                                    $element->setAttribute('class', 'form-control ' . $element->getAttribute('class'));
                                     echo $this->formElement($element);
                                     if ($this->formElementErrors($element))
                                         
@@ -52,32 +49,272 @@
                                     <span class="help-inline"><?php echo $this->formElementErrors($element) ?></span>
                                 </div>
                             </div>
-
                             <?php
                         }
                     endforeach;
                     ?>
-                    <br>
-                    <input type="text" name="discr" value="methodcvss">
-                    <?php $element = $this->form->get('submit'); ?>
-                    <div class="form-group" style="text-align:right;">
-                        <div class="col-sm-12">
-                            <?php
-                            $element->setAttribute('class', 'btn btn-primary');
-                            $element->setAttribute('style', 'width:150px');
 
-                            echo $this->formElement($element);
-                            ?>
-                        </div>
-                    </div>
-
-                    <?php
-                    echo $this->form()->closeTag($form);
-                    ?>
                 </div>
-                <div class="col-md-4">
+            </div>  
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Base Score <span id="basescore" class="label label-danger"> </span>
+                </div>
+                <div class="panel-body">
+                    <?php
+                    foreach ($form as $element) :
+                        if ((in_array($element->getAttribute('name'), array('attackvector',
+                                    'attackcomplexity',
+                                    'privilegerequired',
+                                    'userinteraction',
+                                    'confidentiality',
+                                    'integrity',
+                                    'availability',
+                                    'scope')))) {
+                            ?>
+                            <div class="form-group">
+                                <label class="col-sm-2"><?php echo $element->getLabel() ?></label>
+                                <div class="col-sm-10">
+                                    <div class="btn-group btn-group-justified btn-group-sm" data-toggle="radio">
+                                        <?php
+                                        $element->setOptions(array('label_attributes' => array('class' => 'btn btn-default')));
+                                        $element->setAttribute('class', ' ' . $element->getAttribute('class'));
+                                        echo $this->formElement($element);
+                                        if ($this->formElementErrors($element))
+                                            
+                                            ?>
+                                    </div>
+                                </div>
+                                <span class="help-inline"><?php echo $this->formElementErrors($element) ?></span>
+
+                            </div>
+                            <?php
+                        }
+                    endforeach;
+                    ?>
+
                 </div>
             </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Temporal Score <span id="temporalscore" class="label label-danger"> </span>
+                </div>
+                <div class="panel-body">
+                    <?php
+                    foreach ($form as $element) :
+                        if ((in_array($element->getAttribute('name'), array(
+                                    'exploitability',
+                                    'remediationlevel',
+                                    'reportconfidence')))) {
+                            ?>
+                            <div class="form-group">
+                                <label class="col-sm-2"><?php echo $element->getLabel() ?></label>
+                                <div class="col-sm-10">
+                                    <div class="btn-group btn-group-justified btn-group-sm" data-toggle="radio">
+                                        <?php
+                                        $element->setOptions(array('label_attributes' => array('class' => 'btn btn-default')));
+                                        $element->setAttribute('class', ' ' . $element->getAttribute('class'));
+                                        echo $this->formElement($element);
+                                        if ($this->formElementErrors($element))
+                                            
+                                            ?>
+                                    </div>
+                                    <span class="help-inline"><?php echo $this->formElementErrors($element) ?></span>
+                                </div>
+                            </div>
+                            <?php
+                        }
+                    endforeach;
+                    ?>
+
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Environmental Score <span id="environmentalscore" class="label label-danger"> </span>
+                </div>
+                <div class="panel-body">
+                    <?php
+                    foreach ($form as $element) :
+                        if ((in_array($element->getAttribute('name'), array(
+                                    'reqconfidentiality',
+                                    'reqintegrity',
+                                    'reqavailability',
+                                    'mattackvector',
+                                    'mattackcomplexity',
+                                    'mprivilegerequired',
+                                    'muserinteraction',
+                                    'mconfidentiality',
+                                    'mintegrity',
+                                    'mavailability',
+                                    'mscope'
+                                )))) {
+                            ?>
+                            <div class="form-group">
+                                <label class="col-sm-3"><?php echo $element->getLabel() ?></label>
+                                <div class="col-sm-9">
+                                    <div class="btn-group btn-group-justified btn-group-sm" data-toggle="radio">
+                                        <?php
+                                        $element->setOptions(array('label_attributes' => array('class' => 'btn btn-default')));
+                                        $element->setAttribute('class', ' ' . $element->getAttribute('class'));
+                                        echo $this->formElement($element);
+                                        if ($this->formElementErrors($element))
+                                            
+                                            ?>
+                                    </div>
+                                    <span class="help-inline"><?php echo $this->formElementErrors($element) ?></span>
+                                </div>
+                            </div>
+                            <?php
+                        }
+                    endforeach;
+                    ?>
+
+                </div>
+            </div>
+            <?php
+            echo $this->formElement($this->form->get('redirecturl'));
+            ?>
+
+            <?php $element = $this->form->get('submit'); ?>
+            <div class="form-group" style="text-align:right;">
+                <div class="col-sm-12">
+                    <?php
+                    $element->setAttribute('class', 'btn btn-primary');
+                    $element->setAttribute('style', 'width:150px');
+
+                    echo $this->formElement($element);
+                    ?>
+                </div>
+            </div>
+
+            <?php
+            echo $this->form()->closeTag($form);
+            ?>
+        </div>
+        <div class="col-md-4">
         </div>
     </div>
 </section>
+
+<script type="text/javascript">
+    var exploitabilityCoefficient = 8.22;
+    var scopeCoefficient = 1.08;
+    roundUp = function (d) {
+        return Math.ceil(d * 10) / 10;
+    };
+    function calculate() {
+
+        var attackvector = eval($("input:radio[name=attackvector]:checked").val()) / 100;
+        var attackcomplexity = eval($("input:radio[name=attackcomplexity]:checked").val()) / 100;
+        var userinteraction = eval($("input:radio[name=userinteraction]:checked").val()) / 100;
+        var confidentiality = eval($("input:radio[name=confidentiality]:checked").val()) / 100;
+        var integrity = eval($("input:radio[name=integrity]:checked").val()) / 100;
+        var availability = eval($("input:radio[name=availability]:checked").val()) / 100;
+        var scope = eval($("input:radio[name=scope]:checked").val()) / 100;
+        var privilegerequired = eval($("input:radio[name=privilegerequired]:checked").val()) / 100;
+
+        if (scope === 7.52) {
+            if (privilegerequired === 0.62) {
+                privilegerequired = 0.68;
+            }
+            else if (privilegerequired === 0.27) {
+                privilegerequired = 0.5;
+            }
+        }
+
+        var impact_sub = 0;
+        var exploit_sub = exploitabilityCoefficient * attackvector * attackcomplexity * privilegerequired * userinteraction;
+        var impact_sub_multiplier = 1 - ((1 - confidentiality) * (1 - integrity) * (1 - availability));
+
+        if (scope === 6.42) {
+            impact_sub = scope * impact_sub_multiplier;
+        } else {
+            impact_sub = scope * (impact_sub_multiplier - 0.029) - 3.25 * Math.pow(impact_sub_multiplier - 0.02, 15);
+        }
+
+        if (impact_sub <= 0) {
+            basescore = 0;
+        } else {
+            if (scope === 6.42) {
+                basescore = roundUp(Math.min((exploit_sub + impact_sub), 10));
+            } else {
+                basescore = roundUp(Math.min((exploit_sub + impact_sub) * scopeCoefficient, 10));
+            }
+        }
+
+        // Temporal Score
+
+        var exploitability = eval($("input:radio[name=exploitability]:checked").val()) / 100;
+        var remediationlevel = eval($("input:radio[name=remediationlevel]:checked").val()) / 100;
+        var reportconfidence = eval($("input:radio[name=reportconfidence]:checked").val()) / 100;
+        console.log("exploitability: " + exploitability);
+        console.log("remediationlevel: " + remediationlevel);
+        console.log("reportconfidence: " + reportconfidence);
+        temporalscore = roundUp(basescore * exploitability * remediationlevel * reportconfidence);
+        //Environmental Score
+
+        var reqconfidentiality = eval($("input:radio[name=reqconfidentiality]:checked").val()) / 100;
+        var reqintegrity = eval($("input:radio[name=reqintegrity]:checked").val()) / 100;
+        var reqavailability = eval($("input:radio[name=reqavailability]:checked").val()) / 100;
+        var mattackvector = eval($("input:radio[name=mattackvector]:checked").val()) / 100;
+        var mattackcomplexity = eval($("input:radio[name=mattackcomplexity]:checked").val()) / 100;
+        var mprivilegerequired = eval($("input:radio[name=mprivilegerequired]:checked").val()) / 100;
+        var muserinteraction = eval($("input:radio[name=muserinteraction]:checked").val()) / 100;
+        var mconfidentiality = eval($("input:radio[name=mconfidentiality]:checked").val()) / 100;
+        var mintegrity = eval($("input:radio[name=mintegrity]:checked").val()) / 100;
+        var mavailability = eval($("input:radio[name=mavailability]:checked").val()) / 100;
+        var mscope = eval($("input:radio[name=mscope]:checked").val()) / 100;
+
+        var envImpactScoreMultiplier = Math.min(1 - (
+                (1 - mconfidentiality * reqconfidentiality) *
+                (1 - mintegrity * reqintegrity) *
+                (1 - mavailability * reqavailability)), 0.915);
+        var envExploitationSubScore = exploitabilityCoefficient *
+                mattackvector *
+                mattackcomplexity *
+                mprivilegerequired *
+                muserinteraction;
+
+        if (mscope === 6.42 || mscope === 9.9 || scope === 6.42) {
+            envImpactSubScore = mscope * envImpactScoreMultiplier;
+            envScore = roundUp(roundUp(Math.min(envImpactSubScore + envExploitationSubScore), 10) *
+                    exploitability * remediationlevel * reportconfidence);
+        } else {
+            envImpactSubScore = mscope * (envImpactScoreMultiplier - 0.029) - 3.25 *
+                    Math.pow(envImpactScoreMultiplier - 0.02, 15);
+            envScore = roundUp(roundUp(Math.min(scopeCoefficient *
+                    (envImpactSubScore + envExploitationSubScore), 10)) *
+                    exploitability * remediationlevel * reportconfidence);
+        }
+
+        if (envImpactSubScore <= 0) {
+            envScore = 0;
+        }
+
+
+        $("#environmentalscore").text(envScore);
+        $("#temporalscore").text(temporalscore);
+        $("#basescore").text(basescore);
+        $("input[name=value]").val(basescore);
+    }
+
+//    $("input:radio").bind("click", function () {
+//        calculate();
+//    });
+
+    $("input:radio").bind("click", function () {
+        calculate();
+        $("span.label").each(function () {
+            var spann = $(this).text();
+            if (spann < 5) {
+                $(this).css('background-color', '#00FF00');
+            } else if (spann < 8) {
+                $(this).css('background-color', '#FFFF00');
+            } else {
+                $(this).css('background-color', '#FF0000');
+            }
+        });
+    });
+</script>
