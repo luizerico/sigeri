@@ -14,7 +14,7 @@ class ComplianceController extends GenericController {
         $this->entity = 'Risk\Entity\Compliance';
         $this->title = 'Compliance';
         $this->route = 'compliance';
-        
+
         parent::__construct();
     }
 
@@ -38,7 +38,7 @@ class ComplianceController extends GenericController {
          * To do: Customize a page to report the request with a invalid Id
          */
         try {
-            $ORMRepository = $this->getEntityManager()->getRepository($this->object);
+            $ORMRepository = $this->getEntityManager()->getRepository($this->entity);
             $dbArray = $ORMRepository->find($id);
             if (!$dbArray) {
                 throw new Exception('Id invalido.');
@@ -79,7 +79,7 @@ class ComplianceController extends GenericController {
         return array(
             'title' => $this->title,
             'id' => $id,
-            'form' => $form, 
+            'form' => $form,
             'dbArray' => $dbArray
         );
     }

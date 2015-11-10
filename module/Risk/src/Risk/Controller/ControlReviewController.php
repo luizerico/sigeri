@@ -19,10 +19,8 @@ class ControlReviewController extends GenericController {
     }
 
     public function addAction() {
-
-        $addObject = new ControlReview ();
         $builder = new DoctrineAnnotationBuilder($this->getEntityManager());
-        $form = $builder->createForm($addObject);
+        $form = $builder->createForm($this->object);
         $hydrator = new DoctrineHydrator($this->getEntityManager(), $this->entity);
         $form->setHydrator($hydrator);
         $form->get('submit')->setAttribute('value', 'Add');
@@ -37,7 +35,7 @@ class ControlReviewController extends GenericController {
             )
         ));
 
-        $form->bind($addObject);
+        $form->bind($this->object);
 
         $control_id = $this->params()->fromQuery('control_id', 0);
 
@@ -45,8 +43,8 @@ class ControlReviewController extends GenericController {
         if ($request->isPost()) {
             $form->setData($request->getPost());
             if ($form->isValid()) {
-                $addObject->exchangeArray($hydrator->extract($form->getData()));
-                $this->getEntityManager()->persist($addObject);
+                $this->object->exchangeArray($hydrator->extract($form->getData()));
+                $this->getEntityManager()->persist($this->object);
                 $this->getEntityManager()->flush();
                 $url = $this->params()->fromPost('redirecturl');
                 return $this->redirect()->toUrl($url);
@@ -64,9 +62,8 @@ class ControlReviewController extends GenericController {
     }
 
     public function editAction() {
-        $editObject = new ControlReview ();
         $builder = new DoctrineAnnotationBuilder($this->getEntityManager());
-        $form = $builder->createForm($editObject);
+        $form = $builder->createForm($this->object);
         $hydrator = new DoctrineHydrator($this->getEntityManager(), $this->entity);
         $form->setHydrator($hydrator);
 
@@ -122,7 +119,7 @@ class ControlReviewController extends GenericController {
         if ($request->isPost()) {
             $form->setData($request->getPost());
             if ($form->isValid()) {
-                $editObject->exchangeArray($hydrator->extract($form->getData()));
+                $this->object->exchangeArray($hydrator->extract($form->getData()));
                 $this->getEntityManager()->flush();
                 $url = $this->params()->fromPost('redirecturl');
                 return $this->redirect()->toUrl($url);

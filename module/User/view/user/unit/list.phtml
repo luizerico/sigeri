@@ -1,42 +1,58 @@
 <section class="list">
-<?php
-$title = 'Unit List';
-$this->headTitle ( $title );
-?>
- 
- <h2><?php echo $this->escapeHtml($title); ?></h2>
-	<p>
-		<a href="<?php echo $this->url('unit', array('action'=>'add'));?>">Add
-			new unit</a>
-	</p>
-	<table class="table">
-		<tr>
-			<th>ID</th>
-			<th>Name</th>
-			<th>Description</th>
-			<th>&nbsp;</th>
-		</tr>
- <?php foreach ($dbArray as $dbRow ) : ?>
- <tr>
-			<td><?php echo $this->escapeHtml($dbRow->getId());?></td>
-			<td><?php echo $this->escapeHtml($dbRow->getName());?></td>
-			<td><?php echo $this->escapeHtml($dbRow->getDescription());?></td>
-			<td><a
-				href="<?php 
-				echo $this->url ( 'unit', array (
-				'action' => 'edit',
-				'id' => $dbRow->getId () 
-		) );
-		?>">Edit</a>
-				<a
-				href="<?php 
-				echo $this->url ( 'unit', array (
-				'action' => 'delete',
-				'id' => $dbRow->getId () 
-		) );
-		?>">Delete</a>
-			</td>
-		</tr>
- <?php endforeach; ?>
- </table>
+    <?php
+    $title = 'List ' . $this->title;
+    $this->headTitle('SIGERI - ' . $title);
+    ?>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3><?php echo $this->escapeHtml($title); ?></h3>
+        </div>
+        <div class="panel-body">
+            <p>
+                <a href="<?php echo $this->url('unit', array('action' => 'add')); ?>">Add
+                    new unit</a>
+            </p>
+            <table id="datatable" class="table table-striped responsive-utilities jambo_table bulk_action">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>&nbsp;</th>                  
+                    </tr></thead>
+                <tbody>
+                    <?php foreach ($dbArray as $dbRow) : ?>
+                        <tr>
+                            <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
+                            <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>
+                            <td><?php echo $this->escapeHtml($dbRow->getDescription()); ?></td>
+                            <td><a
+                                    href="<?php
+                                    echo $this->url('unit', array(
+                                        'action' => 'edit',
+                                        'id' => $dbRow->getId()
+                                    ));
+                                    ?>">Edit</a>
+                                <a
+                                    href="<?php
+                                    echo $this->url('unit', array(
+                                        'action' => 'delete',
+                                        'id' => $dbRow->getId()
+                                    ));
+                                    ?>">Delete</a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </section>
+<script>
+    $(document).ready(function () {
+        var table = $('#datatable').DataTable({
+            "pageLength": 20,
+        });
+    });
+</script>

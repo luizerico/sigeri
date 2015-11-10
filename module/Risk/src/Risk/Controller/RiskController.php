@@ -17,7 +17,7 @@ class RiskController extends GenericController {
         $this->entity = 'Risk\Entity\Risk';
         $this->title = 'Risk';
         $this->route = 'risk';
-        
+
         parent::__construct();
     }
 
@@ -91,9 +91,9 @@ class RiskController extends GenericController {
 
         $ORMRepository = $this->getEntityManager();
         $query = $ORMRepository->createQuery($query);
-        
+
         if (isset($limit)) {
-            $query->setMaxResults( $limit );
+            $query->setMaxResults($limit);
         }
 
         $results = $query->getArrayResult(\Doctrine\ORM\AbstractQuery::HYDRATE_SCALAR);

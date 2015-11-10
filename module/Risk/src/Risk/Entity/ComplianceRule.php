@@ -39,7 +39,7 @@ class ComplianceRule {
      * @var \Risk\Entity\Compliance
      * @access protected
      */
-    protected $name;    
+    protected $compliance;    
 
     /**
      * @ORM\Column(type="string")
@@ -109,7 +109,7 @@ class ComplianceRule {
 
     public function exchangeArray($data) {
         $this->id = (isset($data ['id'])) ? $data ['id'] : null;        
-        $this->name = (isset($data ['name'])) ? $data ['name'] : null;
+        $this->compliance = (isset($data ['compliance'])) ? $data ['compliance'] : null;
         $this->rule = (isset($data ['rule'])) ? $data ['rule'] : null;
         $this->description = (isset($data ['description'])) ? $data ['description'] : null;
         $this->annotations = (isset($data ['annotations'])) ? $data ['annotations'] : null; 
@@ -128,12 +128,12 @@ class ComplianceRule {
         return $this;
     }
 
-    public function getName() {
-        return $this->name;
+    public function getCompliance() {
+        return $this->compliance;
     }
 
-    public function setName($name) {
-        $this->name = $name;
+    public function setCompliance($compliance) {
+        $this->compliance = $compliance;
         return $this;
     }
 

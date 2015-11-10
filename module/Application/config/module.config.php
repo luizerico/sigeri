@@ -50,6 +50,20 @@ return array(
                     ),
                 ),
             ),
+            'authentication' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/authentication[/][:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Authentication',
+                        'action' => 'index'
+                    )
+                )
+            ),
         ),
     ),
     'service_manager' => array(
@@ -73,7 +87,8 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Application\Controller\Index' => 'Application\Controller\IndexController'
+            'Application\Controller\Index' => 'Application\Controller\IndexController',
+            'Authentication' => 'Application\Controller\AuthenticationController'
         ),
     ),
     'view_manager' => array(

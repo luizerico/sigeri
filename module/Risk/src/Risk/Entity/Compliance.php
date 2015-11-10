@@ -68,6 +68,18 @@ class Compliance {
     protected $documents;
 
     /**
+     * @ORM\OneToMany(targetEntity="Risk\Entity\ComplianceRule", mappedBy="compliance")
+     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
+     * @Annotation\Required(false)
+     * @Annotation\Filter({"name":"StripTags"})
+     * @Annotation\Options({"label":"Rules"})
+     *
+     * @var \Risk\Entity\ComplianceRule
+     * @access protected
+     */
+    protected $rules;
+
+    /**
      * @Annotation\Type("Zend\Form\Element\Submit")
      * @Annotation\Attributes({"value":"Submit"})
      * @Annotation\Attributes({"style":"width:150px", "class":"btn btn-default"})
@@ -76,11 +88,13 @@ class Compliance {
 
     public function __construct() {
         $this->documents = new ArrayCollection();
+        $this->rules = new ArrayCollection();
     }
 
     public function exchangeArray($data) {
         $this->id = (isset($data ['id'])) ? $data ['id'] : null;
         $this->name = (isset($data ['name'])) ? $data ['name'] : null;
+        $this->rules = (isset($data ['rules'])) ? $data ['rules'] : null;
         $this->description = (isset($data ['description'])) ? $data ['description'] : null;
         $this->documents = (isset($data ['documents'])) ? $data ['documents'] : null;
     }
@@ -130,6 +144,22 @@ class Compliance {
 
     public function getDocuments() {
         return $this->documents;
+    }
+
+    public function addRules(Collection $rules) {
+        foreach ($rules as $rule) {
+            $this->rules->add($rule);
+        }
+    }
+
+    public function removeRules(Collection $rules) {
+        foreach ($rules as $rule) {
+            $this->rules->removeElement($rule);
+        }
+    }
+
+    public function getRules() {
+        return $this->rules;
     }
 
 }

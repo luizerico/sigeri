@@ -64,10 +64,10 @@ class User extends \User\Entity\User implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'id', 'name', 'email', 'unit', 'manager', 'groups', 'detail', 'submit');
+            return array('__isInitialized__', 'id', 'username', 'password', 'email', 'unit', 'manager', 'groups', 'detail', 'submit');
         }
 
-        return array('__isInitialized__', 'id', 'name', 'email', 'unit', 'manager', 'groups', 'detail', 'submit');
+        return array('__isInitialized__', 'id', 'username', 'password', 'email', 'unit', 'manager', 'groups', 'detail', 'submit');
     }
 
     /**
@@ -224,23 +224,23 @@ class User extends \User\Entity\User implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getName()
+    public function getUsername()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getName', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUsername', array());
 
-        return parent::getName();
+        return parent::getUsername();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setName($name)
+    public function setUsername($username)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setName', array($name));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setUsername', array($username));
 
-        return parent::setName($name);
+        return parent::setUsername($username);
     }
 
     /**

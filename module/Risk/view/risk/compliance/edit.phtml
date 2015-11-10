@@ -59,6 +59,7 @@
             <ul class = "nav nav-tabs nav-justified" style = "color:#000;font-weight: bold;">
                 <li class = "active"><a data-toggle = "tab" href = "#description">Description</a></li>
                 <li><a data-toggle = "tab" href = "#documents">Documents</a></li>
+                <li><a data-toggle = "tab" href = "#rules">Rules</a></li>
             </ul>
             <div class = "panel" style = "padding-top:5px;">
                 <div class = "tab-content ">
@@ -69,6 +70,54 @@
                     <div id = "documents" class = "tab-pane fade in">
                         <?php echo $this->formElement($form->get('documents'));
                         ?>
+                    </div>
+                    <div id = "rules" class = "tab-pane fade in">
+                        <div id = "revisions" class = "tab-pane fade in">
+                        <p>
+                            <a href="<?php
+                            echo $this->url('compliancerule', array('action' => 'add'), 
+                                    array('query' => array('compliance_id' => $dbArray->getId()))
+                            );
+                            ?>">
+                                New Rule</a> 
+                        </p>
+                        <table id="datatable" class="display table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Rule</th>
+                                    <th>Type</th>    
+                                    <th>&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($dbArray->getRules() as $dbRow) : ?>
+                                    <tr>
+                                        <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
+                                        <td><?php echo $this->escapeHtml($dbRow->getRule()); ?></td>
+                                        <td><?php echo $this->escapeHtml($dbRow->getType()); ?></td>
+                                        <td><a
+                                                href="<?php
+                                                echo $this->url('compliancerule', array(
+                                                    'action' => 'edit',
+                                                    'id' => $dbRow->getId()
+                                                ));
+                                                ?>">Edit</a>
+                                            <a
+                                                href="<?php
+                                                echo $this->url('compliancerule', array(
+                                                    'action' => 'delete',
+                                                    'id' => $dbRow->getId()
+                                                ));
+                                                ?>">Del</a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+
+
+                    </div>
                     </div>
                 </div>
             </div>

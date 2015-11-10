@@ -64,10 +64,10 @@ class Compliance extends \Risk\Entity\Compliance implements \Doctrine\ORM\Proxy\
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'id', 'name', 'description', 'documents', 'submit');
+            return array('__isInitialized__', 'id', 'name', 'description', 'documents', 'rules', 'submit');
         }
 
-        return array('__isInitialized__', 'id', 'name', 'description', 'documents', 'submit');
+        return array('__isInitialized__', 'id', 'name', 'description', 'documents', 'rules', 'submit');
     }
 
     /**
@@ -296,6 +296,39 @@ class Compliance extends \Risk\Entity\Compliance implements \Doctrine\ORM\Proxy\
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDocuments', array());
 
         return parent::getDocuments();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addRules(\Doctrine\Common\Collections\Collection $rules)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addRules', array($rules));
+
+        return parent::addRules($rules);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeRules(\Doctrine\Common\Collections\Collection $rules)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeRules', array($rules));
+
+        return parent::removeRules($rules);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getRules()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRules', array());
+
+        return parent::getRules();
     }
 
 }

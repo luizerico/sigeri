@@ -245,7 +245,7 @@ class Risk {
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Options({"label":"Revisions"})
      *
-     * @var \Risk\Entity\PlanReview
+     * @var \Risk\Entity\RiskReview
      * @access protected
      */
     protected $revisions;

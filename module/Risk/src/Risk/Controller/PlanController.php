@@ -2,28 +2,26 @@
 
 namespace Risk\Controller;
 
-//define('TITLE', 'Plan');
-//define('ROUTER', 'plan');
-//define('ENTITY', 'Risk\Entity\Plan');
-
 use Risk\Entity\Plan;
+use Risk\Controller\GenericController;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use DoctrineORMModule\Form\Annotation\AnnotationBuilder as DoctrineAnnotationBuilder;
 use Exception;
 
-class PlanController extends GenericController {    
-    
+class PlanController extends GenericController {
+
     public function __construct() {
         $this->object = new Plan();
         $this->entity = 'Risk\Entity\Plan';
         $this->title = 'Plan';
         $this->route = 'plan';
-    }    
+
+        parent::__construct();
+    }
 
     public function editAction() {
-        $editObject = new Plan ();
         $builder = new DoctrineAnnotationBuilder($this->getEntityManager());
-        $form = $builder->createForm($editObject);
+        $form = $builder->createForm($this->object);
         $hydrator = new DoctrineHydrator($this->getEntityManager(), $this->entity);
         $form->setHydrator($hydrator);
 
@@ -57,6 +55,11 @@ class PlanController extends GenericController {
          * change the Submit value button to edit
          */
 
+        $form->add(new \Zend\Form\Element\Csrf('security'));
+        $form->add(new \Zend\Form\Element\Submit('submit', array(
+            'value' => 'Save')));
+        $form->get('submit')->setAttribute('value', 'Add');
+
         $form->bind($dbArray);
         $form->get('submit')->setAttribute('value', 'Edit');
 
@@ -71,11 +74,13 @@ class PlanController extends GenericController {
         if ($request->isPost()) {
             $form->setData($request->getPost());
             if ($form->isValid()) {
-                $editObject->exchangeArray($hydrator->extract($form->getData()));
+                $this->object->exchangeArray($hydrator->extract($form->getData()));
                 $this->getEntityManager()->flush();
                 return $this->redirect()->toRoute($this->route, array(
                             'action' => 'list'
                 ));
+            } else {
+                echo $request;
             }
         }
 
@@ -87,5 +92,4 @@ class PlanController extends GenericController {
         );
     }
 
-    
 }
