@@ -4,52 +4,64 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Zend\Authentication\AuthenticationService;
-use Zend\Authentication\Storage\Session as SessionStorage;
-use Zend\Db\Adapter\Adapter as DbAdapter;
+use Zend\View\Model\JsonModel;
 
 class AuthenticationController extends AbstractActionController {
 
-    public function __init() {
-        // Create a SQLite database connection
-        $dbAdapter = new DbAdapter(array(
-            'driver' => 'Pdo_Sqlite',
-            'database' => 'path/to/sqlite.db'
-        ));
+    public function getAuthService() {
+        if (!$this->authservice) {
+            $this->authservice = $this->getServiceLocator()
+                    ->get('AuthService');
+        }
+
+        return $this->authservice;
     }
 
-    public function indexAction() {
+    public function notFoundAction() {
         $viewModel = new ViewModel();
         $viewModel->setTerminal(true);
         return $viewModel;
     }
 
     public function loginAction() {
-        $this->auth = new AuthenticationService();
+        if ($this->getRequest()->isPost()) {
+            $this->getAuthService()->getAdapter()
+                    ->setIdentity($this->params()->fromPost('username'))
+                    ->setCredential($this->params()->fromPost('password'));
+            $result = $this->getAuthService()->authenticate();
 
-        $config = new Zend\Config\Reader\Ini();
-        $options = $config->ldap->toArray();
-        $authAdapter = new Zend_Auth_Adapter_Ldap($options, $this->_getParam('username'), $this->_getParam('password'));
-
-        $result = $this->auth->authenticate($authAdapter);
-
-        if ($result->isValid()) {
-            //$result->getIdentity(); //Objeto de retorno da autenticação
-            /**
-             * Exemplo de storage para guardar dados na sessão
-             * $storage = Zend_Auth::getInstance()->getStorage();
-             * $storage->write($array);
-             */
-            //Redireciona para o index
-            $this->_redirect('index');
+            if ($result->isValid()) {
+                return $this->redirect()->toRoute('application', array(
+                            'action' => 'index'
+                ));
+            } else {
+                return $this->redirect()->toRoute('authentication', array(
+                            'action' => 'login'
+                ));
+            }
         } else {
-            $this->_redirect('authentication/login');
+            $viewModel = new ViewModel();
+            $viewModel->setTerminal(true);
+            return $viewModel;
         }
     }
 
     public function logoutAction() {
-        $this->auth->clearIdentity();
-        $this->_redirect('authentication/login');
+        $this->getAuthService()->clearIdentity();
+        return $this->redirect()->toRoute('authentication', array(
+                    'action' => 'login'
+        ));
     }
 
+    public function getIdentityAction() {
+        $identity = $this->getAuthService()->getIdentity();
+        
+        return new JsonModel(Array('identity' => $identity));
+    }
+
+//    public function indexAction() {
+//        $viewModel = new ViewModel();
+//        $viewModel->setTerminal(true);
+//        return $viewModel;
+//    }
 }

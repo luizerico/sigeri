@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework (http://framework.zend.com/)
  *
@@ -11,11 +12,20 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Zend\Authentication\AuthenticationService;
 
-class IndexController extends AbstractActionController
-{
-    public function indexAction()
-    {
+class IndexController extends AbstractActionController {
+
+    public function onDispatch(\Zend\Mvc\MvcEvent $e) {
+        if (!$this->getServiceLocator()->get('AuthService')->hasIdentity()) {
+            $this->redirect()->toRoute('authentication', array('action' => 'login'));
+        }
+
+        return parent::onDispatch($e);
+    }
+
+    public function indexAction() {
         return new ViewModel();
     }
+
 }

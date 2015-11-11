@@ -19,6 +19,14 @@ class GenericController extends AbstractActionController {
     public function __construct() {
         //$this->view->addScriptPath("../Asset/view/asset/generic/");
     }
+    
+    public function onDispatch(\Zend\Mvc\MvcEvent $e) {
+        if (!$this->getServiceLocator()->get('AuthService')->hasIdentity()) {
+            $this->redirect()->toRoute('authentication', array('action' => 'login'));
+        }
+
+        return parent::onDispatch($e);
+    }
 
     public function setEntityManager(EntityManager $em) {
         $this->em = $em;

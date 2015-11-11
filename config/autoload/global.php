@@ -13,8 +13,10 @@
 
 return array(
         'db' => array(
-            'driver' => 'Pdo',
-            'dsn' => 'mysql:dbname=sigeri;host=localhost',
+            'driver' => 'pdo_mysql',
+            'dsn' => 'mysql:dbname=sigeri;host=localhost;',
+            'username' => 'sigeri',
+            'password' => 'sigeri001',            
             ),
         'service_manager' => array (
             'factories' => array(

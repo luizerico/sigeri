@@ -41,12 +41,13 @@ class User {
     protected $username;
 
     /**
+     * @ORM\Column(type="string")
      * @Annotation\Type("Zend\Form\Element\Password")
      * @Annotation\Required({"required":"true" })
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Options({"label":"Password:"})
      */
-    public $password;
+    protected $password;
 
     /**
      * @ORM\Column(type="string")
@@ -165,9 +166,7 @@ class User {
     public function setPassword($password) {
         $this->password = $password;
         return $this;
-    }
-
-   
+    }   
 
     public function getEmail() {
         return $this->email;
