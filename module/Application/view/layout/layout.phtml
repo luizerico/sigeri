@@ -193,28 +193,14 @@
                             <ul class="nav navbar-nav navbar-right">
                                 <li class="">
                                     <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <img src="/img/img.jpg" alt="">
-                                        <span id="identity">
-                                            <script>
-                                                $.getJSON(
-                                                        "/authentication/getidentity",
-                                                        function (jsonData) {
-                                                            $("#identity").text(jsonData.identity);
-                                                        }
-                                                );
-                                            </script>
-                                        </span>
+<!--                                        <img src="/img/img.jpg" alt="">-->
+                                        <span class="fa fa-user"></span>
+                                        <span id="identity"></span>
                                         <span class=" fa fa-angle-down"></span>
                                     </a>
                                     <ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
-                                        <li><a href="javascript:;">  Profile</a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:;">
-                                                <span class="badge bg-red pull-right">50%</span>
-                                                <span>Settings</span>
-                                            </a>
-                                        </li>
+                                        <li><a id="userid" href="">Profile</a>
+                                        </li>                                        
                                         <li>
                                             <a href="javascript:;">Help</a>
                                         </li>
@@ -224,10 +210,10 @@
                                 </li>
 
                                 <li role="presentation" class="dropdown">
-                                    <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
+<!--                                    <a href="javascript:;" class="dropdown-toggle info-number" data-toggle="dropdown" aria-expanded="false">
                                         <i class="fa fa-envelope-o"></i>
                                         <span class="badge bg-green">6</span>
-                                    </a>
+                                    </a>-->
                                     <ul id="menu1" class="dropdown-menu list-unstyled msg_list animated fadeInDown" role="menu">
                                         <li>
                                             <a>
@@ -394,6 +380,18 @@
                     this.qs2.cache();
                 }
             });
+        </script>
+
+        <script>
+            $(document).load(
+                    $.getJSON(
+                            "/authentication/getidentity",
+                            function (jsonData) {
+                                $("#identity").text(jsonData.name);
+                                $("#userid").attr("href", "/user/edit/" + jsonData.id);
+                            }
+                    )
+            );
         </script>
 
     </body>

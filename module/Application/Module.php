@@ -12,9 +12,12 @@ namespace Application;
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
-use Zend\Authentication\Adapter\DbTable as AuthAdapter;
+use Zend\Authentication\Adapter\DbTable as DBAuthAdapter;
+use Zend\Authentication\Adapter\Ldap as LdapAuthAdapter;
 use Zend\Authentication\AuthenticationService;
-use Zend\Authentication\Storage\Session as SessionStorage;
+use Zend\Config\Reader\Ini as ConfigReader;
+use Zend\Config\Writer\Ini as ConfigWriter;
+use Zend\Config\Config;
 
 class Module {
 
@@ -68,15 +71,30 @@ class Module {
             'abstract_factories' => array(),
             'aliases' => array(),
             'factories' => array(
-                // Some more code here but removed for simplicity
-                // Autentication
                 'AuthService' => function ($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $dbAuthAdapter = new AuthAdapter($dbAdapter, 'user', 'username', 'password');
+                    $dbAuthAdapter = new DBAuthAdapter($dbAdapter, 'user', 'username', 'password');
 
                     $authService = new AuthenticationService();
                     $authService->setAdapter($dbAuthAdapter);
 
+                    return $authService;
+                },
+                'LDAPAuthService' => function ($sm) {
+//                    echo (__DIR__);
+//                    $teste = new ConfigWriter();
+//                    echo $teste->toFile(__DIR__ . '/config/teste.txt', array('testes'=>'asdfteste'));
+                    
+                    $configReader = new ConfigReader();                    
+                    $configData = $configReader->fromFile(__DIR__ . '/config/application.ini' ,'LDAP');
+                    $config = new Config($configData, true);               
+                    $options = $config->LDAP->ldap->toArray();                    
+
+                    $ldapAuthAdapter = new LdapAuthAdapter($options, 'username', 'password');
+                    
+                    $authService = new AuthenticationService();
+                    $authService->setAdapter($ldapAuthAdapter);
+                    
                     return $authService;
                 })
         );

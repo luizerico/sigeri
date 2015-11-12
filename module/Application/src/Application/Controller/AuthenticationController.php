@@ -9,12 +9,21 @@ use Zend\View\Model\JsonModel;
 class AuthenticationController extends AbstractActionController {
 
     public function getAuthService() {
-        if (!$this->authservice) {
+        if (!isset($this->authservice)) {
             $this->authservice = $this->getServiceLocator()
                     ->get('AuthService');
         }
 
         return $this->authservice;
+    }
+
+    public function getLDAPAuthService() {
+        if (!$this->ldapauthservice) {
+            $this->ldapauthservice = $this->getServiceLocator()
+                    ->get('LDAPAuthService');
+        }
+
+        return $this->ldapauthservice;
     }
 
     public function notFoundAction() {
@@ -25,12 +34,31 @@ class AuthenticationController extends AbstractActionController {
 
     public function loginAction() {
         if ($this->getRequest()->isPost()) {
+
             $this->getAuthService()->getAdapter()
                     ->setIdentity($this->params()->fromPost('username'))
                     ->setCredential($this->params()->fromPost('password'));
-            $result = $this->getAuthService()->authenticate();
 
-            if ($result->isValid()) {
+            $dbresult = $this->getAuthService()->authenticate();
+
+//            $this->getLDAPAuthService()->getAdapter()
+//                    ->setIdentity($this->params()->fromPost('username'))
+//                    ->setCredential($this->params()->fromPost('password'));
+//            $this->getLDAPAuthService()->getAdapter()
+//                    ->setIdentity('admin')
+//                    ->setCredential('sumep-exc');
+//
+//            var_dump($this->getLDAPAuthService()->getIdentity());
+//            
+//            $ldapresult = $this->getLDAPAuthService()->authenticate();           
+
+            if ($dbresult->isValid()) {
+                $resultRow = $this->getAuthService()->getAdapter()
+                        ->getResultRowObject();
+                $this->getAuthService()->getStorage()->write(array(
+                    'id' => $resultRow->id,
+                    'name' => $resultRow->name)
+                );
                 return $this->redirect()->toRoute('application', array(
                             'action' => 'index'
                 ));
@@ -39,11 +67,11 @@ class AuthenticationController extends AbstractActionController {
                             'action' => 'login'
                 ));
             }
-        } else {
-            $viewModel = new ViewModel();
-            $viewModel->setTerminal(true);
-            return $viewModel;
         }
+
+        $viewModel = new ViewModel();
+        $viewModel->setTerminal(true);
+        return $viewModel;
     }
 
     public function logoutAction() {
@@ -54,14 +82,9 @@ class AuthenticationController extends AbstractActionController {
     }
 
     public function getIdentityAction() {
-        $identity = $this->getAuthService()->getIdentity();
-        
-        return new JsonModel(Array('identity' => $identity));
+        //$identity = $this->getAuthService()->getStorage()->read();
+        $identity = $this->getAuthService()->getStorage()->read();
+        return new JsonModel($identity);
     }
 
-//    public function indexAction() {
-//        $viewModel = new ViewModel();
-//        $viewModel->setTerminal(true);
-//        return $viewModel;
-//    }
 }

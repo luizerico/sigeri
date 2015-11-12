@@ -33,7 +33,7 @@ class User {
      * @Annotation\Required({"required":"true" })
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Validator({"name":"StringLength", "options":{"min":"3"}})
-     * @Annotation\Options({"label":"Name:"})
+     * @Annotation\Options({"label":"Username:"})
      *
      * @var string
      * @access protected
@@ -43,9 +43,12 @@ class User {
     /**
      * @ORM\Column(type="string")
      * @Annotation\Type("Zend\Form\Element\Password")
-     * @Annotation\Required({"required":"true" })
+     * @Annotation\Required(false)
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Options({"label":"Password:"})
+     * 
+     * @var string
+     * @access protected
      */
     protected $password;
 
@@ -61,6 +64,19 @@ class User {
      * @access protected
      */
     protected $email;
+    
+    /**
+     * @ORM\Column(type="string")
+     * @Annotation\Type("Zend\Form\Element\Text")
+     * @Annotation\Required({"required":"true" })
+     * @Annotation\Filter({"name":"StripTags"})
+     * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
+     * @Annotation\Options({"label":"Display Name:"})
+     *
+     * @var string
+     * @access protected
+     */
+    protected $name;
 
     /**
      * @ORM\ManyToOne(targetEntity="User\Entity\Unit")
@@ -93,7 +109,7 @@ class User {
     /**
      * @ORM\ManyToMany(targetEntity="User\Entity\Group")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Required({"required":"false" })
+     * @Annotation\Required(false)
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Options({"label":"Groups:"})
      * @Annotation\Attributes({"multiple":"multiple", "id":"my-select"})
@@ -131,6 +147,7 @@ class User {
         $this->username = (isset($data ['username'])) ? $data ['username'] : null;
         $this->password = (isset($data ['password'])) ? $data ['password'] : null;
         $this->email = (isset($data ['email'])) ? $data ['email'] : null;
+        $this->name = (isset($data ['name'])) ? $data ['name'] : null;
         $this->unit = (isset($data ['unit'])) ? $data ['unit'] : null;
         $this->manager = (isset($data ['manager'])) ? $data ['manager'] : null;
         $this->groups = (isset($data ['groups'])) ? $data ['groups'] : null;
@@ -174,6 +191,15 @@ class User {
 
     public function setEmail($email) {
         $this->email = $email;
+        return $this;
+    }
+    
+    public function getName() {
+        return $this->name;
+    }
+
+    public function setName($name) {
+        $this->name = $name;
         return $this;
     }
 
