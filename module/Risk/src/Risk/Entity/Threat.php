@@ -65,20 +65,7 @@ class Threat {
      * @access protected
      */
     protected $type;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Risk\Entity\ThreatSource")
-     * @ORM\JoinColumn(name="source_id", referencedColumnName="id")
-     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Required({"required":"False" })
-     * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Source:", "empty_option":"Please select..."})
-     *
-     * @var \Risk\Entity\ThreatSource
-     * @access protected
-     */
-    protected $source;
-
+    
     /**
      * @ORM\ManyToOne(targetEntity="User\Entity\User")
      * @ORM\JoinColumn(name="analyst_id", referencedColumnName="id")
@@ -91,6 +78,19 @@ class Threat {
      * @access protected
      */
     protected $analyst;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Risk\Entity\ThreatSource")
+     * @ORM\JoinColumn(name="source_id", referencedColumnName="id")
+     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
+     * @Annotation\Required(false)
+     * @Annotation\Options({"label":"Source:"}) 
+     * @Annotation\Attributes({"multiple":"multiple"})
+     *
+     * @var \Risk\Entity\ThreatSource
+     * @access protected
+     */
+    protected $sources;    
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -139,6 +139,7 @@ class Threat {
 
     public function __construct() {
         $this->documents = new ArrayCollection();
+        $this->sources = new ArrayCollection();
     }
 
     public function exchangeArray($data) {
@@ -147,7 +148,7 @@ class Threat {
         $this->description = (isset($data ['description'])) ? $data ['description'] : null;
         $this->level = (isset($data ['level'])) ? $data ['level'] : null;
         $this->type = (isset($data ['type'])) ? $data ['type'] : null;
-        $this->source = (isset($data ['source'])) ? $data ['source'] : null;
+        $this->sources = (isset($data ['sources'])) ? $data ['sources'] : null;
         $this->analyst = (isset($data ['analyst'])) ? $data ['analyst'] : null;
         $this->annotations = (isset($data ['annotations'])) ? $data ['annotations'] : null;
         $this->documents = (isset($data ['documents'])) ? $data ['documents'] : null;
@@ -202,15 +203,6 @@ class Threat {
         return $this;
     }
 
-    public function getSource() {
-        return $this->source;
-    }
-
-    public function setSource(\Risk\Entity\ThreatSource $source) {
-        $this->source = $source;
-        return $this;
-    }
-
     public function getAnalyst() {
         return $this->analyst;
     }
@@ -227,6 +219,22 @@ class Threat {
     public function setAnnotations($annotations) {
         $this->annotations = $annotations;
         return $this;
+    }
+    
+    public function addSources(Collection $sources) {
+        foreach ($sources as $source) {
+            $this->sources->add($source);
+        }
+    }
+    
+    public function removeSources(Collection $sources) {
+        foreach ($sources as $source) {
+            $this->sources->removeElement($source);
+        }
+    }
+
+    public function getSources() {        
+        return $this->sources;
     }
 
     public function addDocuments(Collection $documents) {

@@ -1,0 +1,35 @@
+<section class="list">
+    <?php
+    $title = $this->escapeHtml($dbArray->getName());
+    $this->headTitle('SIGERI - ' . $title);
+    ?>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3><?php echo $this->escapeHtml($title); ?></h3>
+        </div>
+        <div class="panel-body">
+            <p><a href="<?php echo $this->url($this->router, 
+                    array('action' => 'edit', 'id' => $dbArray->getId())); ?>">
+                    Edit register</a> 
+            </p>
+            <p><label>ID: </label> <?php echo $this->escapeHtml($dbArray->getId()); ?></p>   
+            <p><label>Name: </label> <?php echo $this->escapeHtml($dbArray->getName()); ?></p>
+            <p><label>Description: </label> <?php echo $dbArray->getDescription(); ?></p>
+        </div>
+    </div>
+</section>
+
+
+<script>
+
+    $(document).ready(function () {
+        var table = $('.table').DataTable({
+            "lengthChange": false,
+            "pagingType": "simple",
+            "pageLength": 10,
+            "searching": false
+        });
+
+    });
+</script>

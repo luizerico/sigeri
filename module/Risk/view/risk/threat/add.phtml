@@ -23,7 +23,7 @@
             echo $this->form()->openTag($form);
 
             foreach ($form as $element) :
-                if (!(in_array($element->getAttribute('name'), array('submit', 'description', 'annotations', 'documents')))) {
+                if (!(in_array($element->getAttribute('name'), array('submit', 'sources', 'description', 'annotations', 'documents')))) {
                     ?>
 
                     <div class="form-group <?php
@@ -59,7 +59,8 @@
         <br>
         <ul class = "nav nav-tabs nav-justified" style = "color:#000;font-weight: bold;">
             <li class = "active"><a data-toggle = "tab" href = "#description">Description</a></li>
-            <li><a data-toggle = "tab" href = "#notes">Notes</a></li>                    
+            <li><a data-toggle = "tab" href = "#notes">Notes</a></li>      
+            <li><a data-toggle = "tab" href = "#sources">Sources</a></li>
             <li><a data-toggle = "tab" href = "#documents">Documents</a></li>
         </ul>
         <div class = "panel" style = "padding-top:5px;">
@@ -71,7 +72,11 @@
                 <div id = "notes" class = "tab-pane fade in">
                     <?php echo $this->formElement($form->get('annotations'));
                     ?>
-                </div>                        
+                </div>
+                <div id = "sources" class = "tab-pane fade in">
+                    <?php echo $this->formElement($form->get('sources'));
+                    ?>
+                </div>
                 <div id = "documents" class = "tab-pane fade in">
                     <?php echo $this->formElement($form->get('documents'));
                     ?>
@@ -92,5 +97,5 @@
         <?php
         echo $this->form()->closeTag($form);
         ?>
-    </div> 
+    </div>
 </section>

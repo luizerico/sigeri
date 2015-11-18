@@ -25,7 +25,8 @@ class Control {
      * @var integer
      * @access protected
      */
-    protected $id;
+    protected $id;  
+    
 
     /**
      * @ORM\Column(type="string")
@@ -162,6 +163,7 @@ class Control {
 
     public function exchangeArray($data) {
         $this->id = (isset($data ['id'])) ? $data ['id'] : null;
+        $this->version = (isset($data ['version'])) ? $data ['version'] : null;
         $this->name = (isset($data ['name'])) ? $data ['name'] : null;
         $this->status = (isset($data ['status'])) ? $data ['status'] : null;
         $this->analyst = (isset($data ['analyst'])) ? $data ['analyst'] : null;
@@ -182,6 +184,15 @@ class Control {
 
     public function setId($id) {
         $this->id = $id;
+        return $this;
+    }
+    
+    public function getVersion() {
+        return $this->version;
+    }
+
+    public function setVersion($version) {
+        $this->version = $version;
         return $this;
     }
 
