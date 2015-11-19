@@ -32,7 +32,7 @@ class Threat {
      * @Annotation\Type("Zend\Form\Element\Text")
      * @Annotation\Required({"required":"true" })
      * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
+     * @Annotation\Validator({"name":"StringLength", "options":{"min":"3"}})
      * @Annotation\Options({"label":"Name:"})
      *
      * @var string
@@ -44,7 +44,7 @@ class Threat {
      * @ORM\ManyToOne(targetEntity="Risk\Entity\ThreatLevel")
      * @ORM\JoinColumn(name="level_id", referencedColumnName="id")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Required({"required":"False" })
+     * @Annotation\Required(false)
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Options({"label":"Level:", "empty_option":"Please select..."})
      *
@@ -57,7 +57,7 @@ class Threat {
      * @ORM\ManyToOne(targetEntity="Risk\Entity\ThreatType")
      * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Required({"required":"False" })
+     * @Annotation\Required(false)
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Options({"label":"Type:", "empty_option":"Please select..."})
      *
@@ -65,12 +65,12 @@ class Threat {
      * @access protected
      */
     protected $type;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="User\Entity\User")
      * @ORM\JoinColumn(name="analyst_id", referencedColumnName="id")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Required({"required":"False" })
+     * @Annotation\Required(false)
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Options({"label":"Analyst:", "empty_option":"Please select..."})
      *
@@ -78,6 +78,42 @@ class Threat {
      * @access protected
      */
     protected $analyst;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     * @Annotation\Type("Zend\Form\Element\Checkbox")
+     * @Annotation\Required(false)
+     * @Annotation\Options({"label":"Deliberate:"})
+     * 
+     * @var boolean
+     * @access protected
+     * 
+     */
+    protected $deliberate;
+    
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     * @Annotation\Type("Zend\Form\Element\Checkbox")
+     * @Annotation\Required(false)
+     * @Annotation\Options({"label":"Accidental:"})
+     * 
+     * @var boolean
+     * @access protected
+     * 
+     */
+    protected $accidental;
+    
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     * @Annotation\Type("Zend\Form\Element\Checkbox")
+     * @Annotation\Required(false)
+     * @Annotation\Options({"label":"Environmental:"})
+     * 
+     * @var boolean
+     * @access protected
+     * 
+     */
+    protected $environmental;
 
     /**
      * @ORM\ManyToMany(targetEntity="Risk\Entity\ThreatSource")
@@ -90,7 +126,7 @@ class Threat {
      * @var \Risk\Entity\ThreatSource
      * @access protected
      */
-    protected $sources;    
+    protected $sources;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -150,6 +186,9 @@ class Threat {
         $this->type = (isset($data ['type'])) ? $data ['type'] : null;
         $this->sources = (isset($data ['sources'])) ? $data ['sources'] : null;
         $this->analyst = (isset($data ['analyst'])) ? $data ['analyst'] : null;
+        $this->deliberate = (isset($data ['deliberate'])) ? $data ['deliberate'] : null;
+        $this->accidental = (isset($data ['accidental'])) ? $data ['accidental'] : null;
+        $this->environmental = (isset($data ['environmental'])) ? $data ['environmental'] : null;
         $this->annotations = (isset($data ['annotations'])) ? $data ['annotations'] : null;
         $this->documents = (isset($data ['documents'])) ? $data ['documents'] : null;
     }
@@ -211,6 +250,33 @@ class Threat {
         $this->analyst = $analyst;
         return $this;
     }
+    
+    public function getDeliberate() {
+        return $this->deliberate;
+    }
+
+    public function setDeliberate($deliberate) {
+        $this->deliberate = $deliberate;
+        return $this;
+    }
+    
+    public function getAccidental() {
+        return $this->accidental;
+    }
+
+    public function setAccidental($accidental) {
+        $this->accidental = $accidental;
+        return $this;
+    }
+    
+    public function getEnvironmental() {
+        return $this->environmental;
+    }
+
+    public function setEnvironmental($environmental) {
+        $this->environmental = $environmental;
+        return $this;
+    }
 
     public function getAnnotations() {
         return $this->annotations;
@@ -220,20 +286,20 @@ class Threat {
         $this->annotations = $annotations;
         return $this;
     }
-    
+
     public function addSources(Collection $sources) {
         foreach ($sources as $source) {
             $this->sources->add($source);
         }
     }
-    
+
     public function removeSources(Collection $sources) {
         foreach ($sources as $source) {
             $this->sources->removeElement($source);
         }
     }
 
-    public function getSources() {        
+    public function getSources() {
         return $this->sources;
     }
 

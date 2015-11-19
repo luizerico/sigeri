@@ -1,19 +1,26 @@
+INSERT INTO user(id,name,unit_id,email,password,detail) VALUES 
+(1,'admin',1,'admin@admin.com','admin','Administrator'),
+(2,'luizerico',1,'admin@admin.com','123456','Administrator');
 
-insert into threatsource (id, name, description) values 
+
+
+-- Threat --
+
+INSERT INTO threatsource (id, name, description) VALUES 
 (1, "Hacker, Craker",""),
 (2, "Computer Criminal",""),
 (3, "Terrorist",""),
 (4, "Industrial Spionage",""),
 (5, "Insiders","");
 
-insert into threatlevel (id, value, description) values 
+INSERT INTO threatlevel (id, value, description) VALUES 
 (1, 1,"Very Low"),
 (2, 2,"Low"),
 (3, 3,"Medium"),
 (4, 4,"High"),
 (5, 5,"Very High");
 
-insert into threattype (id, name, description) values 
+INSERT INTO threattype (id, name, description) VALUES 
 (1, "Physical damage",""),
 (2, "Natural events",""),
 (3, "Loss of essential services",""),
@@ -23,13 +30,18 @@ insert into threattype (id, name, description) values
 (7, "Unauthorised actions",""),
 (8, "Compromise of functions","");
 
-insert into threat (id, name, level, type, source, analyst, description, annotations) values
-(1, "Fire", 1, 1, 1, 1, "", ""),
-(2, "Water damage", 1, 1, 1, 1, "", ""),
-(3, "Pollution", 1, 1, 1, 1, "", ""),
-(4, "Major accident", 1, 1, 1, 1, "", ""),
-(5, "Destruction of equipment or media", 1, 1, 1, 1, "", ""),
-(6, "Dust, corrosion, freezing", 1, 1, 1, 1, "", "");
+INSERT INTO threat (id, name, level_id, type_id, analyst_id, deliberate, accidental, environmental) VALUES
+(1, "Fire", 3, 1, 1, 1, 1, 1),
+(2, "Water damage", 3, 1, 1, 1, 1, 1),
+(3, "Pollution", 3, 1, 1, 1, 1, 1),
+(4, "Major accident", 3, 1, 1, 1, 1, 1),
+(5, "Destruction of equipment or media", 3, 1, 1, 1, 1, 1),
+(6, "Dust, corrosion, freezing", 3, 1, 1, 1, 1, 1);
+
+
+
+-- Vulnerability --
+
 
 
 
