@@ -1,37 +1,24 @@
-
-<section class="delete">
-
+<?php echo $this->partial('partial/delete_top.phtml'); ?>
+<div class="panel-body">
+    <p>Are you sure that you want to delete?</p>
+    <label>Effort Name:</label> <?php echo $this->escapeHtml($dbArray->getName()); ?> <br>
+    <label>Value:</label> <?php echo $this->escapeHtml($dbArray->getValue()); ?> <br>
+    <p>
     <?php
-    $title = 'Delete ' . $this->title;
-    $this->headTitle('SIGERI - ' . $title);
+    $url = $this->url($this->router, array(
+        'action' => 'delete',
+        'id' => $this->id
+    ));
     ?>
-    <div class="panel panel-danger">
-        <div class="panel-heading">
-            <h3><?php echo $this->escapeHtml($title); ?></h3>
+    <form action="<?php echo $url; ?>" method="post" >
+        <div class="form-group" >
+            <input  type="hidden" name="id"
+                    value="<?php echo (int) $dbArray->getId(); ?>" /> 
+            <input class="btn btn-warning" style="width:100px" type="submit" name="del" 
+                   value="Yes" /> 
+            <input class="btn btn-primary" style="width:100px" type="submit"
+                   name="del" value="No" />
         </div>
-        <div class="panel-body">
-            <p>Are you sure that you want to delete?</p>
-            <label>Effort Name:</label> <?php echo $this->escapeHtml($dbArray->getName()); ?> <br>
-            <label>Value:</label> <?php echo $this->escapeHtml($dbArray->getValue()); ?> <br>
-            <label>Description:</label> <?php echo $this->escapeHtml($dbArray->getDescription()); ?>
-            </p>
-            </p>
-            <?php
-            $url = $this->url($this->router, array(
-                'action' => 'delete',
-                'id' => $this->id
-            ));
-            ?>
-            <form action="<?php echo $url; ?>" method="post" >
-                <div class="form-group" >
-                    <input  type="hidden" name="id"
-                            value="<?php echo (int) $dbArray->getId(); ?>" /> 
-                    <input class="btn btn-warning" style="width:100px" type="submit" name="del" 
-                           value="Yes" /> 
-                    <input class="btn btn-primary" style="width:100px" type="submit"
-                           name="del" value="No" />
-                </div>
-            </form>
-        </div>
-    </div>
-</section>
+    </form>
+</div>
+<?php echo $this->partial('partial/delete_bottom.phtml'); ?>

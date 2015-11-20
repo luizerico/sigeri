@@ -1,29 +1,6 @@
-<section class="edit">
-    <?php
-    $title = 'Edit ' . $this->title;
-    $this->headTitle('SIGERI - ' . $title);
-    ?>
-
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3><?php echo $this->escapeHtml($title); ?></h3>
-        </div>
-        <div class="panel-body">
-            <!--            <div style="background-color: #F8F8F8; border: 1px solid #CCC; border-radius: 5px; padding: 10px;">-->
-
-            <?php if ($this->error): ?>
-                <p class="error">There were one or more issues with your submission. Please correct...</p>
-            <?php endif ?>
-
-            <?php
-            $form = $this->form;
-            $form->setAttribute('action', $this->url);
-            $form->setAttribute('class', 'form-horizontal');
-            $form->prepare();
-
-            echo $this->form()->openTag($form);
-
-            foreach ($form as $element) :
+<?php echo $this->partial('partial/edit_top.phtml'); ?>
+<?php
+foreach ($form as $element) :
                 if (!(in_array($element->getAttribute('name'), array('submit', 'description', 'documents', 'annotations')))) {
                     ?>
 
@@ -127,20 +104,5 @@
                     </div>
                 </div>
             </div>
-            <?php $element = $this->form->get('submit'); ?>
-            <div class="form-group" style="text-align:right;">
-                <div class="col-sm-12">
-                    <?php
-                    $element->setAttribute('class', 'btn btn-primary');
-                    $element->setAttribute('style', 'width:150px');
-
-                    echo $this->formElement($element);
-                    ?>
-                </div>
-            </div>
-
-            <?php
-            echo $this->form()->closeTag($form);
-            ?>
-        </div>
-</section>
+                       
+<?php echo $this->partial('partial/edit_bottom.phtml'); ?>

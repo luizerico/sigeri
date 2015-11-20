@@ -1,73 +1,49 @@
-<section class="list">
-    <?php
-    $title = 'List ' . $this->title;
-    $this->headTitle('SIGERI - ' . $title);
-    ?>
-
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3><?php echo $this->escapeHtml($title); ?></h3>
-        </div>
-        <div class="panel-body">
-            <table id="datatable" class="display table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Status</th>                
-                        <th>Analyst</th>
-                        <th>Register</th>
-                        <th>Risk</th>
-                        <th>&nbsp;</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($dbArray as $dbRow) : ?>
-                        <tr>
-                            <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
-                            <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>
-                            <td><?php echo $this->escapeHtml($dbRow->getStatus()); ?></td>
-                            <td><?php echo $this->escapeHtml($dbRow->getAnalyst()); ?></td>
-                            <td><?php echo $this->escapeHtml($dbRow->getFormatedDate()); ?></td>
-                            <td><?php echo $this->escapeHtml($dbRow->getRisk()); ?></td>
-                            <td><a
-                                    href="<?php
-                                    echo $this->url($this->router, array(
-                                        'action' => 'view',
-                                        'id' => $dbRow->getId()
-                                    ));
-                                    ?>">View</a>
-                                <a
-                                    href="<?php
-                                    echo $this->url($this->router, array(
-                                        'action' => 'edit',
-                                        'id' => $dbRow->getId()
-                                    ));
-                                    ?>">Edit</a>
-                                <a
-                                    href="<?php
-                                    echo $this->url($this->router, array(
-                                        'action' => 'delete',
-                                        'id' => $dbRow->getId()
-                                    ));
-                                    ?>">Delete</a>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</section>
-
-<script>
-
-    $(document).ready(function () {
-        var table = $('#datatable').DataTable({
-            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-            "pageLength": 50,             
-            responsive: true,
-        });
-
-    });
-</script>
+<?php echo $this->partial('partial/list_top.phtml'); ?>
+<table id="datatable" class="display table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Status</th>                
+            <th>Analyst</th>
+            <th>Register</th>
+            <th>Risk</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($dbArray as $dbRow) : ?>
+            <tr>
+                <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
+                <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>
+                <td><?php echo $this->escapeHtml($dbRow->getStatus()); ?></td>
+                <td><?php echo $this->escapeHtml($dbRow->getAnalyst()); ?></td>
+                <td><?php echo $this->escapeHtml($dbRow->getFormatedDate()); ?></td>
+                <td><?php echo $this->escapeHtml($dbRow->getRisk()); ?></td>
+                <td><a
+                        href="<?php
+                        echo $this->url($this->router, array(
+                            'action' => 'view',
+                            'id' => $dbRow->getId()
+                        ));
+                        ?>">View</a>
+                    <a
+                        href="<?php
+                        echo $this->url($this->router, array(
+                            'action' => 'edit',
+                            'id' => $dbRow->getId()
+                        ));
+                        ?>">Edit</a>
+                    <a
+                        href="<?php
+                        echo $this->url($this->router, array(
+                            'action' => 'delete',
+                            'id' => $dbRow->getId()
+                        ));
+                        ?>">Delete</a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+<?php echo $this->partial('partial/list_bottom.phtml'); ?>

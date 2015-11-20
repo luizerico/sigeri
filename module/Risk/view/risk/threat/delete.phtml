@@ -6,8 +6,8 @@
     Level: <?php echo $this->escapeHtml($dbArray->getLevel()); ?> <br>
     Type: <?php echo $this->escapeHtml($dbArray->getType()); ?> <br>
     Analyst: <?php echo $this->escapeHtml($dbArray->getAnalyst()); ?> <br>
-    </p>
 
+    <p>
     <?php
     $url = $this->url($this->router, array(
         'action' => 'delete',

@@ -1,5 +1,4 @@
 <?php echo $this->partial('partial/edit_top.phtml'); ?>
-
         <?php
             foreach ($form as $element) :
                 if ((in_array($element->getAttribute('name'), array('name', 'level', 'type', 'analyst')))) {

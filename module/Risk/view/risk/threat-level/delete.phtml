@@ -1,13 +1,4 @@
-<section class="delete">
-
-    <?php
-    $title = 'Delete ' . $this->title;
-    $this->headTitle('SIGERI - ' . $title);
-    ?>
-    <div class="panel panel-danger">
-        <div class="panel-heading">
-            <h3><?php echo $this->escapeHtml($title); ?></h3>
-        </div>
+<?php echo $this->partial('partial/delete_top.phtml'); ?>
         <div class="panel-body">
             <p>Are you sure that you want to delete?	
             <p>
@@ -19,6 +10,7 @@
                     'id' => $this->id
                 ));
                 ?>
+                <p>
             <form action="<?php echo $url; ?>" method="post" >
                 <div class="form-group" >
                     <input  type="hidden" name="id"
@@ -30,5 +22,4 @@
                 </div>
             </form>
         </div>
-    </div>
-</section>
+<?php echo $this->partial('partial/delete_bottom.phtml'); ?>
