@@ -9,7 +9,10 @@
                 Threat: <?php echo $this->escapeHtml($title); ?> 
                 <a href="<?php echo $this->url($this->router, 
                         array('action' => 'edit', 'id' => $dbArray->getId())); ?>">                    
-                    <button class="btn btn-info" style="float: right;">Edit register</button></a>
+                    <button class="btn btn-info" style="float: right;">
+                        <?php  echo $this->translate('Edit register');?>
+                
+                    </button></a>
             </h3>
 
         </div>

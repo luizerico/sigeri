@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ZendSkeletonApplication\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-20 10:58-0300\n"
-"PO-Revision-Date: 2015-11-20 10:58-0300\n"
+"POT-Creation-Date: 2015-11-20 10:30-0300\n"
+"PO-Revision-Date: 2015-11-20 10:33-0300\n"
 "Last-Translator: Luiz Érico <luizerico@gmail.com>\n"
 "Language-Team: ZF Contibutors <zf-devteam@zend.com>\n"
 "Language: pt\n"
@@ -15,28 +15,13 @@ msgstr ""
 "X-Generator: Poedit 1.7.5\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: ../view/partial/add_top.phtml:3 ../view/partial/list_top.phtml:13
+#: ../view/partial/list_top.phtml:3
+msgid "List "
+msgstr "Listagem "
+
+#: ../view/partial/list_top.phtml:13
 msgid "Add new register"
 msgstr "Adicionar novo registro"
-
-#: ../view/partial/add_top.phtml:13 ../view/partial/edit_top.phtml:13
-msgid "There were one or more issues with your submission. Please correct..."
-msgstr "Existe um ou mais erros nos dados informados. Favor corrigi-los..."
-
-#: ../view/partial/delete_top.phtml:4
-msgid "Delete register"
-msgstr "Apagar registro"
-
-#: ../view/partial/edit_top.phtml:3 ../view/partial/view_top.phtml:13
-msgid "Edit register"
-msgstr "Editar registro"
-
-#: ../view/partial/list_top.phtml:3
-msgid "List"
-msgstr "Listagem"
-
-#~ msgid "List "
-#~ msgstr "Listagem"
 
 #~ msgid "Skeleton Application"
 #~ msgstr "Aplicação Skeleton"

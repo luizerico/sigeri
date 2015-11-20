@@ -1,0 +1,24 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: sigeri\n"
+"POT-Creation-Date: 2015-11-20 10:07-0300\n"
+"PO-Revision-Date: 2015-11-20 10:19-0300\n"
+"Last-Translator: Luiz Érico <luizerico@gmail.com>\n"
+"Language-Team: \n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.7.5\n"
+"X-Poedit-Basepath: /home/luizerico/Projects/sigeri/module/Risk\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-KeywordsList: translate\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: view/partial/list_top.phtml:3
+msgid "List "
+msgstr "Listagem "
+
+#: view/partial/list_top.phtml:13
+msgid "Add new register"
+msgstr "Adicionar novo registro"

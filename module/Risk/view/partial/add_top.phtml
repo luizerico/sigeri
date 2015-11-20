@@ -1,6 +1,6 @@
 <section class="add">
     <?php
-    $title = 'Add new ' . $this->title . ' register';
+    $title = $this->translate('Add new register') . ': ' . $this->title;
     $this->headTitle('SIGERI - ' . $title);
     ?>
     <div class="panel panel-default">
@@ -9,7 +9,9 @@
         </div>
         <div class="panel-body">
             <?php if ($this->error): ?>
-                <p class="error">There were one or more issues with your submission. Please correct...</p>
+                <p class="error">
+                    <?php  echo $this->translate('There were one or more issues with your submission. Please correct...');?>
+                </p>
             <?php endif ?>
             <?php
             $form = $this->form;

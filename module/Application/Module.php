@@ -16,7 +16,6 @@ use Zend\Authentication\Adapter\DbTable as DBAuthAdapter;
 use Zend\Authentication\Adapter\Ldap as LdapAuthAdapter;
 use Zend\Authentication\AuthenticationService;
 use Zend\Config\Reader\Ini as ConfigReader;
-use Zend\Config\Writer\Ini as ConfigWriter;
 use Zend\Config\Config;
 
 class Module {
@@ -32,6 +31,12 @@ class Module {
             $result = $e->getResult();
             $result->setTerminal(TRUE);
         });
+
+        // Set Translation
+        $translator = $e->getApplication()->getServiceManager()->get('translator');
+        $translator
+                ->setLocale(\Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']))
+                ->setFallbackLocale('en_US');
     }
 
     public function getConfig() {
@@ -84,17 +89,17 @@ class Module {
 //                    echo (__DIR__);
 //                    $teste = new ConfigWriter();
 //                    echo $teste->toFile(__DIR__ . '/config/teste.txt', array('testes'=>'asdfteste'));
-                    
-                    $configReader = new ConfigReader();                    
-                    $configData = $configReader->fromFile(__DIR__ . '/config/application.ini' ,'LDAP');
-                    $config = new Config($configData, true);               
-                    $options = $config->LDAP->ldap->toArray();                    
+
+                    $configReader = new ConfigReader();
+                    $configData = $configReader->fromFile(__DIR__ . '/config/application.ini', 'LDAP');
+                    $config = new Config($configData, true);
+                    $options = $config->LDAP->ldap->toArray();
 
                     $ldapAuthAdapter = new LdapAuthAdapter($options, 'username', 'password');
-                    
+
                     $authService = new AuthenticationService();
                     $authService->setAdapter($ldapAuthAdapter);
-                    
+
                     return $authService;
                 })
         );
