@@ -1,23 +1,24 @@
 <section class="list">
     <?php
-    $title = 'List ' . $this->title;
+    $title = $this->translate('List') . ': ' . $this->title;
     $this->headTitle('SIGERI - ' . $title);
     ?>
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3><?php echo $this->escapeHtml($title); ?></h3>
-        </div>
-        <div class="panel-body">
+            <h3><?php echo $this->escapeHtml($title); ?>
             <!-- HTML and script to redirect to another page based on the select -->            
-            <div class="form-group" style="padding-right:15px; padding-left: 15px;">
+            <div class="form-group" style="padding-right:15px; padding-left: 15px; float: right;">
                 <select id="method" class="form-control">
                     <option value="serverasset">New Server Asset</option>
                     <option value="serviceasset">New Service Asset</option>
                     <option value="processasset">New Process Asset</option>
                     <option value="locationasset">New Location Asset</option>
                 </select>
-            </div>            
+            </div>     
+            </h3>
+        </div>
+        <div class="panel-body">               
             <script type="text/javascript">
                 $(document).ready(function () {
                     $('select#method').on('click', function () {
@@ -84,13 +85,4 @@
                     <?php endforeach; ?>
                 </tbody>
             </table>
-        </div>
-    </div>
-</section>
-<script>
-    $(document).ready(function () {
-        var table = $('#datatable').DataTable({
-            "pageLength": 20,
-        });
-    });
-</script>
+<?php echo $this->partial('partial/list_bottom.phtml'); ?>

@@ -105,18 +105,18 @@ class Risk {
 //    protected $method;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Risk\Entity\Probability")
-     * @ORM\JoinColumn(name="probability_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Risk\Entity\Likelihood")
+     * @ORM\JoinColumn(name="likelihood_id", referencedColumnName="id")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Required(true)
      * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Probability", "empty_option":"Please select..."})
+     * @Annotation\Options({"label":"Likelihood", "empty_option":"Please select..."})
      * @Annotation\Attributes({"style":"width:100%"})
      *
-     * @var \Risk\Entity\Probability
+     * @var \Risk\Entity\Likelihood
      * @access protected
      */
-    protected $probability;
+    protected $likelihood;
 
     /**
      * @ORM\ManyToOne(targetEntity="Risk\Entity\Impact")
@@ -198,6 +198,30 @@ class Risk {
      * @access protected
      */
     protected $detimpact;
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="Risk\Entity\Vulnerability")
+     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
+     * @Annotation\Required(false)
+     * @Annotation\Options({"label":"Vulnerabilities"})
+     * @Annotation\Attributes({"multiple":"multiple"})
+     *
+     * @var \Risk\Entity\Vulnerability
+     * @access protected
+     */
+    protected $vulnerabilities;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Risk\Entity\Threat")
+     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
+     * @Annotation\Required(false)
+     * @Annotation\Options({"label":"Threaties"})
+     * @Annotation\Attributes({"multiple":"multiple"})
+     *
+     * @var \Risk\Entity\Threat
+     * @access protected
+     */
+    protected $threaties;
 
     /**
      * @ORM\ManyToMany(targetEntity="\Risk\Entity\Compliance")
@@ -224,6 +248,18 @@ class Risk {
      * @access protected
      */
     protected $controls;
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="Asset\Entity\Asset")
+     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
+     * @Annotation\Required(false)
+     * @Annotation\Options({"label":"Assets"})
+     * @Annotation\Attributes({"multiple":"multiple"})
+     *
+     * @var \Asset\Entity\Asset
+     * @access protected
+     */
+    protected $assets;
 
     /**
      * @ORM\ManyToMany(targetEntity="Document\Entity\Document")
@@ -262,6 +298,9 @@ class Risk {
         $this->documents = new ArrayCollection();
         $this->controls = new ArrayCollection();
         $this->compliance = new ArrayCollection();
+        $this->vulnerabilities = new ArrayCollection();
+        $this->threaties = new ArrayCollection();
+        $this->assets = new ArrayCollection();
     }
 
     public function exchangeArray($data) {
@@ -269,7 +308,7 @@ class Risk {
         $this->name = (isset($data ['name'])) ? $data ['name'] : null;
         $this->status = (isset($data ['status'])) ? $data ['status'] : null;
         $this->description = (isset($data ['description'])) ? $data ['description'] : null;
-        $this->probability = (isset($data ['probability'])) ? $data ['probability'] : null;
+        $this->likelihood = (isset($data ['likelihood'])) ? $data ['likelihood'] : null;
         $this->impact = (isset($data ['impact'])) ? $data ['impact'] : null;
         $this->detimpact = (isset($data ['detimpact'])) ? $data ['detimpact'] : null;
         $this->type = (isset($data ['type'])) ? $data ['type'] : null;
@@ -280,7 +319,10 @@ class Risk {
         $this->documents = (isset($data ['documents'])) ? $data ['documents'] : null;
         $this->controls = (isset($data ['controls'])) ? $data ['controls'] : null;
         $this->compliance = (isset($data ['compliance'])) ? $data ['compliance'] : null;
-
+        $this->vulnerabilities = (isset($data ['vulnerabilities'])) ? $data ['vulnerabilities'] : null;
+        $this->threaties = (isset($data ['threaties'])) ? $data ['threaties'] : null;
+        $this->assets = (isset($data ['assets'])) ? $data ['assets'] : null;
+        
         $this->method = (isset($data ['method'])) ? $data ['method'] : null;
     }
 
@@ -324,12 +366,12 @@ class Risk {
         return $this;
     }
 
-    public function getProbability() {
-        return $this->probability;
+    public function getLikelihood() {
+        return $this->likelihood;
     }
 
-    public function setProbability(\Risk\Entity\Probability $probability) {
-        $this->probability = $probability;
+    public function setLikelihood(\Risk\Entity\Likelihood $likelihood) {
+        $this->likelihood = $likelihood;
         return $this;
     }
 
@@ -465,6 +507,38 @@ class Risk {
         $this->compliance = $compliance;
         return $this;
     }
+    
+    public function addVulnerabilities(Collection $vulnerabilities) {
+        foreach ($vulnerabilities as $vulnerability) {
+            $this->vulnerabilities->add($vulnerability);
+        }
+    }
+
+    public function removeVulnerabilities(Collection $vulnerabilities) {
+        foreach ($vulnerabilities as $vulnerability) {
+            $this->vulnerabilities->removeElement($vulnerability);
+        }
+    }
+
+    public function getVulnerabilities() {
+        return $this->vulnerabilities;
+    }
+
+    public function addThreaties(Collection $threaties) {
+        foreach ($threaties as $threat) {
+            $this->threaties->add($threat);
+        }
+    }
+
+    public function removeThreaties(Collection $threaties) {
+        foreach ($threaties as $threat) {
+            $this->threaties->removeElement($threat);
+        }
+    }
+
+    public function getThreaties() {
+        return $this->threaties;
+    }
 
 //    public function addMethod(Collection $methods) {
 //        foreach ($methods as $method) {
@@ -480,6 +554,22 @@ class Risk {
 
     public function getMethod() {
         return $this->method;
+    }
+    
+    public function addAssets(Collection $assets) {
+        foreach ($assets as $asset) {
+            $this->assets->add($asset);
+        }
+    }
+
+    public function removeAssets(Collection $assets) {
+        foreach ($assets as $asset) {
+            $this->assets->removeElement($asset);
+        }
+    }
+
+    public function getAssets() {
+        return $this->assets;
     }
 
 }

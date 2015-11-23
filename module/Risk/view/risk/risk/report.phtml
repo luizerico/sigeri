@@ -141,7 +141,7 @@ echo $this->headScript()
                         });
 
                         var maxY = d3.max(data, function (d) {
-                            return d.probability;
+                            return d.likelihood;
                         });
 
                         var xPos = d3.scale.linear()
@@ -170,7 +170,7 @@ echo $this->headScript()
                                 .attr("x", width)
                                 .attr("dy", "-1em")
                                 .style("text-anchor", "end")
-                                .text("Probability");
+                                .text("Likelihood");
                         ;
 
                         svg.append("g")
@@ -225,7 +225,7 @@ echo $this->headScript()
                                     tooltip.html(
                                             "Risk: " + d.name +
                                             "</br>Impact: " + d.impact +
-                                            "<br/>Probability: " + d.probability)
+                                            "<br/>Likelihood: " + d.likelihood)
                                             .style("left", (d3.event.pageX + radius * 2) + "px")
                                             .style("top", (d3.event.pageY - 28) + "px");
                                 })
@@ -244,7 +244,7 @@ echo $this->headScript()
 
                         // Set initial positions
                         data.forEach(function (d) {
-                            d.x = xPos(d.probability) - radius;
+                            d.x = xPos(d.likelihood) - radius;
                             d.y = yPos(d.impact) + radius;
                             //d.color = color(d.impact);
                             d.radius = radius;
@@ -272,7 +272,7 @@ echo $this->headScript()
 
                         function moveTowardDataPosition(alpha) {
                             return function (d) {
-                                d.x += (xPos(d.probability) - d.x) * alpha_X * alpha;
+                                d.x += (xPos(d.likelihood) - d.x) * alpha_X * alpha;
                                 d.y += (yPos(d.impact) - d.y) * alpha_X * alpha;
                             };
                         }
@@ -337,7 +337,7 @@ echo $this->headScript()
                 d3.json("jsonData", function (data) {
                     var max_n = 0;
                     for (var d in data) {
-                        max_n = Math.max(data[d].probability, max_n);
+                        max_n = Math.max(data[d].likelihood, max_n);
                     }
                     ;
                     var x = d3.scale.linear()
@@ -349,7 +349,7 @@ echo $this->headScript()
                             .data(data)
                             .enter().append("div")
                             .style("width", function (d) {
-                                return x(d.probability) + "px";
+                                return x(d.likelihood) + "px";
                             })
                             .text(function (d) {
                                 return d.name;
@@ -664,7 +664,7 @@ echo $this->headScript()
                             .append("text")
                             .text(function(d){ return d.name })
                             .attr("x", function(d, i) { return (i * (w / dataset.length ) + (w / dataset.length) / 2)  ; })
-                            .attr("y", function(d) {	return h - (d.probability * 1) + 15; })
+                            .attr("y", function(d) {	return h - (d.likelihood * 1) + 15; })
                             .attr("text-anchor", "middle");
             </script>
             
@@ -691,9 +691,9 @@ echo $this->headScript()
                        
                        .append("rect")
                        .attr("x", function(d, i) { return i * (w / dataset.length); })
-                       .attr("y", function(d) {	return h - (d.probability * 1); })
+                       .attr("y", function(d) {	return h - (d.likelihood * 1); })
                        .attr("width", w / dataset.length - barPadding)
-                       .attr("height", function(d) { return d.probability * 1; })
+                       .attr("height", function(d) { return d.likelihood * 1; })
                        .attr("fill", "brown")
                        
                     svg.selectAll("text")
@@ -702,7 +702,7 @@ echo $this->headScript()
                             .append("text")
                             .text(function(d){ return d.name })
                             .attr("x", function(d, i) { return (i * (w / dataset.length ) + (w / dataset.length) / 2)  ; })
-                            .attr("y", function(d) {	return h - (d.probability * 1) + 15; })
+                            .attr("y", function(d) {	return h - (d.likelihood * 1) + 15; })
                             .attr("text-anchor", "middle");
             </script>
             
@@ -712,9 +712,9 @@ echo $this->headScript()
              <script type="text/javascript">						
                     var dataset = <?php echo $this->data2 ?>;
 
-                    function probability(d){ console.log(d); return d.probability.value; };
+                    function likelihood(d){ console.log(d); return d.likelihood.value; };
                     function threat(d){ console.log(d); return d.threat.value; };
-                    //probability(dataset[3]);
+                    //likelihood(dataset[3]);
 
                     var w = 520;
                     var h = 550;
@@ -735,8 +735,8 @@ echo $this->headScript()
                                     })
                                .attr("cy", h/2)
                                .attr("r", function(d) {
-                                        console.log(d.probability.value);
-                                            return d.probability.value / 2;
+                                        console.log(d.likelihood.value);
+                                            return d.likelihood.value / 2;
                                });
                     
             </script>

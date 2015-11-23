@@ -124,31 +124,7 @@ class Asset {
      * @var \Risk\Entity\Risk
      * @access protected
      */
-    protected $risks;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="Risk\Entity\Vulnerability")
-     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Required(false)
-     * @Annotation\Options({"label":"Vulnerabilities"})
-     * @Annotation\Attributes({"multiple":"multiple"})
-     *
-     * @var \Risk\Entity\Vulnerability
-     * @access protected
-     */
-    protected $vulnerabilities;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="Risk\Entity\Threat")
-     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Required(false)
-     * @Annotation\Options({"label":"Threaties"})
-     * @Annotation\Attributes({"multiple":"multiple"})
-     *
-     * @var \Risk\Entity\Threat
-     * @access protected
-     */
-    protected $threaties;
+    protected $risks;    
 
     /**
      * @ORM\ManyToMany(targetEntity="Risk\Entity\Plan")
@@ -215,8 +191,6 @@ class Asset {
         $this->risks = new ArrayCollection();
         $this->dependencies = new ArrayCollection();
         $this->documents = new ArrayCollection();
-        $this->vulnerabilities = new ArrayCollection();
-        $this->threaties = new ArrayCollection();
         $this->plans = new ArrayCollection();
     }
 
@@ -229,8 +203,6 @@ class Asset {
         $this->analyst = (isset($data ['analyst'])) ? $data ['analyst'] : null;
         $this->groups = (isset($data ['groups'])) ? $data ['groups'] : null;
         $this->risks = (isset($data ['risks'])) ? $data ['risks'] : null;
-        $this->vulnerabilities = (isset($data ['vulnerabilities'])) ? $data ['vulnerabilities'] : null;
-        $this->threaties = (isset($data ['threaties'])) ? $data ['threaties'] : null;
         $this->dependencies = (isset($data ['dependencies'])) ? $data ['dependencies'] : null;
         $this->documents = (isset($data ['documents'])) ? $data ['documents'] : null;
         $this->plans = (isset($data ['plans'])) ? $data ['plans'] : null;
@@ -333,39 +305,7 @@ class Asset {
 
     public function getRisks() {
         return $this->risks;
-    }
-
-    public function addVulnerabilities(Collection $vulnerabilities) {
-        foreach ($vulnerabilities as $vulnerability) {
-            $this->vulnerabilities->add($vulnerability);
-        }
-    }
-
-    public function removeVulnerabilities(Collection $vulnerabilities) {
-        foreach ($vulnerabilities as $vulnerability) {
-            $this->vulnerabilities->removeElement($vulnerability);
-        }
-    }
-
-    public function getVulnerabilities() {
-        return $this->vulnerabilities;
-    }
-
-    public function addThreaties(Collection $threaties) {
-        foreach ($threaties as $threat) {
-            $this->threaties->add($threat);
-        }
-    }
-
-    public function removeThreaties(Collection $threaties) {
-        foreach ($threaties as $threat) {
-            $this->threaties->removeElement($threat);
-        }
-    }
-
-    public function getThreaties() {
-        return $this->threaties;
-    }
+    }    
 
     public function addDependencies(Collection $dependencies) {
         foreach ($dependencies as $dependency) {

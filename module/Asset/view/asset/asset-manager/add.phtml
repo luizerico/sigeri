@@ -1,43 +1,30 @@
-<section class="add">
-	<h2>Add Asset Manager</h2>
-
-<?php if($this->error): ?>
-<p class="error">There were one or more issues with your submission.
-		Please correct...</p>
-<?php endif ?>
-
+<?php echo $this->partial('partial/add_top.phtml'); ?>
 <?php
+foreach ($form as $element) :
+    ?>
 
-$form = $this->form;
-$form->setAttribute ( 'action', $this->url );
-$form->prepare ();
+    <div class="form-group <?php
+    if ($this->formElementErrors($element))
+        echo "error"
+        ?>">
+        <label class="col-xs-2 col-sm-2 col-md-2 control-label"><?php echo $element->getLabel() ?></label>
+        <div class="col-xs-10 col-sm-10 col-md-10">
+            <?php
+            $element->setAttribute('class', 'form-control ' . $element->getAttribute('class'));
 
-echo $this->form ()->openTag ( $form );
+            //if (!$element->hasAttribute('class'))
+            //	$element->setAttribute('class', 'form-control');
+            echo $this->formElement($element);
+            if ($this->formElementErrors($element))
+                
+                ?>
+            <span class="help-inline"><?php echo $this->formElementErrors($element) ?></span>
+        </div>
+    </div>
 
-foreach ( $form as $element ) :
-	?>
-
-<div
-		class="control-group <?php
-	
-	if ($this->formElementErrors ( $element ))
-		echo "error"?>">
-		<label class="control-label"><?php echo $element->getLabel() ?></label>
-		<div class="controls">
-        <?php
-	
-	echo $this->formElement ( $element );
-	if ($this->formElementErrors ( $element ))
-		?>
-                    <span class="help-inline"><?php echo $this->formElementErrors($element) ?></span>
-		</div>
-	</div>
-
-<?php
-endforeach
-;
-
-echo $this->form ()->closeTag ( $form );
+    <?php
+endforeach;
 ?>
 
-</section>
+
+<?php echo $this->partial('partial/add_bottom.phtml'); ?>

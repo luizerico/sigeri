@@ -83,11 +83,11 @@ class RiskController extends GenericController {
             $orderby = " ORDER BY " . $orderby . " DESC ";
         }
 
-        $query = "SELECT u.id AS id, u.name AS name, i.value AS impact, p.value AS probability,
+        $query = "SELECT u.id AS id, u.name AS name, i.value AS impact, p.value AS likelihood,
                     (i.value * p.value) AS risk
                     FROM Risk\Entity\Risk u                     
                     JOIN u.impact i 
-                    JOIN u.probability p " . $orderby;
+                    JOIN u.likelihood p " . $orderby;
 
         $ORMRepository = $this->getEntityManager();
         $query = $ORMRepository->createQuery($query);

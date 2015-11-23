@@ -107,7 +107,7 @@ echo $this->headScript()
                 }));
 
                 y.domain([0, d3.max(data, function (d) {
-                        return d.impact * d.probability;
+                        return d.impact * d.likelihood;
                     })]);
 
                 chart.append("g")
@@ -123,7 +123,7 @@ echo $this->headScript()
                         .attr("y", 6)
                         .attr("dy", ".70em")
                         .style("text-anchor", "end")
-                        .text("Impact x Probability");
+                        .text("Impact x Likelihood");
 
                 chart.selectAll(".bar")
                         .data(data)
@@ -137,10 +137,10 @@ echo $this->headScript()
                             return x(d.name);
                         })
                         .attr("y", function (d) {
-                            return y(d.impact * d.probability);
+                            return y(d.impact * d.likelihood);
                         })
                         .attr("height", function (d) {
-                            return height - y(d.impact * d.probability);
+                            return height - y(d.impact * d.likelihood);
                         })
                         .attr("width", x.rangeBand())
                         .on("mouseover", function (d) {
@@ -149,7 +149,7 @@ echo $this->headScript()
                                     .style("opacity", 1);
                             tooltip.html(
                                     "Risk: " + d.name +
-                                    "</br>Probability: " + d.probability +
+                                    "</br>Likelihood: " + d.likelihood +
                                     "</br>Impact: " + d.impact)
                                     .style("left", (d3.event.pageX) + "px")
                                     .style("top", (d3.event.pageY - 60) + "px");
@@ -277,7 +277,7 @@ echo $this->headScript()
                                     .duration(200)
                                     .style("opacity", 1);
                             tooltip.html(
-                                    "Probability: " + data[i].probability +
+                                    "Likelihood: " + data[i].likelihood +
                                     "</br>Impact: " + data[i].impact)
                                     .style("left", (d3.event.pageX) + "px")
                                     .style("top", (d3.event.pageY - 40) + "px");
@@ -314,7 +314,7 @@ echo $this->headScript()
                         .attr("y", 6)
                         .attr("dy", ".70em")
                         .style("text-anchor", "end")
-                        .text("Impact + Probability");
+                        .text("Impact + Likelihood");
 
                 var tooltip = d3.select("body").append("div")
                         .attr("class", "tooltip");

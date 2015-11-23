@@ -1,6 +1,9 @@
-INSERT INTO user(id,name,unit_id,email,password,detail) VALUES 
-(1,'admin',1,'admin@admin.com','admin','Administrator'),
-(2,'luizerico',1,'admin@admin.com','123456','Administrator');
+INSERT INTO user(id,username,name,unit_id,email,password,detail) VALUES 
+(1,'admin','admin',1,'admin@admin.com','admin','Administrator'),
+(2,'manager01','manager01',1,'manager01@admin.com','123456','Manager'),
+(3,'analist01','analist01',1,'analist01@admin.com','123456','IT analist'),
+(4,'analist02','analist02',1,'analist02@admin.com','123456','Process analist'),
+(5,'luizerico','Luiz Erico',1,'admin@admin.com','123456','creator');
 
 
 
@@ -79,7 +82,7 @@ INSERT INTO impact (id, value, description) VALUES
 (4, 4,"High"),
 (5, 5,"Very High");
 
-INSERT INTO probability (id, value, description) VALUES 
+INSERT INTO likelihood (id, value, description) VALUES 
 (1, 1,"Very Low"),
 (2, 2,"Low"),
 (3, 3,"Medium"),
@@ -108,5 +111,19 @@ INSERT INTO risktype (id, name, description) VALUES
 (16, "Reputational risk",""),
 (17, "Strategic risk","");
 
+INSERT INTO riskstatus (id, name, description) VALUES 
+(1, "Active",""),
+(2, "Obsolete",""),
+(3, "Mitigated",""),
+(4, "Avoided",""),
+(5, "Reduced","");
 
 
+
+-- Risk
+INSERT INTO assettype (id, name, description) VALUES 
+(1, "Generic Server",""),
+(2, "Web Server",""),
+(3, "DNS Server",""),
+(4, "Application Server",""),
+(5, "File Server","");

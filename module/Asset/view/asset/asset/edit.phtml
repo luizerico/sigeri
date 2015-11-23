@@ -28,8 +28,6 @@
                         if (!(in_array($element->getAttribute('name'), array('submit',
                                     'description',
                                     'risks',
-                                    'vulnerabilities',
-                                    'threaties',
                                     'plans',
                                     'dependencies',
                                     'documents',
@@ -70,8 +68,6 @@
                         <li class = "active"><a data-toggle = "tab" href = "#description">Description</a></li>
                         <li><a data-toggle = "tab" href = "#groups">Groups</a></li>
                         <li><a data-toggle = "tab" href = "#risks">Risks</a></li>
-                        <li><a data-toggle = "tab" href = "#vulnerabilities">Vulnerabilities</a></li>
-                        <li><a data-toggle = "tab" href = "#threaties">Threaties</a></li>
                         <li><a data-toggle = "tab" href = "#plans">Plans</a></li>
                         <li><a data-toggle = "tab" href = "#dependencies">Dependencies</a></li>
                         <li><a data-toggle = "tab" href = "#documents">Documents</a></li>
@@ -89,14 +85,6 @@
                             </div>
                             <div id = "risks" class = "tab-pane fade in">
                                 <?php echo $this->formElement($form->get('risks'));
-                                ?>
-                            </div>
-                            <div id = "vulnerabilities" class = "tab-pane fade in">
-                                <?php echo $this->formElement($form->get('vulnerabilities'));
-                                ?>
-                            </div>
-                            <div id = "threaties" class = "tab-pane fade in">
-                                <?php echo $this->formElement($form->get('threaties'));
                                 ?>
                             </div>
                             <div id = "plans" class = "tab-pane fade in">

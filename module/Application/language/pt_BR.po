@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ZendSkeletonApplication\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-20 10:58-0300\n"
-"PO-Revision-Date: 2015-11-20 10:58-0300\n"
+"POT-Creation-Date: 2015-11-23 13:05-0300\n"
+"PO-Revision-Date: 2015-11-23 13:05-0300\n"
 "Last-Translator: Luiz Érico <luizerico@gmail.com>\n"
 "Language-Team: ZF Contibutors <zf-devteam@zend.com>\n"
 "Language: pt\n"
@@ -34,6 +34,10 @@ msgstr "Editar registro"
 #: ../view/partial/list_top.phtml:3
 msgid "List"
 msgstr "Listagem"
+
+#: ../view/risk/threat-type/edit.phtml:32
+msgid "name"
+msgstr "nome"
 
 #~ msgid "List "
 #~ msgstr "Listagem"

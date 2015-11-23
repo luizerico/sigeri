@@ -3,16 +3,15 @@
 namespace Risk\Entity;
 
 use Zend\Form\Annotation;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="probability")
+ * @ORM\Table(name="likelihood")
  * @Annotation\Hydrator("Zend\Stdlib\Hydrator\ObjectProperty")
- * @Annotation\Name("Probability")
+ * @Annotation\Name("Likelihood")
  */
-class Probability {
+class Likelihood {
 
     /**
      * @ORM\Id

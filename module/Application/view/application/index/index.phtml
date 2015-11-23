@@ -230,7 +230,7 @@
                                     d3.json("risk/jsonRiskData", function (data) {
 
                                         var maxX = d3.max(data, function (d) {
-                                            return d.probability;
+                                            return d.likelihood;
                                         });
 
                                         var maxY = d3.max(data, function (d) {
@@ -306,7 +306,7 @@
                                                 })
                                                 .attr("class", "circle")
                                                 .attr("fill", function (d) {
-                                                    return color(d.impact * d.probability);
+                                                    return color(d.impact * d.likelihood);
                                                 })
                                                 //                            .style("opacity", 0.5)
                                                 .call(force.drag)
@@ -317,7 +317,7 @@
                                                     tooltip.html(
                                                             "Risk: " + d.name +
                                                             "</br>Impact: " + d.impact +
-                                                            "<br/>Probability: " + d.probability)
+                                                            "<br/>Probability: " + d.likelihood)
                                                             .style("left", (d3.event.pageX + radius * 2) + "px")
                                                             .style("top", (d3.event.pageY - 28) + "px");
                                                 })
@@ -336,7 +336,7 @@
 
                                         // Set initial positions
                                         data.forEach(function (d) {
-                                            d.x = xPos(d.probability) - radius;
+                                            d.x = xPos(d.likelihood) - radius;
                                             d.y = yPos(d.impact) + radius;
                                             //d.color = color(d.impact);
                                             d.radius = radius;
@@ -364,7 +364,7 @@
 
                                         function moveTowardDataPosition(alpha) {
                                             return function (d) {
-                                                d.x += (xPos(d.probability) - d.x) * alpha_X * alpha;
+                                                d.x += (xPos(d.likelihood) - d.x) * alpha_X * alpha;
                                                 d.y += (yPos(d.impact) - d.y) * alpha_X * alpha;
                                             };
                                         }
@@ -475,7 +475,7 @@
                                                         field.id + "\">" + 
                                                         field.name + "</a><p><strong>" + 
                                                         "Risk: " + field.risk + "</strong></p><p><small>" +                                                        
-                                                        "probability: " + field.probability + 
+                                                        "likelihood: " + field.likelihood + 
                                                         " | impact: " + field.impact +
                                                         composer2);
                                             });

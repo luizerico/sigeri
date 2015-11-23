@@ -28,7 +28,7 @@ return array(
             'RiskManager' => 'Risk\Controller\RiskManagerController',
             
             'Impact' => 'Risk\Controller\ImpactController',
-            'Probability' => 'Risk\Controller\ProbabilityController',
+            'Likelihood' => 'Risk\Controller\LikelihoodController',
             
             'Vulnerability' => 'Risk\Controller\VulnerabilityController',
             'VulnerabilityType' => 'Risk\Controller\VulnerabilityTypeController',
@@ -145,16 +145,16 @@ return array(
                     )
                 )
             ),
-            'probability' => array(
+            'likelihood' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/probability[/][:action[/:id]]',
+                    'route' => '/likelihood[/][:action[/:id]]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id' => '[0-9]+'
                     ),
                     'defaults' => array(
-                        'controller' => 'Probability',
+                        'controller' => 'Likelihood',
                         'action' => 'index'
                     )
                 )
