@@ -413,21 +413,29 @@
                     </div>
                     <div class="tiles">
                         <div class="col-md-4 tile">
-                            <span>Total Sessions</span>
-                            <h2>231,809</h2>
+                            <span>High Risks</span>
+                            <h2 id="highrisk">
+                                <script>
+                                    $.getJSON(
+                                            "/risk/count?where=value>4",
+                                            function (jsonData) {
+                                                $("#highrisk").text(jsonData.rowCount);
+                                            }
+                                    );</script>
+                            </h2>
                             <span class="sparkline11 graph" style="height: 160px;">
                                 <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
                             </span>
                         </div>
                         <div class="col-md-4 tile">
-                            <span>Total Revenue</span>
+                            <span>Medium Risks</span>
                             <h2>$231,809</h2>
                             <span class="sparkline22 graph" style="height: 160px;">
                                 <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
                             </span>
                         </div>
                         <div class="col-md-4 tile">
-                            <span>Total Sessions</span>
+                            <span>Low Risks</span>
                             <h2>231,809</h2>
                             <span class="sparkline11 graph" style="height: 160px;">
                                 <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
@@ -464,18 +472,18 @@
                                                     <a class=\"pull-left border-aero profile_thumb\">\n\
                                                         <i class=\"fa fa-exclamation-triangle\"></i>\n\
                                                     </a><div class=\"media-body\">";
-                                
+
                                 var composer2 = "</small></p></div></li>";
-                        
+
                                 $.getJSON(
                                         "/risk/jsonRiskData?orderby=impact&limit=5", function (result) {
                                             $.each(result, function (i, field) {
-                                                $("#toprisk").append(composer1 + 
-                                                        "<a class=\"title\" href=\"/risk/view/" + 
-                                                        field.id + "\">" + 
-                                                        field.name + "</a><p><strong>" + 
-                                                        "Risk: " + field.risk + "</strong></p><p><small>" +                                                        
-                                                        "likelihood: " + field.likelihood + 
+                                                $("#toprisk").append(composer1 +
+                                                        "<a class=\"title\" href=\"/risk/view/" +
+                                                        field.id + "\">" +
+                                                        field.name + "</a><p><strong>" +
+                                                        "Risk: " + field.risk + "</strong></p><p><small>" +
+                                                        "likelihood: " + field.likelihood +
                                                         " | impact: " + field.impact +
                                                         composer2);
                                             });

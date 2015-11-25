@@ -197,7 +197,7 @@ class Risk {
      * @var string
      * @access protected
      */
-    protected $detimpact;
+    //protected $detimpact;
     
     /**
      * @ORM\ManyToMany(targetEntity="Risk\Entity\Vulnerability")
@@ -570,6 +570,14 @@ class Risk {
 
     public function getAssets() {
         return $this->assets;
+    }
+    
+    public function getAssetSumValue(){
+        $sum = 0;
+        foreach($this->getAssets() as $asset) {
+            $sum += $asset->getRelevance()->getValue(); 
+        }
+        return $sum;
     }
 
 }

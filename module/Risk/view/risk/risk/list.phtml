@@ -1,15 +1,18 @@
 <?php echo $this->partial('partial/list_top.phtml'); ?>
-<table id="datatable" class="display table">
+<table id="datatable" class="table table-striped responsive-utilities jambo_table bulk_action">
     <thead>
         <tr>
             <th>ID</th>
             <th>Name</th>
+            <th>Status</th>
+            <th id="risk">Risk</th>  
             <th>Impact</th>
             <th>Likelihood</th>
-            <th id="risk">Risk</th>
+            <th>Assets</th>
+            <th>Relevance</th>
             <th>Type</th>
             <th>Analyst</th>
-            <th>Register</th> 
+             
             <th style="width:120px;">&nbsp;</th>
         </tr>
     </thead>
@@ -17,13 +20,16 @@
         <?php foreach ($dbArray as $dbRow) : ?>
             <tr>
                 <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
-                <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>
-                <td><?php echo $this->escapeHtml($dbRow->getImpact()); ?></td>
-                <td><?php echo $this->escapeHtml($dbRow->getLikelihood()); ?></td>
-                <td><?php echo $this->escapeHtml($dbRow->getImpact()->getValue() * $dbRow->getLikelihood()->getValue()); ?></td>
+                <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>                
+                <td><?php echo $this->escapeHtml($dbRow->getStatus()); ?></td>
+                <td class="cell_center"><?php echo $this->escapeHtml($dbRow->getImpact()->getValue() * $dbRow->getLikelihood()->getValue()); ?></td>
+                <td class="cell_center"><?php echo $this->escapeHtml($dbRow->getImpact()->getValue()); ?></td>
+                <td class="cell_center"><?php echo $this->escapeHtml($dbRow->getLikelihood()->getValue()); ?></td>
+                <td class="cell_center"><?php echo $this->escapeHtml($dbRow->getAssets()->count()); ?></td>
+                <td class="cell_center"><?php echo $this->escapeHtml($dbRow->getAssetSumValue()); ?></td>
                 <td><?php echo $this->escapeHtml($dbRow->getType()); ?></td>
                 <td><?php echo $this->escapeHtml($dbRow->getAnalyst()); ?></td>
-                <td><?php echo $this->escapeHtml($dbRow->getFormatedDate()); ?></td>
+                
                 <td><a
                         href="<?php
                         echo $this->url($this->router, array(
@@ -55,7 +61,7 @@
 
 <script>
     var colindex = document.getElementById('risk').cellIndex;
-    $('#datatable tbody tr td:nth-child(5)').each(function () {
+    $('#datatable tbody tr td:nth-child(4)').each(function () {
         cell = $(this);
         if (cell.text() < 10) {
             cell.css('background-color', '#88FF88');

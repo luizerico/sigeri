@@ -213,10 +213,10 @@ class RiskController extends GenericController {
          * change the Submit value button to edit
          */
 
-        $form->add(new \Zend\Form\Element\Csrf('security'));
-        $form->add(new \Zend\Form\Element\Submit('submit', array(
-            'value' => 'Save')));
-        $form->get('submit')->setAttribute('value', 'Add');
+//        $form->add(new \Zend\Form\Element\Csrf('security'));
+//        $form->add(new \Zend\Form\Element\Submit('submit', array(
+//            'value' => 'Save')));
+//        $form->get('submit')->setAttribute('value', 'Add');
 
         $form->bind($dbArray);
         $form->get('submit')->setAttribute('value', 'Edit');
@@ -245,9 +245,7 @@ class RiskController extends GenericController {
                 return $this->redirect()->toRoute($this->route, array(
                             'action' => 'list'
                 ));
-            } else {
-                echo $request;
-            }
+            } 
         }
 
         return array(

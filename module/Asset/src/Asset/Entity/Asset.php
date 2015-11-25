@@ -100,6 +100,30 @@ class Asset {
      * @access protected
      */
     protected $unit;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Asset\Entity\AssetRelevance")
+     * @ORM\JoinColumn(name="value_id", referencedColumnName="id")
+     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
+     * @Annotation\Required(false)
+     * @Annotation\Options({"label":"Relevance:", "empty_option":"Please select..."})
+     *
+     * @var \Asset\Entity\AssetRelevance
+     * @access protected
+     */
+    protected $relevance;
+    
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="Asset\Entity\Consequence")
+     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
+     * @Annotation\Required(false)
+     * @Annotation\Options({"label":"Consequences:"})
+     * @Annotation\Attributes({"multiple":"multiple"})
+     *
+     * @access protected
+     */
+    protected $consequences;
 
     /**
      * @ORM\ManyToMany(targetEntity="Asset\Entity\AssetGroup")
@@ -124,7 +148,7 @@ class Asset {
      * @var \Risk\Entity\Risk
      * @access protected
      */
-    protected $risks;    
+//    protected $risks;    
 
     /**
      * @ORM\ManyToMany(targetEntity="Risk\Entity\Plan")
@@ -199,8 +223,9 @@ class Asset {
         $this->name = (isset($data ['name'])) ? $data ['name'] : null;
         $this->description = (isset($data ['description'])) ? $data ['description'] : null;
         $this->type = (isset($data ['type'])) ? $data ['type'] : null;
-        $this->manager = (isset($data ['manager'])) ? $data ['manager'] : null;
-        $this->analyst = (isset($data ['analyst'])) ? $data ['analyst'] : null;
+        $this->analyst = (isset($data ['analyst'])) ? $data ['analyst'] : null;        
+        $this->unit = (isset($data ['unit'])) ? $data ['unit'] : null;
+        $this->relevance = (isset($data ['relevance'])) ? $data ['relevance'] : null;
         $this->groups = (isset($data ['groups'])) ? $data ['groups'] : null;
         $this->risks = (isset($data ['risks'])) ? $data ['risks'] : null;
         $this->dependencies = (isset($data ['dependencies'])) ? $data ['dependencies'] : null;
@@ -254,6 +279,15 @@ class Asset {
 
     public function setUnit(\User\Entity\Unit $unit) {
         $this->unit = $unit;
+        return $this;
+    }
+    
+    public function getRelevance() {
+        return $this->relevance;
+    }
+
+    public function setRelevance(\Asset\Entity\AssetValue $relevance) {
+        $this->relevance = $relevance;
         return $this;
     }
 

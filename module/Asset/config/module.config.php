@@ -41,6 +41,8 @@ return array(
         'invokables' => array(
             'Asset' => 'Asset\Controller\AssetController',
             'AssetType' => 'Asset\Controller\AssetTypeController',
+            'AssetRelevance' => 'Asset\Controller\AssetRelevanceController',
+            'Consequence' => 'Asset\Controller\ConsequenceController',
             'AssetGroup' => 'Asset\Controller\AssetGroupController',
             'ServerAsset' => 'Asset\Controller\ServerAssetController',
             'ServiceAsset' => 'Asset\Controller\ServiceAssetController',
@@ -74,6 +76,34 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'AssetType',
+                        'action' => 'index'
+                    )
+                )
+            ),
+            'assetrelevance' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/assetrelevance[/][:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'AssetRelevance',
+                        'action' => 'index'
+                    )
+                )
+            ),
+            'consequence' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/consequence[/][:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Consequence',
                         'action' => 'index'
                     )
                 )

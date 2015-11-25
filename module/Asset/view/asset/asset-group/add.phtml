@@ -4,8 +4,7 @@ foreach ($form as $element) :
     if ((in_array($element->getAttribute('name'), array('name',
                 'type',
                 'analyst',
-                'unit',
-                'ipaddress')))) {
+                'unit')))) {
         ?>
 
         <div class="form-group <?php
@@ -16,9 +15,6 @@ foreach ($form as $element) :
             <div class="col-xs-10 col-sm-10 col-md-10">
                 <?php
                 $element->setAttribute('class', 'form-control ' . $element->getAttribute('class'));
-
-                //if (!$element->hasAttribute('class'))
-                //	$element->setAttribute('class', 'form-control');
                 echo $this->formElement($element);
                 if ($this->formElementErrors($element))
                     
@@ -35,8 +31,6 @@ endforeach;
 <ul class = "nav nav-tabs nav-justified" style = "color:#000;font-weight: bold;">
     <li class = "active"><a data-toggle = "tab" href = "#description">Description</a></li>
     <li><a data-toggle = "tab" href = "#risks">Risks</a></li>
-    <li><a data-toggle = "tab" href = "#vulnerabilities">Vulnerabilities</a></li>
-    <li><a data-toggle = "tab" href = "#threaties">Threaties</a></li>
     <li><a data-toggle = "tab" href = "#plans">Plans</a></li>
     <li><a data-toggle = "tab" href = "#dependencies">Dependencies</a></li>
     <li><a data-toggle = "tab" href = "#documents">Documents</a></li>
@@ -50,14 +44,6 @@ endforeach;
         </div>
         <div id = "risks" class = "tab-pane fade in">
             <?php echo $this->formElement($form->get('risks'));
-            ?>
-        </div>
-        <div id = "vulnerabilities" class = "tab-pane fade in">
-            <?php echo $this->formElement($form->get('vulnerabilities'));
-            ?>
-        </div>
-        <div id = "threaties" class = "tab-pane fade in">
-            <?php echo $this->formElement($form->get('threaties'));
             ?>
         </div>
         <div id = "plans" class = "tab-pane fade in">
@@ -75,22 +61,4 @@ endforeach;
 
     </div>
 </div>
-<?php $element = $this->form->get('submit'); ?>
-<div class="form-group" style="text-align:right;">
-    <div class="col-sm-12">
-        <?php
-        $element->setAttribute('class', 'btn btn-primary');
-        $element->setAttribute('style', 'width:150px');
-
-        echo $this->formElement($element);
-        ?>
-    </div>
-</div>
-<?php
-echo $this->form()->closeTag($form);
-?>
-</div>
-<div class="col-md-4">
-</div>           
-</div>
-</section>
+<?php echo $this->partial('partial/add_bottom.phtml'); ?>

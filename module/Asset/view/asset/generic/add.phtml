@@ -1,16 +1,11 @@
 <?php echo $this->partial('partial/add_top.phtml'); ?>
 <?php
 foreach ($form as $element) :
-    if (!(in_array($element->getAttribute('name'), array('submit',
-                'description',
-                'risks',
-                'vulnerabilities',
-                'threaties',
-                'plans',
-                'dependencies',
-                'documents')))) {
+    if ((in_array($element->getAttribute('name'), array('name',
+                'type',
+                'analyst',
+                'unit')))) {
         ?>
-
         <div class="form-group <?php
         if ($this->formElementErrors($element))
             echo "error"
@@ -19,9 +14,6 @@ foreach ($form as $element) :
             <div class="col-xs-10 col-sm-10 col-md-10">
                 <?php
                 $element->setAttribute('class', 'form-control ' . $element->getAttribute('class'));
-
-                //if (!$element->hasAttribute('class'))
-                //	$element->setAttribute('class', 'form-control');
                 echo $this->formElement($element);
                 if ($this->formElementErrors($element))
                     

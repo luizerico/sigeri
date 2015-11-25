@@ -1,13 +1,4 @@
-<section class="list">
-    <?php
-    $title = $this->escapeHtml($dbArray->getName());
-    $this->headTitle('SIGERI - ' . $title);
-    ?>
-
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3><?php echo $this->escapeHtml($title); ?></h3>
-        </div>
+<?php echo $this->partial('partial/view_top.phtml'); ?>
         <div class="panel-body">
             <p><a href="<?php echo $this->url($this->router, array('action' => 'edit', 'id' => $dbArray->getId())); ?>">
                     Edit register</a> 
@@ -51,7 +42,7 @@
                         
                     </div>
                     <div id = "documents" class = "tab-pane fade in">
-                        <table id="datatable" class="display table">
+                        <table id="datatable" class="table table-striped responsive-utilities jambo_table bulk_action">
                             <thead>
                                 <tr>
                                     <th>Id</th>
@@ -78,19 +69,5 @@
                 </div>
             </div>
         </div>
-    </div>
-
-</section>
-
-<script>
-
-    $(document).ready(function () {
-        var table = $('#datatable').DataTable({
-            "lengthChange": false,
-            "pagingType": "simple",
-            "pageLength": 10,
-            "searching": false
-        });
-
-    });
-</script>
+    
+<?php echo $this->partial('partial/view_bottom.phtml'); ?>

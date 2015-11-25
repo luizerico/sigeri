@@ -11,9 +11,6 @@ foreach ($form as $element) :
         <div class="col-xs-10 col-sm-10 col-md-10">
             <?php
             $element->setAttribute('class', 'form-control ' . $element->getAttribute('class'));
-
-            //if (!$element->hasAttribute('class'))
-            //	$element->setAttribute('class', 'form-control');
             echo $this->formElement($element);
             if ($this->formElementErrors($element))
                 

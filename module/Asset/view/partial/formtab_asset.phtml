@@ -1,0 +1,39 @@
+<br>
+<ul class = "nav nav-tabs nav-justified" style = "color:#000;font-weight: bold;">
+    <li class = "active"><a data-toggle = "tab" href = "#description">Description</a></li>
+    <li><a data-toggle = "tab" href = "#groups">Groups</a></li>
+    <li><a data-toggle = "tab" href = "#consequences">Consequences</a></li>
+    <li><a data-toggle = "tab" href = "#plans">Plans</a></li>
+    <li><a data-toggle = "tab" href = "#dependencies">Dependencies</a></li>
+    <li><a data-toggle = "tab" href = "#documents">Documents</a></li>
+
+</ul>
+<div class = "panel" style = "padding-top:5px;">
+    <div class = "tab-content ">
+        <div id = "description" class = "tab-pane fade in active">
+            <?php echo $this->formElement($form->get('description'));
+            ?>
+        </div>
+        <div id = "groups" class = "tab-pane fade in">
+            <?php echo $this->formElement($form->get('groups'));
+            ?>
+        </div>
+        <div id = "consequences" class = "tab-pane fade in">
+            <?php echo $this->formElement($form->get('consequences'));
+            ?>
+        </div>
+        <div id = "plans" class = "tab-pane fade in">
+            <?php echo $this->formElement($form->get('plans'));
+            ?>
+        </div>
+        <div id = "dependencies" class = "tab-pane fade in">
+            <?php echo $this->formElement($form->get('dependencies'));
+            ?>
+        </div>
+        <div id = "documents" class = "tab-pane fade in">
+            <?php echo $this->formElement($form->get('documents'));
+            ?>
+        </div>   
+
+    </div>
+</div>

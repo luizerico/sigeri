@@ -60,3 +60,7 @@ span.label {
     font-size: 31px;
     margin-top: -25px;
 }
+
+.cell_center {
+    text-align: center;
+}

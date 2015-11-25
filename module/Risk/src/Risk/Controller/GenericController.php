@@ -225,6 +225,18 @@ class GenericController extends AbstractActionController {
         $result = array("rowCount" => $count);
         return new JsonModel($result);
     }
+    
+    public function count2Action($where = '') {
+        
+        $where = ' WHERE ' . $this->params()->fromQuery('where');
+        
+        $dql = 'SELECT COUNT(rows) FROM ' . $this->entity . ' rows ' . $where;
+
+        $q = $this->getEntityManager()->createQuery($dql);
+        $count = $q->getSingleScalarResult();
+        $result = array("rowCount" => $count);
+        return new JsonModel($result);
+    }
 
     public function consultAction() {
         $where = $this->params()->fromQuery('where');
