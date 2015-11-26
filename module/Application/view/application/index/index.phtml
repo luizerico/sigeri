@@ -412,30 +412,45 @@
                         </div>
                     </div>
                     <div class="tiles">
-                        <div class="col-md-4 tile">
+                        <div class="col-md-3 tile">
                             <span>High Risks</span>
                             <h2 id="highrisk">
                                 <script>
                                     $.getJSON(
-                                            "/risk/count?where=value>4",
+                                            "/risk/riskcount?where=risk>15",
                                             function (jsonData) {
-                                                $("#highrisk").text(jsonData.rowCount);
+                                                $("#highrisk").text(jsonData.count_risk);
                                             }
-                                    );</script>
+                                    );</script> 
                             </h2>
                             <span class="sparkline11 graph" style="height: 160px;">
                                 <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
                             </span>
                         </div>
-                        <div class="col-md-4 tile">
-                            <span>Medium Risks</span>
-                            <h2>$231,809</h2>
+                        <div class="col-md-3 tile">
+                            <span>Low Risks</span>
+                            <h2 id="lowrisk">
+                                <script>
+                                    $.getJSON(
+                                            "/risk/riskcount?where=risk<5",
+                                            function (jsonData) {
+                                                $("#lowrisk").text(jsonData.count_risk);
+                                            }
+                                    );</script>
+                            </h2>
                             <span class="sparkline22 graph" style="height: 160px;">
                                 <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
                             </span>
                         </div>
-                        <div class="col-md-4 tile">
-                            <span>Low Risks</span>
+                        <div class="col-md-3 tile">
+                            <span>Assets High Risk</span>
+                            <h2>231,809</h2>
+                            <span class="sparkline11 graph" style="height: 160px;">
+                                <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
+                            </span>
+                        </div>
+                        <div class="col-md-3 tile">
+                            <span>Assets Low Risk</span>
                             <h2>231,809</h2>
                             <span class="sparkline11 graph" style="height: 160px;">
                                 <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>

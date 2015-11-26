@@ -103,6 +103,70 @@ class RiskController extends GenericController {
         return new JsonModel($results);
     }
 
+    public function riskcountAction() {
+        $where = $this->params()->fromQuery('where');
+        if (isset($where)) {
+            $where = " WHERE " . $where;
+        }
+
+        $query = "SELECT COUNT(*) AS count_risk FROM (
+                    SELECT
+                        impact.value AS impact, 
+                        likelihood.value AS likelihood,
+                        (impact.value * likelihood.value) AS risk
+                        FROM risk
+                        JOIN impact 
+                        JOIN likelihood 
+                        WHERE risk.impact_id=impact.id AND risk.likelihood_id=likelihood.id
+                        ) as x " . $where;
+
+        $con = $this->getEntityManager()->getConnection();
+        $stmt = $con->prepare($query);
+        $stmt->execute();
+        $data = $stmt->fetch();
+
+        return new JsonModel($data);
+    }
+
+    public function assetcountAction() {
+        $where = $this->params()->fromQuery('where');
+        if (isset($where)) {
+            $where = " " . $where . " AND ";
+        }
+
+        $query = "SELECT COUNT(*) AS asset FROM (
+                        SELECT asset.name AS asset, risk.name AS name, impact.value AS impact, likelihood.value AS likelihood, (impact.value * likelihood.value) AS risk 
+                            FROM risk 
+                            left join risk_asset ON risk.id=risk_asset.risk_id 
+                            left join asset ON risk_asset.asset_id=asset.id 
+                            join impact 
+                            join likelihood
+                            WHERE
+                                    impact.id=risk.impact_id AND
+                                    likelihood.id=risk.likelihood_id
+                            GROUP BY asset) 
+                    AS risk_asset 
+                    WHERE " . $where . " asset<>'NULL'";
+
+//        $query = "SELECT COUNT(*) AS count_risk FROM (
+//                    SELECT
+//                        impact.value AS impact, 
+//                        likelihood.value AS likelihood,
+//                        (impact.value * likelihood.value) AS risk
+//                        FROM risk
+//                        JOIN impact 
+//                        JOIN likelihood 
+//                        WHERE risk.impact_id=impact.id AND risk.likelihood_id=likelihood.id
+//                        ) as x " . $where;
+
+        $con = $this->getEntityManager()->getConnection();
+        $stmt = $con->prepare($query);
+        $stmt->execute();
+        $data = $stmt->fetch();
+
+        return new JsonModel($data);
+    }
+
 //    public function addAction() {
 //        /*
 //         * $addObject = new Risk ();
@@ -245,7 +309,7 @@ class RiskController extends GenericController {
                 return $this->redirect()->toRoute($this->route, array(
                             'action' => 'list'
                 ));
-            } 
+            }
         }
 
         return array(

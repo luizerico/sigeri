@@ -19,7 +19,7 @@ class GenericController extends AbstractActionController {
     public function __construct() {
         //$this->view->addScriptPath("../Asset/view/asset/generic/");
     }
-    
+
     public function onDispatch(\Zend\Mvc\MvcEvent $e) {
         if (!$this->getServiceLocator()->get('AuthService')->hasIdentity()) {
             $this->redirect()->toRoute('authentication', array('action' => 'login'));
@@ -225,18 +225,6 @@ class GenericController extends AbstractActionController {
         $result = array("rowCount" => $count);
         return new JsonModel($result);
     }
-    
-    public function count2Action($where = '') {
-        
-        $where = ' WHERE ' . $this->params()->fromQuery('where');
-        
-        $dql = 'SELECT COUNT(rows) FROM ' . $this->entity . ' rows ' . $where;
-
-        $q = $this->getEntityManager()->createQuery($dql);
-        $count = $q->getSingleScalarResult();
-        $result = array("rowCount" => $count);
-        return new JsonModel($result);
-    }
 
     public function consultAction() {
         $where = $this->params()->fromQuery('where');
@@ -245,21 +233,21 @@ class GenericController extends AbstractActionController {
 
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('row')->from($this->entity, 'row');
-        
-        if(isset($limit)){
+
+        if (isset($limit)) {
             $qb->setMaxResults($limit);
         }
-        
-        if(isset($where)){
-            $qb->andWhere('row.'. $where);
+
+        if (isset($where)) {
+            $qb->andWhere('row.' . $where);
         }
-        
-        if(isset($orderby)){
-            $qb->addOrderBy('row.'.$orderby, $order = 'DESC');
+
+        if (isset($orderby)) {
+            $qb->addOrderBy('row.' . $orderby, $order = 'DESC');
         }
-                
+
         $result = $qb->getQuery()->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_SCALAR);
-        
+
         return new JsonModel($result);
     }
 
