@@ -250,5 +250,14 @@ class GenericController extends AbstractActionController {
 
         return new JsonModel($result);
     }
+    
+    protected function querysql($query) {
+        $con = $this->getEntityManager()->getConnection();
+        $stmt = $con->prepare($query);
+        $stmt->execute();
+        $data = $stmt->fetchAll();
+
+        return $data;
+    }
 
 }

@@ -134,7 +134,7 @@ class RiskController extends GenericController {
             $where = " " . $where . " AND ";
         }
 
-        $query = "SELECT COUNT(*) AS asset FROM (
+        $query = "SELECT COUNT(*) AS assetcount FROM (
                         SELECT asset.name AS asset, risk.name AS name, impact.value AS impact, likelihood.value AS likelihood, (impact.value * likelihood.value) AS risk 
                             FROM risk 
                             left join risk_asset ON risk.id=risk_asset.risk_id 
@@ -148,23 +148,47 @@ class RiskController extends GenericController {
                     AS risk_asset 
                     WHERE " . $where . " asset<>'NULL'";
 
-//        $query = "SELECT COUNT(*) AS count_risk FROM (
-//                    SELECT
-//                        impact.value AS impact, 
-//                        likelihood.value AS likelihood,
-//                        (impact.value * likelihood.value) AS risk
-//                        FROM risk
-//                        JOIN impact 
-//                        JOIN likelihood 
-//                        WHERE risk.impact_id=impact.id AND risk.likelihood_id=likelihood.id
-//                        ) as x " . $where;
-
         $con = $this->getEntityManager()->getConnection();
         $stmt = $con->prepare($query);
         $stmt->execute();
-        $data = $stmt->fetch();
+        $data = $stmt->fetchAll();
 
         return new JsonModel($data);
+    }
+
+    public function typeAssetListAction() {
+        $query = "SELECT type as assettype, count(*) AS number, ROUND(sum(risk)/count(*),2) AS avgrisk, MAX(risk) AS maxrisk FROM (
+                    SELECT asset.name AS asset, assettype.name AS type, impact.value AS impact, likelihood.value AS likelihood, (impact.value * likelihood.value) AS risk 
+                    FROM risk 
+                    LEFT JOIN risk_asset ON risk.id=risk_asset.risk_id 
+                    LEFT JOIN asset ON risk_asset.asset_id=asset.id 
+                    JOIN impact 
+                    JOIN likelihood
+                    JOIN assettype
+                    WHERE   asset.type_id=assettype.id AND
+                            impact.id=risk.impact_id AND
+                            likelihood.id=risk.likelihood_id		
+                    GROUP BY asset) AS risk_asset 
+                WHERE asset<>'NULL'
+                GROUP by type";
+
+        return new JsonModel($this->querysql($query));
+    }
+    
+    public function typeRiskListAction() {
+        $query = "SELECT type as risktype, count(*) AS number, ROUND(sum(risk)/count(*),2) AS avgrisk, MAX(risk) AS maxrisk FROM (
+                    SELECT risktype.name AS type, impact.value AS impact, likelihood.value AS likelihood, (impact.value * likelihood.value) AS risk 
+                        FROM risk
+                        join impact 
+                        join likelihood
+                        join risktype
+                        WHERE	risk.type_id=risktype.id AND
+                                impact.id=risk.impact_id AND
+                                likelihood.id=risk.likelihood_id		
+                        ) AS risk_asset 
+                GROUP by type";
+
+        return new JsonModel($this->querysql($query));
     }
 
 //    public function addAction() {

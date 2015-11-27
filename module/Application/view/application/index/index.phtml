@@ -443,15 +443,31 @@
                             </span>
                         </div>
                         <div class="col-md-3 tile">
-                            <span>Assets High Risk</span>
-                            <h2>231,809</h2>
+                            <span>Assets (risk>15)</span>
+                            <h2 id="assethighrisk">
+                                <script>
+                                    $.getJSON(
+                                            "/risk/assetcount?where=risk>15",
+                                            function (jsonData) {
+                                                $("#assethighrisk").text(jsonData[0].assetcount);
+                                            }
+                                    );</script> 
+                            </h2>
                             <span class="sparkline11 graph" style="height: 160px;">
                                 <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
                             </span>
                         </div>
                         <div class="col-md-3 tile">
-                            <span>Assets Low Risk</span>
-                            <h2>231,809</h2>
+                            <span>Assets (risk<5)</span>
+                            <h2 id="assetlowrisk">
+                                <script>
+                                    $.getJSON(
+                                            "/risk/assetcount?where=risk<5",
+                                            function (jsonData) {
+                                                $("#assetlowrisk").text(jsonData[0].assetcount);
+                                            }
+                                    );</script> 
+                            </h2>
                             <span class="sparkline11 graph" style="height: 160px;">
                                 <canvas width="200" height="60" style="display: inline-block; vertical-align: top; width: 94px; height: 30px;"></canvas>
                             </span>
@@ -491,7 +507,7 @@
                                 var composer2 = "</small></p></div></li>";
 
                                 $.getJSON(
-                                        "/risk/jsonRiskData?orderby=impact&limit=5", function (result) {
+                                        "/risk/jsonRiskData?orderby=risk&limit=5", function (result) {
                                             $.each(result, function (i, field) {
                                                 $("#toprisk").append(composer1 +
                                                         "<a class=\"title\" href=\"/risk/view/" +
@@ -512,6 +528,94 @@
         </div>
     </div>
 </div>
+<div class="row">
+
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Risks and Assets <small>types</small></h2>
+                <!--                <ul class="nav navbar-right panel_toolbox">
+                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Settings 1</a>
+                                            </li>
+                                            <li><a href="#">Settings 2</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                    </li>
+                                </ul>-->
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="dashboard-widget-content">
+                    <div class="col-md-6 col-sm-12 col-xs-12">
+                        <h2 class="line_30">Asset type average risk</h2>
+                        <table class="countries_list">
+                            <thead style="font-weight: 800;">
+                                <tr>
+                                    <td>Asset type</td>
+                                    <td>Number</td>
+                                    <td>Avg Risk</td>
+                                    <td>Max Risk</td>
+                                </tr>
+                            </thead>
+                            <tbody id="assettable">
+                            <script>
+                                $.getJSON(
+                                        "/risk/typeassetlist", function (result) {
+                                            $.each(result, function (i, field) {
+                                                $("#assettable").append(
+                                                        "<tr><td>"+ field.assettype + "</td>" +
+                                                        "<td>" + field.number + "</td>" +
+                                                        "<td>" + field.avgrisk + "</td>" +
+                                                        "<td>" + field.maxrisk + "</td></tr>"
+                                                        );
+                                            });
+                                        });
+                            </script>                               
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-6 col-sm-12 col-xs-12">
+                        <h2 class="line_30">Risk type Average</h2>
+                        <table class="countries_list">
+                            <thead style="font-weight: 800;">
+                                <tr>
+                                    <td>Risk Type</td>
+                                    <td>Number</td>
+                                    <td>Avg Risk</td>
+                                    <td>Max Risk</td>
+                                </tr>
+                            </thead>
+                            <tbody id="risktable">
+                            <script>
+                                $.getJSON(
+                                        "/risk/typerisklist", function (result) {
+                                            $.each(result, function (i, field) {
+                                                $("#risktable").append(
+                                                        "<tr><td>"+ field.risktype + "</td>" +
+                                                        "<td>" + field.number + "</td>" +
+                                                        "<td>" + field.avgrisk + "</td>" +
+                                                        "<td>" + field.maxrisk + "</td></tr>"
+                                                        );
+                                            });
+                                        });
+                            </script>                               
+                            </tbody>
+                        </table>
+                    </div>
+                    <!--<div id="world-map-gdp" class="col-md-8 col-sm-12 col-xs-12" style="height:230px;"></div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div class="row">
     <div class="col-md-12">
@@ -561,66 +665,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-
-    <div class="col-md-12">
-        <div class="x_panel">
-            <div class="x_title">
-                <h2>Visitors location <small>geo-presentation</small></h2>
-                <ul class="nav navbar-right panel_toolbox">
-                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="#">Settings 1</a>
-                            </li>
-                            <li><a href="#">Settings 2</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li><a class="close-link"><i class="fa fa-close"></i></a>
-                    </li>
-                </ul>
-                <div class="clearfix"></div>
-            </div>
-            <div class="x_content">
-                <div class="dashboard-widget-content">
-                    <div class="col-md-4 hidden-small">
-                        <h2 class="line_30">125.7k Views from 60 countries</h2>
-
-                        <table class="countries_list">
-                            <tbody>
-                                <tr>
-                                    <td>United States</td>
-                                    <td class="fs15 fw700 text-right">33%</td>
-                                </tr>
-                                <tr>
-                                    <td>France</td>
-                                    <td class="fs15 fw700 text-right">27%</td>
-                                </tr>
-                                <tr>
-                                    <td>Germany</td>
-                                    <td class="fs15 fw700 text-right">16%</td>
-                                </tr>
-                                <tr>
-                                    <td>Spain</td>
-                                    <td class="fs15 fw700 text-right">11%</td>
-                                </tr>
-                                <tr>
-                                    <td>Britain</td>
-                                    <td class="fs15 fw700 text-right">10%</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <!--<div id="world-map-gdp" class="col-md-8 col-sm-12 col-xs-12" style="height:230px;"></div>-->
                 </div>
             </div>
         </div>
