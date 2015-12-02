@@ -15,7 +15,8 @@
 		"doctrine/orm" : ">=2.1",
 		"doctrine/doctrine-orm-module" : "dev-master",
 		"zendframework/zend-developer-tools" : "dev-master",
-		"zendframework/zend-authentication": "2.3.*"
+		"zendframework/zend-authentication": "2.3.*",
+                "gedmo/doctrine-extensions": "dev-master"
 	},
 	"minimum-stability" : "alpha"
 }

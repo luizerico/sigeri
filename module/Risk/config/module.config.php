@@ -15,45 +15,48 @@ return array(
             'orm_default' => array(
                 'drivers' => array(
                     __NAMESPACE__ . '\Entity' => __NAMESPACE__ . '_driver'
-                )
-            )
-        )
+                ),
+            ),
+        ),
+        'eventmanager' => array(
+            'orm_default' => array(
+                'subscribers' => array(
+                    'Gedmo\Loggable\LoggableListener',
+                    'Gedmo\Timestampable\TimestampableListener',                    
+                    'Gedmo\SoftDeleteable\SoftDeleteableListener',
+                ),
+            ),
+        ),
     ),
     'controllers' => array(
         'invokables' => array(
             'Risk' => 'Risk\Controller\RiskController',
+            'RiskVersion' => 'Risk\Controller\RiskVersionController',
             'RiskType' => 'Risk\Controller\RiskTypeController',
             'RiskStatus' => 'Risk\Controller\RiskStatusController',
             'RiskReview' => 'Risk\Controller\RiskReviewController',
             'RiskManager' => 'Risk\Controller\RiskManagerController',
-            
             'Impact' => 'Risk\Controller\ImpactController',
             'Likelihood' => 'Risk\Controller\LikelihoodController',
-            
             'Vulnerability' => 'Risk\Controller\VulnerabilityController',
             'VulnerabilityType' => 'Risk\Controller\VulnerabilityTypeController',
             'VulnerabilityLevel' => 'Risk\Controller\VulnerabilityLevelController',
-            
             'Threat' => 'Risk\Controller\ThreatController',
             'ThreatLevel' => 'Risk\Controller\ThreatLevelController',
             'ThreatSource' => 'Risk\Controller\ThreatSourceController',
             'ThreatType' => 'Risk\Controller\ThreatTypeController',
-            
             'Control' => 'Risk\Controller\ControlController',
             'ControlType' => 'Risk\Controller\ControlTypeController',
             'ControlStatus' => 'Risk\Controller\ControlStatusController',
             'ControlReview' => 'Risk\Controller\ControlReviewController',
-            
             'Plan' => 'Risk\Controller\PlanController',
             'PlanStatus' => 'Risk\Controller\PlanStatusController',
             'PlanStrategy' => 'Risk\Controller\PlanStrategyController',
             'PlanEffort' => 'Risk\Controller\PlanEffortController',
             'PlanReview' => 'Risk\Controller\PlanReviewController',
-            
             'Compliance' => 'Risk\Controller\ComplianceController',
             'ComplianceType' => 'Risk\Controller\ComplianceTypeController',
             'ComplianceRule' => 'Risk\Controller\ComplianceRuleController',
-            
             'Method' => 'Risk\Controller\MethodController',
             'MethodCvss' => 'Risk\Controller\MethodCvssController',
             'MethodOwasp' => 'Risk\Controller\MethodOwaspController',
@@ -71,6 +74,20 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'Risk',
+                        'action' => 'index'
+                    )
+                )
+            ),
+            'riskversion' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/riskversion[/][:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'RiskVersion',
                         'action' => 'index'
                     )
                 )

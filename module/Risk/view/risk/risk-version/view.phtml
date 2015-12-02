@@ -16,14 +16,17 @@
                     Edit register</a> 
             </p>
 
-            <p><label>ID: </label> <?php echo $this->escapeHtml($dbArray->getId()); ?></p>   
+            <p><label>ID: </label> <?php echo $this->escapeHtml($dbArray->getId()); ?></p>
+            <p><label>Risk ID: </label> <?php echo $this->escapeHtml($dbArray->getRiskId()); ?></p>
             <p><label>Status: </label> <?php echo $this->escapeHtml($dbArray->getStatus()); ?></p>
             <p><label>Likelihood: </label> <?php echo $this->escapeHtml($dbArray->getLikelihood()); ?></p>
             <p><label>Impact: </label> <?php echo $this->escapeHtml($dbArray->getImpact()); ?></p>
             <p><label>Type: </label> <?php echo $this->escapeHtml($dbArray->getType()); ?></p>
             <p><label>Analyst: </label> <?php echo $this->escapeHtml($dbArray->getAnalyst()); ?></p>
-            <p><label>Register: </label> <?php echo $this->dateFormat($dbArray->getCreated(), IntlDateFormatter::LONG); ?></p>
-            <p><label>Changed: </label> <?php echo $this->dateFormat($dbArray->getUpdated(), IntlDateFormatter::LONG); ?></p>
+            <p><label>Register: </label> <?php echo $this->dateFormat($dbArray->getCreated(), IntlDateFormatter::LONG, IntlDateFormatter::MEDIUM); ?></p>
+            <p><label>Changed: </label> <?php echo $this->dateFormat($dbArray->getUpdated(), IntlDateFormatter::LONG, IntlDateFormatter::MEDIUM); ?></p>
+
+
 
             <ul class="nav nav-tabs nav-justified" style="color:#000;font-weight: bold;">
                 <li class="active"><a data-toggle="tab" href="#description">Description</a></li>
@@ -117,8 +120,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div id="revisions" class="tab-pane fade in">  
-                        
+                    <div id="revisions" class="tab-pane fade in">                        
                         <table id="datatable" class="table table-striped responsive-utilities jambo_table bulk_action">
                             <thead>
                                 <tr>
@@ -131,8 +133,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($vsArray as $dbRow) : ?>
-                                <?php echo $dbRow;?>
+                                <?php foreach ($dbArray->getRevisions() as $dbRow) : ?>
                                     <tr>
                                         <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
                                         <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>

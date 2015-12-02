@@ -1,7 +1,7 @@
 <?php echo $this->partial('partial/add_top.phtml'); ?>
 <?php
 foreach ($form as $element) :
-    if ((in_array($element->getAttribute('name'), array('name', 'status', 'type', 'likelihood', 'impact', 'analyst', 'date')))) {
+    if ((in_array($element->getAttribute('name'), array('name', 'status', 'type', 'likelihood', 'impact', 'analyst')))) {
         ?>
         <div class="form-group <?php
         if ($this->formElementErrors($element))

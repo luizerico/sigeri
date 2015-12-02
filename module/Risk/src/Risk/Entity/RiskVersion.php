@@ -10,12 +10,12 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="risk")
+ * @ORM\Table(name="riskversion")
  * @Annotation\Hydrator("Zend\Stdlib\Hydrator\ObjectProperty")
- * @Annotation\Name("Risk") 
+ * @Annotation\Name("RiskVersion") 
  * @ORM\HasLifecycleCallbacks
  */
-class Risk {
+class RiskVersion {
 
     /**
      * @ORM\Id
@@ -28,6 +28,15 @@ class Risk {
      * @access protected
      */
     protected $id;
+    
+    /**
+     * @ORM\Column(type="integer")
+     * @Annotation\Options({"label":"Risk Id:"})
+     *
+     * @var integer
+     * @access protected
+     */
+    protected $risk_id;
 
     /**
      * @ORM\Column(type="string")
@@ -295,6 +304,7 @@ class Risk {
 
     public function exchangeArray($data) {
         $this->id = (isset($data ["id"])) ? $data ["id"] : null;
+        $this->risk_id = (isset($data ["risk_id"])) ? $data ["risk_id"] : null;
         $this->name = (isset($data ["name"])) ? $data ["name"] : null;
         $this->status = (isset($data ["status"])) ? $data ["status"] : null;
         $this->description = (isset($data ["description"])) ? $data ["description"] : null;
@@ -326,6 +336,15 @@ class Risk {
 
     public function setId($id) {
         $this->id = $id;
+        return $this;
+    }
+    
+    public function getRiskId() {
+        return $this->risk_id;
+    }
+
+    public function setRiskId($risk_id) {
+        $this->risk_id = $risk_id;
         return $this;
     }
 
@@ -584,7 +603,6 @@ class Risk {
     
     /** @ORM\PostUpdate */
     public function postUpdate(){
-        
     }
     
     /** @ORM\PreUpdate */

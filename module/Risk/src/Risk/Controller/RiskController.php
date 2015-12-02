@@ -3,6 +3,7 @@
 namespace Risk\Controller;
 
 use Risk\Entity\Risk;
+use Risk\Entity\RiskVersion;
 use Risk\Controller\GenericController;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
@@ -20,35 +21,6 @@ class RiskController extends GenericController {
 
         parent::__construct();
     }
-
-    /*
-     *
-     * DRAFT Controller - Improve and clean the code ASAP ...
-     *
-     * @var Doctrine\ORM\EntityManager $dbArray - common object to send to Views
-     *      $addObject - common object to addAction
-     *      $this->object - common object to editAction
-     *     
-     */
-
-//    protected $em;
-//
-//    public function setEntityManager(EntityManager $em) {
-//        $this->em = $em;
-//    }
-//
-//    public function getEntityManager() {
-//        if (null == $this->em) {
-//            $this->em = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
-//        }
-//        return $this->em;
-//    }
-    // Set one template to be used by all actions
-//    public function __construct()
-//    {
-//        $this->viewModel = new ViewModel();
-//        $this->viewModel->setTemplate('my-model/index/default.phtml');
-//    }
 
     public function xychartAction() {
         $viewModel = new ViewModel(array(
@@ -174,7 +146,7 @@ class RiskController extends GenericController {
 
         return new JsonModel($this->querysql($query));
     }
-    
+
     public function typeRiskListAction() {
         $query = "SELECT type as risktype, count(*) AS number, ROUND(sum(risk)/count(*),2) AS avgrisk, MAX(risk) AS maxrisk FROM (
                     SELECT risktype.name AS type, impact.value AS impact, likelihood.value AS likelihood, (impact.value * likelihood.value) AS risk 
@@ -191,80 +163,57 @@ class RiskController extends GenericController {
         return new JsonModel($this->querysql($query));
     }
 
-//    public function addAction() {
-//        /*
-//         * $addObject = new Risk ();
-//         * // To do: How to automate this...
-//         * // $builder = new AnnotationBuilder ();
-//         * // $form = $builder->createForm ( $addObject );
-//         * //
-//         * // $form = new RiskForm ( $this->getEntityManager () );
-//         * // $form->get ( 'submit' )->setValue ( 'Add' );
-//         * $forms = $this->getServiceLocator()->get('FormElementManager');
-//         * $form = $forms->get('RiskForm', array('name' => 'formName', 'options' => array()));
-//         *
-//         * $form->setHydrator ( new DoctrineHydrator ( $this->getEntityManager (), ENTITY ) );
-//         *
-//         * $request = $this->getRequest ();
-//         * if ($request->isPost ()) {
-//         * // $form->bind($riskType);
-//         * $form->setData ( $request->getPost () );
-//         * if ($form->isValid ()) {
-//         * // var_dump($form->getData());
-//         * $addObject->exchangeArray ( $form->getData () );
-//         * // Write de data to database using Doctrine
-//         * $this->getEntityManager ()->persist ( $addObject );
-//         * $this->getEntityManager ()->flush ();
-//         * // Redirect to list risktype page
-//         * return $this->redirect ()->toRoute ( ROUTER, array (
-//         * 'action' => 'list'
-//         * ) );
-//         * }
-//         * }
-//         *
-//         * // define the submit label form to correspond to function name
-//         * $form->get ( 'submit' )->setAttribute ( 'value', 'Add' );
-//         */
-//        $addObject = new Risk ();
-//        $builder = new DoctrineAnnotationBuilder($this->getEntityManager());
-//        $form = $builder->createForm($addObject); 
-//        $hydrator = new DoctrineHydrator($this->getEntityManager(), ENTITY);
-//        $form->setHydrator($hydrator);
-//        
-//        
-//        $form->add(new \Zend\Form\Element\Csrf('security'));
-//        $form->add(new \Zend\Form\Element\Submit('submit', array(
-//            'value' => 'Save')));
-//        $form->get('submit')->setAttribute('value', 'Add');
-//
-////        $formfieldset = $builder->createForm(new Method());
-////        $formfieldset->setName('methodfieldset');
-////        $formfieldset->setUseAsBaseFieldset(true);
-////        $formfieldset->setHydrator(new DoctrineHydrator($this->getEntityManager(), 'Risk\Entity\Method'));
-////
-////        $form->add($formfieldset);
-//
-//        $form->bind($addObject);
-//
-//        $request = $this->getRequest();
-//        if ($request->isPost()) {
-//            $form->setData($request->getPost());
-//            if ($form->isValid()) {
-//                $addObject->exchangeArray($hydrator->extract($form->getData()));
-//                $this->getEntityManager()->persist($addObject);
-//                $this->getEntityManager()->flush();
-//                return $this->redirect()->toRoute(ROUTER, array(
-//                            'action' => 'list'
-//                ));
-//            }
-//        }
-//
-//        return array(
-//            'title' => $this->title,
-//            'form' => $form
-//        );
-//    }
-//
+    public function versionListAction() {
+        $risk_id = $this->params()->fromQuery('risk_id');
+        $query = "SELECT * FROM riskversion where risk_id=" . $risk_id;
+
+        return new JsonModel($this->querysql($query));
+    }
+
+    public function addAction() {
+        $builder = new DoctrineAnnotationBuilder($this->getEntityManager());
+        $form = $builder->createForm($this->object);
+        $hydrator = new DoctrineHydrator($this->getEntityManager(), $this->entity);
+        $form->setHydrator($hydrator);
+        $form->get('submit')->setAttribute('value', 'Add');
+
+        $form->bind($this->object);
+
+        // Get the asset informations send by the import code
+        $form->populateValues(array('name' => $this->params()->fromQuery('assetname')));
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $form->setData($request->getPost());
+            if ($form->isValid()) {
+                $this->object->exchangeArray($hydrator->extract($form->getData()));
+                $this->getEntityManager()->persist($this->object);
+                $this->getEntityManager()->flush();
+
+                /*
+                 *  This method is strange and poor but is more simple that
+                 *  use the clone or copy to copy an entirely entity and all
+                 *  relations.
+                 */
+                $riskversion = new RiskVersion();
+                $riskversion->exchangeArray($hydrator->extract($form->getData()));
+                $riskversion->setRiskId($this->object->getId());
+                $this->getEntityManager()->persist($riskversion);
+                $this->getEntityManager()->flush();
+
+                return $this->redirect()->toRoute($this->route, array(
+                            'action' => 'list'
+                ));
+            }
+        }
+
+        return array(
+            'title' => $this->title,
+            'router' => $this->route,
+            'form' => $form
+        );
+    }
+
     public function editAction() {
         $builder = new DoctrineAnnotationBuilder($this->getEntityManager());
         $form = $builder->createForm($this->object);
@@ -296,171 +245,38 @@ class RiskController extends GenericController {
             ));
         }
 
-        /*
-         * bind to the form and
-         * change the Submit value button to edit
-         */
-
-//        $form->add(new \Zend\Form\Element\Csrf('security'));
-//        $form->add(new \Zend\Form\Element\Submit('submit', array(
-//            'value' => 'Save')));
-//        $form->get('submit')->setAttribute('value', 'Add');
-
         $form->bind($dbArray);
         $form->get('submit')->setAttribute('value', 'Edit');
-
-//
-//        $formfieldset = $builder->createForm(new Method());
-//        $formfieldset->setName('method');
-//        $formfieldset->setUseAsBaseFieldset(true);
-//        $form->add($formfieldset);
-
-        /*
-         * Check if request is a post from edit form and
-         * extract the data using de hydrator and
-         * flush to database using ORM and
-         * redirect to list page
-         */
 
         $request = $this->getRequest();
         if ($request->isPost()) {
             $form->setData($request->getPost());
             if ($form->isValid()) {
-                // $data = $form->getData ();
-                // $this->getEntityManager()->persist($this->object);
-                $this->object->exchangeArray($hydrator->extract($form->getData()));
+
+                $riskversion = new RiskVersion();
+                $riskversion->exchangeArray($hydrator->extract($form->getData()));
+                $riskversion->setRiskId($id);
+                $this->getEntityManager()->persist($riskversion);
+
                 $this->getEntityManager()->flush();
                 return $this->redirect()->toRoute($this->route, array(
                             'action' => 'list'
                 ));
             }
         }
+        
+        $versionArray = $this->getEntityManager()
+                ->getRepository('\Risk\Entity\RiskVersion')->findBy(array('risk_id'=>$id));
+        echo $versionArray;
+
 
         return array(
             'title' => $this->title,
             'id' => $id,
             'form' => $form,
-            'dbArray' => $dbArray
+            'dbArray' => $dbArray,
+            'vsArray' => $versionArray,
         );
     }
 
-//    public function listAction() {
-//        /*
-//         * This function can be simplified. I prefer keep it in this way
-//         * to make the reading easily.
-//         */
-//        // Query Doctrine for all registers
-//        $ORMRepository = $this->getEntityManager()->getRepository(ENTITY);
-//        $dbArray = $ORMRepository->findAll();
-//
-//        /*
-//         * Retrieve Metadata from table - Improve later
-//         * $temp_metadados = $this->getEntityManager()->getClassMetadata(ENTITY)->getColumnNames();
-//         * $metadados = array_merge($temp_metadados,
-//         * 		$this->getEntityManager()->getClassMetadata(ENTITY)->getAssociationNames());
-//         */
-//
-//        /*
-//         * Return de View on the long way...
-//         * $viewModel = new ViewModel ();
-//         * $viewModel->setVariable ( 'dbArray', $dbArray );
-//         * return $viewModel;
-//         */
-//        return new ViewModel(array(
-//            //'metadados' => $metadados,
-//            'title' => $this->title,
-//            'router' => ROUTER,
-//            'dbArray' => $dbArray
-//        ));
-//    }
-//    public function deleteAction() {
-//        $id = (int) $this->params()->fromRoute('id', 0);
-//        if (!$id) {
-//            return $this->redirect()->toRoute(ROUTER, array(
-//                        'action' => 'list'
-//            ));
-//        }
-//
-//        /*
-//         * Check if the requested Id is valid and
-//         * Exist in the database
-//         * To do: Customize a page to report the request with a invalid Id
-//         */
-//        try {
-//            $ORMRepository = $this->getEntityManager();
-//            $dbArray = $ORMRepository->getRepository(ENTITY)->find($id);
-//
-//            if (!$dbArray) {
-//                throw new Exception('Id invalido.');
-//            }
-//        } catch (Exception $ex) {
-//            return $this->redirect()->toRoute(ROUTER, array(
-//                        'action' => 'list'
-//            ));
-//        }
-//
-//        /*
-//         * Check if the user press the Yes button and
-//         * Process the delete request and
-//         * Redirect to the list page
-//         */
-//        $request = $this->getRequest();
-//        if ($request->isPost()) {
-//            $del = $request->getPost('del', 'No');
-//
-//            if ($del == 'Yes') {
-//                $id = $request->getPost('id');
-//                $ORMRepository->remove($dbArray);
-//                $ORMRepository->flush();
-//            }
-//
-//            return $this->redirect()->toRoute(ROUTER, array(
-//                        'action' => 'list'
-//            ));
-//        }
-//
-//        return array(
-//            'title' => $this->title,
-//            'router' => ROUTER,
-//            'id' => $id,
-//            'dbArray' => $this->getEntityManager()->getRepository(ENTITY)->find($id)
-//        );
-//    }
-//    public function indexAction() {
-//        return new ViewModel ();
-//    }
-//
-//    public function viewAction() {
-//
-//        $id = (int) $this->params()->fromRoute('id', 0);
-//        if (!$id) {
-//            return $this->redirect()->toRoute(ROUTER, array(
-//                        'action' => 'list'
-//            ));
-//        }
-//
-//        /*
-//         * Check if the requested Id is valid and
-//         * Exist in the database
-//         * To do: Customize a page to report the request with a invalid Id
-//         */
-//        try {
-//            $ORMRepository = $this->getEntityManager();
-//            $dbArray = $ORMRepository->getRepository(ENTITY)->find($id);
-//
-//            if (!$dbArray) {
-//                throw new Exception('Id invalido.');
-//            }
-//        } catch (Exception $ex) {
-//            return $this->redirect()->toRoute(ROUTER, array(
-//                        'action' => 'list'
-//            ));
-//        }
-//
-//        return new ViewModel(array(
-//            'title' => $this->title,
-//            'router' => ROUTER,
-//            'dbArray' => $dbArray
-//        ));
-//    }
 }

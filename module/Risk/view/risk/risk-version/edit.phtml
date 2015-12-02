@@ -37,7 +37,6 @@ endforeach;
     <li><a data-toggle = "tab" href = "#assets">Assets</a></li>
     <li><a data-toggle = "tab" href = "#documents">Documents</a></li>
     <li><a data-toggle = "tab" href = "#method">Method</a></li>
-    <li><a data-toggle = "tab" href = "#revisions">Revisions</a></li>
 </ul>
 <div class = "panel" style = "padding-top:5px;">
     <div class = "tab-content ">
@@ -73,61 +72,7 @@ endforeach;
             <?php echo $this->formElement($form->get('documents'));
             ?>
         </div>
-        <div id = "revisions" class = "tab-pane fade in">
-            <p>
-                <a href="<?php
-                echo $this->url('riskreview', array('action' => 'add'), array('query' => array('risk_id' => $dbArray->getId()))
-                );
-                ?>">
-                    New revision register</a> 
-            </p>
-            <table id="datatable" class="table table-striped responsive-utilities jambo_table bulk_action">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Status</th>                        
-                        <th>Type</th>                        
-                        <th>Likelihood</th>
-                        <th>Impact</th>                        
-                        <th>Risk</th>
-                        <th>Changed</th>                        
-                        <th>&nbsp;</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($vsArray as $dbRow) : ?>
-                        <tr>
-                            <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
-                            <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>
-                            <td><?php echo $this->escapeHtml($dbRow->getStatus()); ?></td>
-                            <td><?php echo $this->escapeHtml($dbRow->getType()); ?></td>
-                            <td><?php echo $this->escapeHtml($dbRow->getLikelihood()); ?></td>
-                            <td><?php echo $this->escapeHtml($dbRow->getImpact()); ?></td>
-                            <td><?php echo $this->escapeHtml($dbRow->getLikelihood()->getValue() * $dbRow->getImpact()->getValue()); ?></td>
-                            <td><?php echo $this->dateFormat($dbArray->getUpdated(), IntlDateFormatter::SHORT); ?></td>
-                            <td><a
-                                    href="<?php
-                                    echo $this->url('riskversion', array(
-                                        'action' => 'edit',
-                                        'id' => $dbRow->getId()
-                                    ));
-                                    ?>">Edit</a>
-                                <a
-                                    href="<?php
-                                    echo $this->url('riskversion', array(
-                                        'action' => 'delete',
-                                        'id' => $dbRow->getId()
-                                    ));
-                                    ?>">Del</a>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-
-
-        </div>
+        
         <div id = "method" class = "tab-pane fade in">
             <!-- HTML and script to redirect to another page based on the select -->
             <div class="form-group" style="padding-right:15px; padding-left: 15px;">

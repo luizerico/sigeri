@@ -1,0 +1,83 @@
+<?php echo $this->partial('partial/list_top.phtml'); ?>
+<table id="datatable" class="table table-striped responsive-utilities jambo_table bulk_action">
+    <thead>
+        <tr>
+            <th>ID</th>            
+            <th>Risk Id</th>            
+            <th>Risk Name</th>
+            <th>Changed</th>
+            <th id="risk">Risk</th>              
+            <th>Assets</th>
+            <th>Relevance</th>
+            <th>Type</th>
+            <th>Analyst</th>
+             
+            <th style="width:120px;">&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($dbArray as $dbRow) : ?>
+            <tr>
+                <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
+                <td><?php echo $this->escapeHtml($dbRow->getRiskId()); ?></td>
+                <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td> 
+                <td><?php echo $this->dateFormat($dbRow->getUpdated(), IntlDateFormatter::SHORT, IntlDateFormatter::SHORT); ?></td>
+                <td class="cell_center"><?php echo $this->escapeHtml($dbRow->getImpact()->getValue() * $dbRow->getLikelihood()->getValue()); ?></td>
+                <td class="cell_center"><?php echo $this->escapeHtml($dbRow->getAssets()->count()); ?></td>
+                <td class="cell_center"><?php echo $this->escapeHtml($dbRow->getAssetSumValue()); ?></td>
+                <td><?php echo $this->escapeHtml($dbRow->getType()); ?></td>
+                <td><?php echo $this->escapeHtml($dbRow->getAnalyst()); ?></td>
+                
+                
+                <td><a
+                        href="<?php
+                        echo $this->url($this->router, array(
+                            'action' => 'view',
+                            'id' => $dbRow->getId()
+                        ));
+                        ?>">View </a>
+                    <a
+                        href="<?php
+                        echo $this->url($this->router, array(
+                            'action' => 'edit',
+                            'id' => $dbRow->getId()
+                        ));
+                        ?>">Edit</a>
+                    <a
+                        href="<?php
+                        echo $this->url($this->router, array(
+                            'action' => 'delete',
+                            'id' => $dbRow->getId()
+                        ));
+                        ?>">Delete</a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+<?php echo $this->partial('partial/list_bottom.phtml'); ?>
+
+
+<script>
+    var colindex = document.getElementById('risk').cellIndex;
+    $('#datatable tbody tr td:nth-child(5)').each(function () {
+        cell = $(this);
+        if (cell.text() < 10) {
+            cell.css('background-color', '#88FF88');
+        }
+        else {
+            cell.css('background-color', '#FF8888');
+        }
+        console.log(cell.text());
+    });
+
+
+//    var dataTbl = document.getElementById('datatable');
+//    
+//    for (var i = 0; i < dataTbl.rows.length; i++){
+//        for (var j=0; j< dataTbl.rows[i].cells.length; j++)
+//        console.log(dataTbl.rows[i].cells[j]);
+//    }
+
+
+</script>
