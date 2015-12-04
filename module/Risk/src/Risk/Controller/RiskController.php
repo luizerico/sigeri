@@ -35,6 +35,13 @@ class RiskController extends GenericController {
         ));
         return $viewModel->setTemplate('risk/risk/barchart.phtml');
     }
+    
+    public function linechartAction() {
+        $viewModel = new ViewModel(array(
+            'title' => $this->title,
+        ));
+        return $viewModel->setTemplate('risk/risk/linechart.phtml');
+    }
 
     public function columnchartAction() {
         $viewModel = new ViewModel(array(
@@ -267,8 +274,6 @@ class RiskController extends GenericController {
         
         $versionArray = $this->getEntityManager()
                 ->getRepository('\Risk\Entity\RiskVersion')->findBy(array('risk_id'=>$id));
-        echo $versionArray;
-
 
         return array(
             'title' => $this->title,
@@ -277,6 +282,37 @@ class RiskController extends GenericController {
             'dbArray' => $dbArray,
             'vsArray' => $versionArray,
         );
+    }
+    
+    public function viewAction() {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute($this->route, array(
+                        'action' => 'list'
+            ));
+        }
+
+        try {
+            $ORMRepository = $this->getEntityManager();
+            $dbArray = $ORMRepository->getRepository($this->entity)->find($id);
+            if (!$dbArray) {
+                throw new Exception('Id invalido.');
+            }
+        } catch (Exception $ex) {
+            return $this->redirect()->toRoute($this->route, array(
+                        'action' => 'list'
+            ));
+        }
+        
+        $versionArray = $this->getEntityManager()
+                ->getRepository('\Risk\Entity\RiskVersion')->findBy(array('risk_id'=>$id));
+
+        return new ViewModel(array(
+            'title' => $this->title,
+            'router' => $this->route,
+            'dbArray' => $dbArray,
+            'vsArray' => $versionArray,
+        ));
     }
 
 }

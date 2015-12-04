@@ -6,7 +6,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3>
-                Threat: <?php echo $this->escapeHtml($title); ?> 
+                <?php echo $this->escapeHtml($title); ?> 
                 <a href="<?php echo $this->url($this->router, 
                         array('action' => 'edit', 'id' => $dbArray->getId())); ?>">                    
                     <button class="btn btn-info" style="float: right;">

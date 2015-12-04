@@ -32,6 +32,7 @@ class RiskVersion {
     /**
      * @ORM\Column(type="integer")
      * @Annotation\Options({"label":"Risk Id:"})
+     * @Annotation\Attributes({"readonly":"readonly"})
      *
      * @var integer
      * @access protected

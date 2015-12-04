@@ -4,6 +4,7 @@ namespace Risk\Controller;
 
 use Risk\Entity\RiskVersion;
 use Risk\Controller\GenericController;
+use Zend\View\Model\JsonModel;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
 use DoctrineORMModule\Form\Annotation\AnnotationBuilder as DoctrineAnnotationBuilder;
 use Exception;
@@ -18,6 +19,44 @@ class RiskVersionController extends GenericController {
 
         parent::__construct();
     }     
+    
+    public function jsonRiskDataAction() {
+        $risk_id = $this->params()->fromQuery('risk_id');
+        $orderby = $this->params()->fromQuery('orderby');
+        $limit = $this->params()->fromQuery('limit');
+
+        if (isset($risk_id)) {
+            $risk_id = " WHERE u.risk_id=" . $risk_id . " ";
+        }
+        if (isset($orderby)) {
+            $orderby = " ORDER BY " . $orderby . " DESC ";
+        }
+
+        $query = "SELECT 
+                        u.id AS id, 
+                        u.risk_id AS risk_id,
+                        u.name AS name,
+                        u.created AS date,                        
+                        i.value AS impact, 
+                        p.value AS likelihood,
+                        (i.value * p.value) AS risk
+                    FROM Risk\Entity\RiskVersion u                     
+                    JOIN u.impact i 
+                    JOIN u.likelihood p " . 
+                    $risk_id . 
+                    $orderby;
+
+        $ORMRepository = $this->getEntityManager();
+        $query = $ORMRepository->createQuery($query);
+
+        if (isset($limit)) {
+            $query->setMaxResults($limit);
+        }
+
+        $results = $query->getArrayResult(\Doctrine\ORM\AbstractQuery::HYDRATE_SCALAR);
+
+        return new JsonModel($results);
+    }
     
     
     public function editAction() {

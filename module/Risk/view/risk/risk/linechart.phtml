@@ -1,0 +1,285 @@
+<!-- <script src="" type="text/javascript" /> -->
+<?php
+echo $this->headScript()
+        ->prependFile($this->basePath() . '/js/d3.js')
+?>
+<section class="edit">           
+    <?php
+    $title = 'Graphs ' . $this->title;
+    $this->headTitle('SIGERI - ' . $title);
+    ?>
+
+    <h2><?php echo $this->escapeHtml($title); ?></h2>
+    <?php echo $this->data2 ?>
+
+
+
+
+    <div id="linechart" class="linechart">
+        <div class="chart"></div>
+
+        <style>
+
+            body { font: 12px Arial;}
+
+            path { 
+                stroke: steelblue;
+                stroke-width: 2;
+                fill: none;
+            }
+
+            .axis path,
+            .axis line {
+                fill: none;
+                stroke: grey;
+                stroke-width: 1;
+                shape-rendering: crispEdges;
+            }
+
+            .chart div {
+                font: 10px sans-serif;
+                background-color: steelblue;
+                text-align: right;
+                padding: 3px;
+                margin: 1px;
+                color: white;
+            }
+            .linechart {
+                border: solid 1px #ccc;
+                /* position: absolute; */
+                width: 100%;
+                padding: 9px;
+                border-radius: 5px;
+                /* display: block; */
+            }
+
+            .legend {
+                font-size: 10px;
+                font-weight: bold;
+                text-anchor: middle;
+            }
+
+            .tooltip {   
+                position: absolute;           
+                text-align: left;           
+                //width: 80px;                  
+                //height: 35px;                 
+                padding: 10px;             
+                font: 11px sans-serif;        
+                background: #EEE;   
+                border: 0px;      
+                border-radius: 3px;           
+                pointer-events: none;
+                box-shadow: 1px 1px 2px #CCC;
+            </style>
+
+            <script type="text/javascript">
+
+                // Set the dimensions of the canvas / graph
+                var margin = {top: 20, right: 60, bottom: 50, left: 40};
+
+                //            width = $("#linechart").width() - margin.left - margin.right,
+                //                    height = $("#linechart").height() - margin.top - margin.bottom;
+
+                width = 720 - margin.left - margin.right,
+                        height = 470 - margin.top - margin.bottom;
+
+
+                // Parse the date / time
+                //var oldparseDate = d3.time.format("%d-%b-%y").parse;
+                var parseDate = d3.time.format("%Y-%m-%d %H:%M:%S.%L%L").parse;
+                var bisectDate = d3.bisector(function (d) {
+                    return d.date;
+                }).left;
+
+                // Set the ranges
+                var x = d3.time.scale().range([0, width]);
+                var y = d3.scale.linear().range([height, 0]);
+
+                // Define the axes
+                var xAxis = d3.svg.axis().scale(x)
+                        .orient("bottom").ticks(5);
+
+                var yAxis = d3.svg.axis().scale(y)
+                        .orient("left").ticks(10);
+
+                // Define the line
+                var valueline = d3.svg.line()
+                        //.interpolate("basis")
+                        .x(function (d) {
+                            return x(d.date);
+                        })
+                        .y(function (d) {
+                            return y(d.risk);
+                        });
+
+                // Adds the svg canvas
+                var svg = d3.select(".chart")
+                        .append("svg")
+                        .attr("width", width + margin.left + margin.right)
+                        .attr("height", height + margin.top + margin.bottom)
+                        .append("g")
+                        .attr("transform",
+                                "translate(" + margin.left + "," + margin.top + ")");
+
+                // Get the data
+                d3.json("/riskversion/jsonRiskData?orderby=date", function (error, data) {
+
+                    data.forEach(function (d) {
+                        //console.log(parseDate(d.date.date));
+                        d.date = parseDate(d.date.date);
+                        d.risk = +d.risk;
+                    });
+
+                    // Scale the range of the data
+                    x.domain(d3.extent(data, function (d) {
+                        return d.date;
+                    }));
+                    y.domain([0, d3.max(data, function (d) {
+                            return d.risk;
+                        })]);
+
+                    // Nest the entries by symbol
+                    var dataNest = d3.nest()
+                            .key(function (d) {
+                                return d.risk_id;
+                            })
+                            .entries(data);
+                    console.log(dataNest);
+
+                    var color = d3.scale.category10();   // set the colour scale
+
+                    legendSpace = width / dataNest.length; // spacing for legend
+
+                    // Loop through each symbol / key
+                    dataNest.forEach(function (d, i) {
+                        svg.append("path")
+                                .attr("class", "line")
+                                .style("stroke", function () { // Add the colours dynamically
+                                    return d.color = color(d.key);
+                                })
+                                .attr("d", valueline(d.values));
+
+                        // Add the Legend
+                        svg.append("text")
+                                .attr("x", (legendSpace / 2) + i * legendSpace) // spacing
+                                .attr("y", height + (margin.bottom / 2) + 20)
+                                .attr("class", "legend")    // style the legend
+                                .style("fill", function () { // dynamic colours
+                                    return d.color = color(d.key);
+                                })
+                                .text(d.values[0].name);
+
+                    });
+
+
+
+//                    svg.append('g')
+//                            .selectAll('text')
+//                            .data(data)
+//                            .enter()
+//                            .append('text')
+//                            .classed('label', true)
+//                            .attr({
+//                                'x': function (d, i) {
+//                                    return x(d.date) + 3;
+//                                },
+//                                'y': function (d, i) {
+//                                    return y(d.risk);
+//                                }
+//                            })
+//                            .text(function (d, i) {
+//                                return d.risk;
+//                            });
+
+                    svg.append('g')
+                            .selectAll('circle')
+                            .data(data)
+                            .enter()
+                            .append("a")
+                            .attr("xlink:href", function (d) {
+                                return "/riskversion/view/" + d.id;
+                            })
+                            .append('circle')
+                            .style("fill", "transparent")
+                            .attr({
+                                'cx': function (d, i) {
+                                    return x(d.date);
+                                },
+                                'cy': function (d, i) {
+                                    return y(d.risk);
+                                }
+                            })
+                            .style("stroke", "#666666")
+                            .style("fill", "#CCCCCC")
+                            .style("opacity", 0)
+                            .attr('r', 4)
+                            .on("mouseover", function (d) {
+                                tooltip.transition()
+                                        .duration(200)
+                                        .style("opacity", 1);
+                                tooltip.html(
+                                        "Risk: " + d.name +
+                                        "</br>Likelihood: " + d.likelihood +
+                                        "</br>Impact: " + d.impact)
+                                        .style("left", (d3.event.pageX) + "px")
+                                        .style("top", (d3.event.pageY - 60) + "px");
+
+                                d3.select(this)
+                                        .transition()
+                                        .style("opacity", .75)
+                                        .attr("r", 6);
+
+                                rect
+                                        .attr('y', y(d.risk))
+                                        .attr({
+                                            'width': x(d.date),
+                                            'height': height - y(d.risk)})
+                                        .style("display", "");
+                            })
+                            .on("mouseout", function (d) {
+                                tooltip.transition()
+                                        .duration(500)
+                                        .style("opacity", 0);
+
+                                d3.select(this)
+                                        .transition()
+                                        .duration(500)
+                                        .delay(500)
+                                        .style("opacity", 0)
+                                        .attr("r", 4);
+                                
+                                rect.style("display","none");
+
+                            });
+
+                    // Tip Text
+                    var tooltip = d3.select("body").append("div")
+                            .attr("class", "tooltip");
+
+                    var rect = svg.append("rect")
+                            .style("display", "none")                    
+                            .style("stroke", "#666")
+                            .style("stroke-width", 1)
+                            .style("stroke-dasharray","2,2")
+                            .style("fill", "#CCC")
+                            .style("fill-opacity", 0.2 );
+
+
+                    // Add the X Axis
+                    svg.append("g")
+                            .attr("class", "x axis")
+                            .attr("transform", "translate(0," + height + ")")
+                            .call(xAxis);
+
+                    // Add the Y Axis
+                    svg.append("g")
+                            .attr("class", "y axis")
+                            .call(yAxis);
+
+                });
+
+            </script>
+
+        </div>
+    </section>
