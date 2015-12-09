@@ -29,13 +29,20 @@ class RiskController extends GenericController {
         return $viewModel->setTemplate('risk/risk/xychart.phtml');
     }
 
+    public function piechartAction() {
+        $viewModel = new ViewModel(array(
+            'title' => $this->title,
+        ));
+        return $viewModel->setTemplate('risk/risk/piechart.phtml');
+    }
+
     public function barchartAction() {
         $viewModel = new ViewModel(array(
             'title' => $this->title,
         ));
         return $viewModel->setTemplate('risk/risk/barchart.phtml');
     }
-    
+
     public function linechartAction() {
         $viewModel = new ViewModel(array(
             'title' => $this->title,
@@ -62,24 +69,25 @@ class RiskController extends GenericController {
             $orderby = " ORDER BY " . $orderby . " DESC ";
         }
 
-        $query = "SELECT u.id AS id, u.name AS name, i.value AS impact, p.value AS likelihood,
-                    (i.value * p.value) AS risk
-                    FROM Risk\Entity\Risk u                     
-                    JOIN u.impact i 
-                    JOIN u.likelihood p " . $orderby;
-
-        $ORMRepository = $this->getEntityManager();
-        $query = $ORMRepository->createQuery($query);
-
         if (isset($limit)) {
-            $query->setMaxResults($limit);
+            $limit = " LIMIT " . $limit;
         }
 
-        $results = $query->getArrayResult(\Doctrine\ORM\AbstractQuery::HYDRATE_SCALAR);
+        $query = "SELECT risk.id as id,
+                    risk.name AS name, 
+                    impact.value AS impact, 
+                    likelihood.value AS likelihood, 
+                    (impact.value * likelihood.value) AS value 
+                        FROM risk 
+                        join impact 
+                        join likelihood
+                        WHERE
+                                impact.id=risk.impact_id AND
+                                likelihood.id=risk.likelihood_id "
+                . $orderby
+                . $limit;
 
-        $json2 = \Zend\Json\Json::encode($results, true);
-
-        return new JsonModel($results);
+        return new JsonModel($this->querysql($query));
     }
 
     public function riskcountAction() {
@@ -136,7 +144,7 @@ class RiskController extends GenericController {
     }
 
     public function typeAssetListAction() {
-        $query = "SELECT type as assettype, count(*) AS number, ROUND(sum(risk)/count(*),2) AS avgrisk, MAX(risk) AS maxrisk FROM (
+        $query = "SELECT type as name, count(*) AS value, ROUND(sum(risk)/count(*),2) AS avgrisk, MAX(risk) AS maxrisk FROM (
                     SELECT asset.name AS asset, assettype.name AS type, impact.value AS impact, likelihood.value AS likelihood, (impact.value * likelihood.value) AS risk 
                     FROM risk 
                     LEFT JOIN risk_asset ON risk.id=risk_asset.risk_id 
@@ -155,7 +163,7 @@ class RiskController extends GenericController {
     }
 
     public function typeRiskListAction() {
-        $query = "SELECT type as risktype, count(*) AS number, ROUND(sum(risk)/count(*),2) AS avgrisk, MAX(risk) AS maxrisk FROM (
+        $query = "SELECT type as name, count(*) AS value, ROUND(sum(risk)/count(*),2) AS avgrisk, MAX(risk) AS maxrisk FROM (
                     SELECT risktype.name AS type, impact.value AS impact, likelihood.value AS likelihood, (impact.value * likelihood.value) AS risk 
                         FROM risk
                         join impact 
@@ -271,9 +279,9 @@ class RiskController extends GenericController {
                 ));
             }
         }
-        
+
         $versionArray = $this->getEntityManager()
-                ->getRepository('\Risk\Entity\RiskVersion')->findBy(array('risk_id'=>$id));
+                        ->getRepository('\Risk\Entity\RiskVersion')->findBy(array('risk_id' => $id));
 
         return array(
             'title' => $this->title,
@@ -283,7 +291,7 @@ class RiskController extends GenericController {
             'vsArray' => $versionArray,
         );
     }
-    
+
     public function viewAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
@@ -303,9 +311,9 @@ class RiskController extends GenericController {
                         'action' => 'list'
             ));
         }
-        
+
         $versionArray = $this->getEntityManager()
-                ->getRepository('\Risk\Entity\RiskVersion')->findBy(array('risk_id'=>$id));
+                        ->getRepository('\Risk\Entity\RiskVersion')->findBy(array('risk_id' => $id));
 
         return new ViewModel(array(
             'title' => $this->title,

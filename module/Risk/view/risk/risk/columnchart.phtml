@@ -1,4 +1,6 @@
-<!-- <script src="" type="text/javascript" /> -->
+<script type="text/javascript" src="/js/mygraph.js"></script>
+<link type="text/css" href="/css/mygraph.css" rel="stylesheet">
+
 <?php
 echo $this->headScript()
         ->prependFile($this->basePath() . '/js/d3.js')
@@ -12,7 +14,7 @@ echo $this->headScript()
     <h2><?php echo $this->escapeHtml($title); ?></h2>
     <?php echo $this->data2 ?>
 
-    <div id="areachart0" class="areachart">
+    <div id="areachart0" >
         <style>
             .bar {
                 fill: steelblue;
@@ -76,106 +78,108 @@ echo $this->headScript()
         </style>
 
 
-        <svg class="columnchart"></svg>
-
+<!--        <svg class="columnchart01"></svg>-->
+        <div id="columnchart01"></div>
         <script type="text/javascript">
 
-            var margin = {top: 20, right: 30, bottom: 30, left: 40},
-            width = $("#areachart0").width() - margin.left - margin.right,
-                            height = 400 - margin.top - margin.bottom;
+            columnChart("columnchart01", "/risk/jsonRiskData", 0, 1);
 
-            var x = d3.scale.ordinal().rangeRoundBands([0, width], .1);
-            var y = d3.scale.linear().range([height, 0]);
-
-            var xAxis = d3.svg.axis()
-                    .scale(x)
-                    .orient("bottom");
-
-            var yAxis = d3.svg.axis()
-                    .scale(y)
-                    .orient("left");
-
-            var chart = d3.select(".columnchart")
-                    .attr("width", width + margin.left + margin.right)
-                    .attr("height", height + margin.top + margin.bottom)
-                    .append("g")
-                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-            d3.json("jsonRiskData", function (data) {
-                x.domain(data.map(function (d) {
-                    return d.name;
-                }));
-
-                y.domain([0, d3.max(data, function (d) {
-                        return d.impact * d.likelihood;
-                    })]);
-
-                chart.append("g")
-                        .attr("class", "x axis")
-                        .attr("transform", "translate(0," + height + ")")
-                        .call(xAxis);
-
-                chart.append("g")
-                        .attr("class", "y axis")
-                        .call(yAxis)
-                        .append("text")
-                        .attr("transform", "rotate(-90)")
-                        .attr("y", 6)
-                        .attr("dy", ".70em")
-                        .style("text-anchor", "end")
-                        .text("Impact x Likelihood");
-
-                chart.selectAll(".bar")
-                        .data(data)
-                        .enter().append("a")
-                        .attr("xlink:href", function (d) {
-                            return "/risk/edit/" + d.id;
-                        })
-                        .append("rect")
-                        .attr("class", "bar")
-                        .attr("x", function (d) {
-                            return x(d.name);
-                        })
-                        .attr("y", function (d) {
-                            return y(d.impact * d.likelihood);
-                        })
-                        .attr("height", function (d) {
-                            return height - y(d.impact * d.likelihood);
-                        })
-                        .attr("width", x.rangeBand())
-                        .on("mouseover", function (d) {
-                            tooltip.transition()
-                                    .duration(200)
-                                    .style("opacity", 1);
-                            tooltip.html(
-                                    "Risk: " + d.name +
-                                    "</br>Likelihood: " + d.likelihood +
-                                    "</br>Impact: " + d.impact)
-                                    .style("left", (d3.event.pageX) + "px")
-                                    .style("top", (d3.event.pageY - 60) + "px");
-                        })
-                        .on("mouseout", function (d) {
-                            tooltip.transition()
-                                    .duration(500)
-                                    .style("opacity", 0);
-                        })
-                        ;
-                ;
-
-                // Tip Text
-                var tooltip = d3.select("body").append("div")
-                        .attr("class", "tooltip");
-
-            });
-
-            function type(d) {
-                d.value = +d.value; // coerce to number
-                return d;
-            }
+//            var margin = {top: 20, right: 30, bottom: 30, left: 40},
+//            width = $("#areachart0").width() - margin.left - margin.right,
+//                            height = 400 - margin.top - margin.bottom;
+//
+//            var x = d3.scale.ordinal().rangeRoundBands([0, width], .1);
+//            var y = d3.scale.linear().range([height, 0]);
+//
+//            var xAxis = d3.svg.axis()
+//                    .scale(x)
+//                    .orient("bottom");
+//
+//            var yAxis = d3.svg.axis()
+//                    .scale(y)
+//                    .orient("left");
+//
+//            var chart = d3.select(".columnchart")
+//                    .attr("width", width + margin.left + margin.right)
+//                    .attr("height", height + margin.top + margin.bottom)
+//                    .append("g")
+//                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+//
+//            d3.json("jsonRiskData", function (data) {
+//                x.domain(data.map(function (d) {
+//                    return d.name;
+//                }));
+//
+//                y.domain([0, d3.max(data, function (d) {
+//                        return d.impact * d.likelihood;
+//                    })]);
+//
+//                chart.append("g")
+//                        .attr("class", "x axis")
+//                        .attr("transform", "translate(0," + height + ")")
+//                        .call(xAxis);
+//
+//                chart.append("g")
+//                        .attr("class", "y axis")
+//                        .call(yAxis)
+//                        .append("text")
+//                        .attr("transform", "rotate(-90)")
+//                        .attr("y", 6)
+//                        .attr("dy", ".70em")
+//                        .style("text-anchor", "end")
+//                        .text("Impact x Likelihood");
+//
+//                chart.selectAll(".bar")
+//                        .data(data)
+//                        .enter().append("a")
+//                        .attr("xlink:href", function (d) {
+//                            return "/risk/edit/" + d.id;
+//                        })
+//                        .append("rect")
+//                        .attr("class", "bar")
+//                        .attr("x", function (d) {
+//                            return x(d.name);
+//                        })
+//                        .attr("y", function (d) {
+//                            return y(d.impact * d.likelihood);
+//                        })
+//                        .attr("height", function (d) {
+//                            return height - y(d.impact * d.likelihood);
+//                        })
+//                        .attr("width", x.rangeBand())
+//                        .on("mouseover", function (d) {
+//                            tooltip.transition()
+//                                    .duration(200)
+//                                    .style("opacity", 1);
+//                            tooltip.html(
+//                                    "Risk: " + d.name +
+//                                    "</br>Likelihood: " + d.likelihood +
+//                                    "</br>Impact: " + d.impact)
+//                                    .style("left", (d3.event.pageX) + "px")
+//                                    .style("top", (d3.event.pageY - 60) + "px");
+//                        })
+//                        .on("mouseout", function (d) {
+//                            tooltip.transition()
+//                                    .duration(500)
+//                                    .style("opacity", 0);
+//                        })
+//                        ;
+//                ;
+//
+//                // Tip Text
+//                var tooltip = d3.select("body").append("div")
+//                        .attr("class", "tooltip");
+//
+//            });
+//
+//            function type(d) {
+//                d.value = +d.value; // coerce to number
+//                return d;
+//            }
         </script>
 
     </div>
-    <p>  </p>
+<!--    <p>  </p>
     <div id="areachart1" class="areachart">            
 
         <svg class="columnchart2"></svg>
@@ -329,7 +333,7 @@ echo $this->headScript()
             }
 
         </script>
-    </div>   
+    </div>   -->
 </section>
 
 

@@ -30,7 +30,7 @@ echo $this->headScript()
             }
 
             path {
-                stroke-width: 2;
+                stroke-width: 2.5px;
                 fill: none;
             }
 
@@ -90,11 +90,11 @@ echo $this->headScript()
             // Set the dimensions of the canvas / graph
             var margin = {top: 20, right: 20, bottom: 50, left: 40};
 
-            //            width = $("#linechart").width() - margin.left - margin.right,
-            //                    height = $("#linechart").height() - margin.top - margin.bottom;
+            width = $("#linechart").width() - margin.left - margin.right,
+                    height = $("#linechart").width() * 4 / 7 - margin.top - margin.bottom;
 
-            width = 780 - margin.left - margin.right,
-                    height = 470 - margin.top - margin.bottom;
+//            width = 780 - margin.left - margin.right,
+//                    height = 470 - margin.top - margin.bottom;
 
 
             // Parse the date / time
@@ -173,7 +173,7 @@ echo $this->headScript()
                             .attr("d", valueline(d.values))
                             .on("mouseover", function (d) {
                                 d3.select(this)                          //on mouseover of each line, give it a nice thick stroke
-                                        .style("stroke-width", '4px');
+                                        .style("stroke-width", '5px');
 
                                 circle
                                         .transition()
@@ -185,7 +185,7 @@ echo $this->headScript()
                             })
                             .on("mouseout", function (d) {        //undo everything on the mouseout
                                 d3.select(this)
-                                        .style("stroke-width", '2px');
+                                        .style("stroke-width", '2.5px');
                                 circle
                                         .transition()
                                         .delay(100)
@@ -205,14 +205,24 @@ echo $this->headScript()
                             })
                             .text(d.values[0].name);
 
+                    var dx = 0;
+
                     var label = svg.append("text")
                             .attr("transform", "translate(" +
                                     x(d.values[0].date) + "," +
                                     y(d.values[0].risk) + ")")
                             .style("text-anchor", function () {
-                                return "end";
+                                if (x(d.values[0].date) > (width / 2)) {
+                                    dx = -6;
+                                    return "end";
+                                }
+                                else {
+                                    dx = 6;
+                                    return "start";
+                                }
                             })
-                            .attr("dx", -6)
+                            .attr("dx", dx)
+                            .style()
                             .attr("dy", ".35em")
                             .text(d.values[0].name);
 
@@ -249,10 +259,10 @@ echo $this->headScript()
                                         .style("left", (d3.event.pageX) + "px")
                                         .style("top", (d3.event.pageY - 60) + "px");
 
-                                d3.select(this)
-                                        .transition()
-                                        .style("opacity", .75)
-                                        .attr("r", 8);
+//                                d3.select(this)
+//                                        .transition()
+//                                        .style("opacity", .75)
+//                                        .attr("r", 8);
 
                                 rect
                                         .attr('y', y(d.risk))
@@ -269,12 +279,12 @@ echo $this->headScript()
                                         .duration(500)
                                         .style("opacity", 0);
 
-                                d3.select(this)
-                                        .transition()
-                                        .duration(500)
-                                        .delay(500)
-                                        .style("opacity", 1)
-                                        .attr("r", 4);
+//                                d3.select(this)
+//                                        .transition()
+//                                        .duration(500)
+//                                        .delay(500)
+//                                        .style("opacity", 1)
+//                                        .attr("r", 4);
 
                                 rect.style("display", "none");
 
@@ -312,6 +322,7 @@ echo $this->headScript()
                         .call(yAxis);
 
             });
+
 
         </script>
 
