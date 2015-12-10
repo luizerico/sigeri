@@ -86,7 +86,7 @@
 
 
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
                 <h2>Risk Map <small> Global </small></h2>
@@ -486,7 +486,7 @@
 
                                 var composer2 = "</small></p></div></li>";
                                 $.getJSON(
-                                        "/risk/jsonRiskData?orderby=risk&limit=5", function (result) {
+                                        "/risk/jsonRiskData?orderby=value&limit=5", function (result) {
                                             $.each(result, function (i, field) {
                                                 $("#toprisk").append(composer1 +
                                                         "<a class=\"title\" href=\"/risk/view/" +
@@ -510,7 +510,7 @@
 
 <!-- Bar Graphs -->
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
             <div class="x_title">
                 <h2>Risk Summary <small>Types and Groups</small></h2>
@@ -519,162 +519,27 @@
             <div class="x_content">
 
                 <div class="row" style="border-bottom: 1px solid #E0E0E0; padding-bottom: 5px; margin-bottom: 5px;">
-                    <div class="col-md-7" style="overflow:hidden;">
-                        <div id="columnchart01" class="areachart">
+                    <div class="col-md-7 col-sm-12 col-xs-12" style="overflow:hidden;">
+                        <div id="columnchart01" >          
                             <style>
-                                .bar {
+                                .column {
                                     fill: steelblue;
+                                    stroke: 4px #CCC;
                                 }
 
-                                .bar:hover {
+                                .column:hover {
                                     fill: brown;
                                 }
-
-                                .axis text {
-                                    font: 10px sans-serif;
-                                }
-
-                                .axis path, .axis line {
-                                    fill: none;
-                                    stroke: #000;
-                                    shape-rendering: crispEdges;
-                                }
-
-                                .x.axis path {          
-                                    display: none;
-                                }
-
-                                text {
-                                    font-size: 0.9em;
-                                }
-
-                                .tooltip {   
-                                    position: absolute;           
-                                    text-align: left;           
-                                    padding: 10px;             
-                                    font: 11px sans-serif;        
-                                    background: #EEE;   
-                                    border: 0px;      
-                                    border-radius: 3px;           
-                                    pointer-events: none;
-                                    box-shadow: 1px 1px 2px #CCC;
-
-                                }
-                                label {
-                                    width: 100%;
-                                    text-align: right;
-                                    //position: absolute;
-                                    top: 20px;
-                                    right: 15px;
-                                    border: 0;
-                                    padding: 0;
-                                }                                
-
                             </style>
 
-
-                            <svg class="columnchart"></svg>
-
                             <script type="text/javascript">
-
-                                var margin = {top: 2, right: 2, bottom: 5, left: 20},
-                                width = $("#columnchart01").width() - margin.left - margin.right,
-                                        height = width / 3 - margin.top - margin.bottom;
-
-                                var x = d3.scale.ordinal().rangeRoundBands([0, width], .1);
-                                var y = d3.scale.linear().range([height, 0]);
-
-                                var xAxis = d3.svg.axis()
-                                        .scale(x)
-                                        .orient("bottom");
-
-                                var yAxis = d3.svg.axis()
-                                        .scale(y)
-                                        .orient("left");
-
-                                var chart = d3.select(".columnchart")
-                                        .attr("width", width + margin.left + margin.right)
-                                        .attr("height", height + margin.top + margin.bottom)
-                                        .append("g")
-                                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-                                d3.json("/risk/jsonRiskData", function (data) {
-                                    x.domain(data.map(function (d) {
-                                        return d.name;
-                                    }));
-
-                                    y.domain([0, d3.max(data, function (d) {
-                                            return d.impact * d.likelihood;
-                                        })]);
-
-                                    chart.append("g")
-                                            .attr("class", "x axis")
-                                            .attr("transform", "translate(0," + height + ")")
-                                            .call(xAxis);
-
-                                    chart.append("g")
-                                            .attr("class", "y axis")
-                                            .call(yAxis)
-                                            .append("text")
-                                            .attr("transform", "rotate(-90)")
-                                            .attr("y", 6)
-                                            .attr("dy", ".70em")
-                                            .style("text-anchor", "end")
-                                            .text("Impact x Likelihood");
-
-                                    chart.selectAll(".bar")
-                                            .data(data)
-                                            .enter().append("a")
-                                            .attr("xlink:href", function (d) {
-                                                return "/risk/edit/" + d.id;
-                                            })
-                                            .append("rect")
-                                            .attr("class", "bar")
-                                            .attr("x", function (d) {
-                                                return x(d.name);
-                                            })
-                                            .attr("y", function (d) {
-                                                return y(d.impact * d.likelihood);
-                                            })
-                                            .attr("height", function (d) {
-                                                return height - y(d.impact * d.likelihood);
-                                            })
-                                            .attr("width", x.rangeBand())
-                                            .on("mouseover", function (d) {
-                                                tooltip.transition()
-                                                        .duration(200)
-                                                        .style("opacity", 1);
-                                                tooltip.html(
-                                                        "Risk: " + d.name +
-                                                        "</br>Likelihood: " + d.likelihood +
-                                                        "</br>Impact: " + d.impact)
-                                                        .style("left", (d3.event.pageX) + "px")
-                                                        .style("top", (d3.event.pageY - 60) + "px");
-                                            })
-                                            .on("mouseout", function (d) {
-                                                tooltip.transition()
-                                                        .duration(500)
-                                                        .style("opacity", 0);
-                                            })
-                                            ;
-                                    ;
-
-                                    // Tip Text
-                                    var tooltip = d3.select("body").append("div")
-                                            .attr("class", "tooltip");
-
-                                });
-
-                                function type(d) {
-                                    d.value = +d.value; // coerce to number
-                                    return d;
-                                }
+                                // columnChart(destiny div, json link, external links, labels, yLabel) 
+                                columnChart("columnchart01", "/risk/jsonRiskData", "/risk/view/", 0, "likelihood x impact");
                             </script>
-
                         </div>
                     </div>
 
-                    <div class="col-md-5">
+                    <div class="col-md-5 col-sm-12 col-xs-12">
                         <div class="row" style="text-align: center;">
                             <div class="col-md-4">
                                 <canvas id="canvas1i" height="110" width="110" style="margin: 5px 10px 10px 0"></canvas>
@@ -757,7 +622,7 @@
                     </div>
                     <div class="col-md-6 col-sm-12 col-xs-12">
                         <div id="piechart01" class="piechart">
-                                                        
+
                             <script>
                                 piechart("piechart01", "/risk/typerisklist", 0, "Risk Type");
                             </script>
