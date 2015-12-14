@@ -1,4 +1,6 @@
-<!-- <script src="" type="text/javascript" /> -->
+<script type="text/javascript" src="/js/mygraph.js"></script>
+<link type="text/css" href="/css/mygraph.css" rel="stylesheet">
+
 <?php
 echo $this->headScript()
         ->prependFile($this->basePath() . '/js/d3.js')
@@ -16,7 +18,15 @@ echo $this->headScript()
         <div class="panel-body">
             <?php echo $this->data2 ?>
 
-            <div id="areachart" class="areachart">
+            <div id="xychart01" class="xychart">
+                <script type="text/javascript">
+                    // xychartChart(destiny div, json link, external links, labels, yLabel) 
+                    xychart("xychart01", "/risk/jsonRiskData", ["impact", "likelihood"], "/risk/view/", 1);
+                </script>
+            </div>
+
+            
+<!--            <div id="areachart" class="areachart">
                 <label><input type="checkbox" id="show_label" checked="checked"> Show labels</label>
                 <svg id="matrix"></svg>
 
@@ -78,7 +88,7 @@ echo $this->headScript()
                 <script type="text/javascript">
                     var margin = {top: 20, right: 20, bottom: 30, left: 40},
                     width = $("#areachart").width() - margin.left - margin.right,
-                            height = ($("#areachart").width() * 3/7) - margin.top - margin.bottom;
+                            height = ($("#areachart").width() * 3 / 7) - margin.top - margin.bottom;
 
                     var radius = 5,
                             padding = 1,
@@ -316,7 +326,7 @@ echo $this->headScript()
                     });
 
                 </script>
-            </div>
+            </div>-->
         </div>
     </div>
 </section>

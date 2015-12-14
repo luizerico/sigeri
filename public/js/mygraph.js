@@ -115,7 +115,7 @@ function piechart(divChart, dbData, labels, title) {
 
 }
 
-function columnChart(divChart, dbData, exlink, labels, yLabel) {
+function columnchart(divChart, dbData, exlink, labels, yLabel) {
     var tooltip = d3.select("body").append("div")
             .attr("class", "tooltip");
 
@@ -262,8 +262,6 @@ function multicolumnChart(divChart, dbData, mfield, exlink, labels, yLabel) {
     var width = $("#" + divChart).width() - margin.left - margin.right,
             height = width / 3 - margin.top - margin.bottom;
 
-    console.log(height + " - " + width);
-
     var x = d3.scale.ordinal().rangeRoundBands([0, width], .01);
     var y = d3.scale.linear().range([height, 0]);
 
@@ -288,7 +286,6 @@ function multicolumnChart(divChart, dbData, mfield, exlink, labels, yLabel) {
         }));
 
         y.domain([0, d3.max(data, function (d) {
-                console.log(mfield[0]);
                 return mfield[0] + mfield[1];
             })]);
 
@@ -363,8 +360,8 @@ function multicolumnChart(divChart, dbData, mfield, exlink, labels, yLabel) {
                             .style("opacity", 1);
                     tooltip.html(
                             "Name: " + data[i].name +
-                            "</br>"+mfield[0]+": " + data[i][mfield[0]] +
-                            "</br>"+mfield[1]+": " + data[i][mfield[1]])
+                            "</br>" + mfield[0] + ": " + data[i][mfield[0]] +
+                            "</br>" + mfield[1] + ": " + data[i][mfield[1]])
                             .style("left", (d3.event.pageX) + "px")
                             .style("top", (d3.event.pageY - 40) + "px");
                 })
@@ -377,20 +374,6 @@ function multicolumnChart(divChart, dbData, mfield, exlink, labels, yLabel) {
                     tooltip.style("left", (d3.event.pageX + 3) + "px")
                             .style("top", (d3.event.pageY - 45) + "px");
                 });
-        ;
-//
-//        var xAxis = d3.svg.axis()
-//                .scale(x)
-//                .orient("bottom");
-//
-//        var yAxis = d3.svg.axis()
-//                .scale(yScale)
-//                .orient("left");
-
-//        svg.append("g")
-//                .attr("class", "x axis")
-//                .attr("transform", "translate(0," + height + ")")
-//                .call(xAxis);
 
         svg.append("g")
                 .attr("class", "y axis")
@@ -441,5 +424,309 @@ function multicolumnChart(divChart, dbData, mfield, exlink, labels, yLabel) {
                         ;
                     });
         }
+    });
+}
+
+function xychart(divChart, dbData, mfield, exlink, labels) {
+    var tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip");
+
+    var margin = {top: 20, right: 20, bottom: 30, left: 40};
+
+    var width = $("#" + divChart).width() - margin.left - margin.right,
+            height = (width * 3 / 7) - margin.top - margin.bottom;
+
+    var radius = 5,
+            padding = 1,
+            alpha_X = 1;
+
+    var force = d3.layout.force()
+            .charge(-50)
+            .gravity(0)
+            .chargeDistance(20)
+            .size([width, height]);
+
+    var color = d3.scale.category10();
+
+    var svg = d3.select("#" + divChart).append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var gradient = svg.append("linearGradient")
+            .attr("y1", "100%")
+            .attr("y2", "0%")
+            .attr("x1", "0%")
+            .attr("x2", "100%")
+            .attr("id", "gradient")
+            .attr("spreadMethod", "pad");
+
+    gradient.append("stop")
+            .attr("offset", "0%")
+            .attr("stop-color", "#0F0");
+
+    gradient.append("stop")
+            .attr("offset", "50%")
+            .attr("stop-color", "#FF0");
+
+    gradient.append("stop")
+            .attr("offset", "100%")
+            .attr("stop-color", "#F00");
+
+    svg.append("svg:rect")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .style("fill", "url(#gradient)");
+
+    d3.json(dbData, function (data) {
+        var maxX = d3.max(data, function (d) {
+            return d[mfield[1]];
+        });
+
+        var maxY = d3.max(data, function (d) {
+            return d[mfield[0]];
+        });
+
+        var xPos = d3.scale.linear()
+                .domain([0, maxX])
+                .range([0, width]);
+
+        var yPos = d3.scale.linear()
+                .domain([0, maxY])
+                .range([height, 0]);
+
+        // Axis 
+        var xAxis = d3.svg.axis()
+                .scale(xPos)
+                .orient("bottom");
+
+        var yAxis = d3.svg.axis()
+                .scale(yPos)
+                .orient("left");
+
+        // Set initial positions
+        data.forEach(function (d) {
+            d.x = xPos(d[mfield[1]]) - radius;
+            d.y = yPos(d[mfield[0]]) + radius;
+            d.radius = radius;
+        });
+
+
+        svg.append("g")
+                .attr("transform", "translate(" + margin.left + "," + (height + margin.top) + ")")
+                .attr("class", "axis")
+                .call(xAxis)
+                .append("text")
+                .attr("x", width)
+                .attr("dy", "-1em")
+                .style("text-anchor", "end")
+                .text("Likelihood");
+        ;
+
+        svg.append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                .attr("class", "axis")
+                .call(yAxis)
+                .append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 8)
+                .attr("dy", "1em")
+                .style("text-anchor", "end")
+                .text([mfield[0]]);
+
+        var text = svg.selectAll("text.node")
+                .data(data).enter()
+                .append("svg:text")
+                .text(function (d) {
+                    return d.name;
+                })
+                .attr("opacity", function (d) {
+                    if (labels) {
+                        return "1";
+                    }
+                    else {
+                        return "0";
+                    }
+                });
+
+
+        var node = svg.selectAll("circle.node")
+                .data(data).enter()
+                .append("a")
+                .attr("xlink:href", function (d) {
+                    return exlink + d.id;
+                })
+                .append("svg:circle")
+                .attr("r", function (d) {
+                    return radius;
+                })
+                .attr("class", "circle")
+                .attr("fill", function (d) {
+                    return color(d[mfield[0]]);
+                })
+                //                            .style("opacity", 0.5)
+                .call(force.drag)
+                .on("mouseover", function (d, i) {
+                    tooltip.transition()
+                            .duration(200)
+                            .style("opacity", 1);
+                    tooltip.html(
+                            "Name: " + data[i].name +
+                            "</br>" + mfield[0] + ": " + data[i][mfield[0]] +
+                            "</br>" + mfield[1] + ": " + data[i][mfield[1]])
+                            .style("left", (d3.event.pageX) + "px")
+                            .style("top", (d3.event.pageY - 40) + "px");
+                })
+                .on("mouseout", function (d) {
+                    tooltip.transition()
+                            .duration(500)
+                            .style("opacity", 0);
+                })
+                ;
+
+        force
+                .nodes(data)
+                .on("tick", tick)
+                .start();
+
+
+        function tick(e) {
+            node.each(moveTowardDataPosition(e.alpha));
+            node.each(collide(e.alpha));
+            node
+                    .attr("cx", function (d) {
+                        return d.x + margin.left;
+                    })
+                    .attr("cy", function (d) {
+                        return d.y + margin.top;
+                    })
+                    ;
+            text
+                    .attr("x", function (d) {
+                        return d.x + 3 + radius + margin.left;
+                    })
+                    .attr("y", function (d) {
+                        return d.y + radius + margin.top;
+                    });
+        }
+
+        function moveTowardDataPosition(alpha) {
+            return function (d) {
+                d.x += (xPos(d[mfield[1]]) - d.x) * alpha_X * alpha;
+                d.y += (yPos(d[mfield[0]]) - d.y) * alpha_X * alpha;
+            };
+        }
+
+        function collide(alpha) {
+            var quadtree = d3.geom.quadtree(data);
+            return function (d) {
+                var r = d.radius + r + padding,
+                        nx1 = d.x - r,
+                        nx2 = d.x + r,
+                        ny1 = d.y - r,
+                        ny2 = d.y + r;
+                quadtree.visit(function (quad, x1, y1, x2, y2) {
+                    if (quad.point && (quad.point !== d)) {
+                        var x = d.x - quad.point.x,
+                                y = d.y - quad.point.y,
+                                l = Math.sqrt(x * x + y * y),
+                                r = d.radius + quad.point.radius + (d.color !== quad.point.color) * padding;
+                        if (l < r) {
+                            l = (l - r) / l * alpha;
+                            d.x -= x *= l;
+                            d.y -= y *= l;
+                            quad.point.x += x;
+                            quad.point.y += y;
+                        }
+                    }
+                    return x1 > nx2 || x2 < nx1 || y1 > ny2 || y2 < ny1;
+                });
+            };
+        }
+
+        if (labels) {
+            svg.append("g")
+                    .append("text")
+                    .style("text-anchor", "start")
+                    .style("font-weight", "bold")
+                    .style("fill", "#666")
+                    .attr("transform", "translate( 4, 12)")
+                    .text("Label Off")
+                    .on("click", function (d) {
+                        if (text.attr("opacity") === "0") {
+                            d3.select(this).text("Label Off");
+                            text.transition()
+                                    .duration(750)
+                                    .attr("opacity", "1");
+                        }
+                        else {
+                            d3.select(this).text("Label On");
+                            text.transition()
+                                    .duration(750)
+                                    .attr("opacity", "0");
+                        }
+                        ;
+                    });
+        }
+
+    });
+
+}
+
+function barchart(divChart, dbData, exlink, labels) {
+    var tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip");
+
+    var margin = {top: 20, right: 20, bottom: 30, left: 40};
+
+    var width = $("#" + divChart).width() - margin.left - margin.right,
+            height = (width * 3 / 7) - margin.top - margin.bottom;
+
+    d3.json(dbData, function (data) {
+
+        var max_n = 0;
+
+        for (var d in data) {
+            max_n = Math.max(data[d].likelihood, max_n);
+        }
+        ;
+
+        var x = d3.scale.linear()
+                .domain([0, max_n])
+                .range([0, width]);
+        // Axis 
+        var xAxis = d3.svg.axis()
+                .scale(x)
+                .orient("bottom");
+
+        d3.select(".chart")
+                .selectAll("div")
+                .data(data)
+                .enter().append("div")
+                .style("width", function (d) {
+                    return x(d.likelihood) + "px";
+                })
+                .on("mouseover", function (d) {
+                    tooltip.transition()
+                            .duration(200)
+                            .style("opacity", 1);
+                    tooltip.html(
+                            "Name: " + d.name +
+                            "</br>Value: " + d.value)
+                            .style("left", (d3.event.pageX) + "px")
+                            .style("top", (d3.event.pageY - 60) + "px");
+                })
+                .on("mouseout", function (d) {
+                    tooltip.transition()
+                            .duration(500)
+                            .style("opacity", 0);
+                })
+                .on("mousemove", function (d) {
+                    tooltip.style("left", (d3.event.pageX + 3) + "px")
+                            .style("top", (d3.event.pageY - 45) + "px");
+                })
+                .text(function (d) {
+                    return d.name;
+                });
     });
 }

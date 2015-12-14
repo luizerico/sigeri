@@ -110,3 +110,32 @@ label {
 text {
     font-size: 0.9em;
 }
+
+
+// XYChart
+.axis text {
+    font-size: 0.9em sans-serif;
+}
+
+.axis path, .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.circle {
+    stroke: #000;
+    stroke-opacity: 1;
+    fill-opacity: 1;
+}
+text {
+    font-size: 0.9em;
+}
+
+label {
+    width: 100%;
+    top: 20px;
+    right: 15px;
+    border: 0;
+    padding: 0;
+}

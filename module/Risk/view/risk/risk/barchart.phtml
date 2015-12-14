@@ -1,4 +1,6 @@
-<!-- <script src="" type="text/javascript" /> -->
+<script type="text/javascript" src="/js/mygraph.js"></script>
+<link type="text/css" href="/css/mygraph.css" rel="stylesheet">
+
 <?php
 echo $this->headScript()
         ->prependFile($this->basePath() . '/js/d3.js')
@@ -13,6 +15,15 @@ echo $this->headScript()
     <?php echo $this->data2 ?>
 
     <div id="areachart" class="areachart">
+        
+        <div id="barchart01" class="barchart">
+                <script type="text/javascript">
+                    // xychartChart(destiny div, json link, external links, labels, yLabel) 
+                    barchart("barchart01", "/risk/jsonRiskData", "/risk/view/", 1);
+                </script>
+            </div>
+        
+        
         <div class="chart"></div>
 
         <style>
