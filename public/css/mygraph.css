@@ -139,3 +139,17 @@ label {
     border: 0;
     padding: 0;
 }
+
+// BARChart
+/*.barline {
+    font: 10px sans-serif;
+    background-color: steelblue;
+    text-align: right;
+    padding: 3px;
+    margin: 1px;
+    color: white;
+}*/
+
+div {
+    background-color: sienna;
+}

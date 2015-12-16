@@ -68,3 +68,7 @@ span.label {
 .media .profile_thumb {
     border: 0px ;
 }
+
+label {
+    display: inline;
+}

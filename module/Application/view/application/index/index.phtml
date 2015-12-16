@@ -104,7 +104,7 @@
                         </div>
                     </div>
                     <div class="tiles">
-                        <div class="col-md-3 tile">
+                        <div class="col-md-3 tile col-sm-3 col-xs-6">
                             <span>High Risks</span>
                             <h2 id="highrisk">
                                 <script>
@@ -117,7 +117,7 @@
                             </h2>
 
                         </div>
-                        <div class="col-md-3 tile">
+                        <div class="col-md-3 tile col-sm-3 col-xs-6">
                             <span>Low Risks</span>
                             <h2 id="lowrisk">
                                 <script>
@@ -130,7 +130,7 @@
                             </h2>
 
                         </div>
-                        <div class="col-md-3 tile">
+                        <div class="col-md-3 tile col-sm-3 col-xs-6">
                             <span>Assets (risk>15)</span>
                             <h2 id="assethighrisk">
                                 <script>
@@ -143,7 +143,7 @@
                             </h2>
 
                         </div>
-                        <div class="col-md-3 tile">
+                        <div class="col-md-3 tile col-sm-3 col-xs-6">
                             <span>Assets (risk<5)</span>
                             <h2 id="assetlowrisk">
                                 <script>
@@ -208,7 +208,7 @@
             <div class="x_content">
 
                 <div class="row" style="border-bottom: 1px solid #E0E0E0; padding-bottom: 5px; margin-bottom: 5px;">
-                    <div class="col-md-7 col-sm-12 col-xs-12" style="overflow:hidden;">
+                    <div class="col-md-6 col-sm-12 col-xs-12" style="overflow:hidden;">
                         <div id="columnchart01" >          
                             <style>
                                 .column {
@@ -228,20 +228,63 @@
                         </div>
                     </div>
 
-                    <div class="col-md-5 col-sm-12 col-xs-12">
+                    <div class="col-md-6 col-sm-12 col-xs-12">
                         <div class="row" style="text-align: center;">
-                            <div class="col-md-4">
-                                <canvas id="canvas1i" height="110" width="110" style="margin: 5px 10px 10px 0"></canvas>
-                                <h4 style="margin:0">Bounce Rates</h4>
+                            <div class="animated flipInY col-md-4 col-sm-4 col-xs-12 ">
+                                <a href="/vulnerability/list" class="dashlink">
+                                    <div class="tile-stats">
+                                        
+                                        <div id="vulnerabilitycount" class="count">
+                                            <script>
+                                                $.getJSON(
+                                                        "/risk/countregister?entity=vulnerability",
+                                                        function (jsonData) {
+                                                            $("#vulnerabilitycount").text(jsonData[0].rowCount);
+                                                        }
+                                                );</script>
+                                        </div>
+                                        <h3>Vulnerabilities</h3>
+                                        <p>Vulnerabilities.</p>
+                                    </div>
+                                </a>
                             </div>
-                            <div class="col-md-4">
-                                <canvas id="canvas1i2" height="110" width="110" style="margin: 5px 10px 10px 0"></canvas>
-                                <h4 style="margin:0">New Traffic</h4>
+                            <div class="animated flipInY col-md-4 col-sm-4 col-xs-12">
+                                <a href="/threat/list" class="dashlink">
+                                    <div class="tile-stats">
+                                        
+                                        <div id="threatcount" class="count">
+                                            <script>
+                                                $.getJSON(
+                                                        "/risk/countregister?entity=threat",
+                                                        function (jsonData) {
+                                                            $("#threatcount").text(jsonData[0].rowCount);
+                                                        }
+                                                );</script>
+                                        </div>
+                                        <h3>Threaties</h3>
+                                        <p>Threaties.</p>
+                                    </div>
+                                </a>
                             </div>
-                            <div class="col-md-4">
-                                <canvas id="canvas1i3" height="110" width="110" style="margin: 5px 10px 10px 0"></canvas>
-                                <h4 style="margin:0">Device Share</h4>
+                            <div class="animated flipInY col-md-4 col-sm-4 col-xs-12">
+                                <a href="/risktype/list" class="dashlink">
+                                    <div class="tile-stats">
+                                        
+                                        <div id="risktypecount" class="count">
+                                            <script>
+                                                $.getJSON(
+                                                        "/risk/countregister?entity=risktype",
+                                                        function (jsonData) {
+                                                            $("#risktypecount").text(jsonData[0].rowCount);
+                                                        }
+                                                );</script>
+                                        </div>
+                                        <h3>Risk Type</h3>
+                                        <p>Risk Types.</p>
+                                    </div>
+                                </a>
                             </div>
+
                         </div>
                     </div>
                 </div>

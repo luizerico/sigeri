@@ -673,7 +673,7 @@ function xychart(divChart, dbData, mfield, exlink, labels) {
 
 }
 
-function barchart(divChart, dbData, exlink, labels) {
+function barchart(divChart, dbData, field, exlink, labels) {
     var tooltip = d3.select("body").append("div")
             .attr("class", "tooltip");
 
@@ -687,7 +687,7 @@ function barchart(divChart, dbData, exlink, labels) {
         var max_n = 0;
 
         for (var d in data) {
-            max_n = Math.max(data[d].likelihood, max_n);
+            max_n = Math.max(data[d][field], max_n);
         }
         ;
 
@@ -699,13 +699,17 @@ function barchart(divChart, dbData, exlink, labels) {
                 .scale(x)
                 .orient("bottom");
 
-        d3.select(".chart")
+        d3.select("#" + divChart)
                 .selectAll("div")
                 .data(data)
-                .enter().append("div")
+                .enter().append("a")
+                .attr("href", function (d) {
+                    return exlink + d.id;
+                }).append("div")                
                 .style("width", function (d) {
-                    return x(d.likelihood) + "px";
+                    return x(d[field]) + "px";
                 })
+                .attr("class", "barline")
                 .on("mouseover", function (d) {
                     tooltip.transition()
                             .duration(200)

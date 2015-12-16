@@ -1,0 +1,51 @@
+<script type="text/javascript" src="/js/mygraph.js"></script>
+<link type="text/css" href="/css/mygraph.css" rel="stylesheet">
+<?php
+echo $this->headScript()
+        ->prependFile($this->basePath() . '/js/d3.js')
+?>
+
+<section class="edit">           
+    <?php
+    $title = 'Graphs ' . $this->title;
+    $this->headTitle('SIGERI - ' . $title);
+    ?>
+
+    <h2 class="line_30">Risk type Average</h2>
+    <?php echo $this->data2 ?>
+
+    <div id="piechart01" class="piechart">
+
+        <script>
+            piechart("piechart01", "/risk/typeassetlist", 1, "Risk Type");
+        </script>
+
+    </div>
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <table class="countries_list">
+            <thead style="font-weight: 800;">
+                <tr>
+                    <td>Risk Type</td>
+                    <td>Number</td>
+                    <td>Avg Risk</td>
+                    <td>Max Risk</td>
+                </tr>
+            </thead>
+            <tbody id="risktable">
+            <script>
+                $.getJSON(
+                        "/risk/typerisklist", function (result) {
+                            $.each(result, function (i, field) {
+                                $("#risktable").append(
+                                        "<tr><td>" + field.name + "</td>" +
+                                        "<td>" + field.value + "</td>" +
+                                        "<td>" + field.avgrisk + "</td>" +
+                                        "<td>" + field.maxrisk + "</td></tr>"
+                                        );
+                            });
+                        });
+            </script>                               
+            </tbody>
+        </table>
+    </div>
+</section>

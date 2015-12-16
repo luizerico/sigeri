@@ -13,27 +13,6 @@ echo $this->headScript()
 
     <h2><?php echo $this->escapeHtml($title); ?></h2>
     <?php echo $this->data2 ?>
-
-    <div id="columnchart01">          
-        <style>
-            .column {
-                fill: steelblue;
-                stroke: 4px #CCC;
-            }
-
-            .column:hover {
-                fill: brown;
-            }
-        </style>
-
-        <script type="text/javascript">
-            // columnChart(destiny div, json link, external links, labels, yLabel) 
-            columnchart("columnchart01", "/risk/jsonRiskData", "/risk/view/", 1, "likelihood x impact");
-        </script>
-    </div>
-
-
-
     <div id="multicolumnchart01">          
         <style>
             .column a:visited {

@@ -1,233 +1,216 @@
-<section class="list">
-    <?php
-    $title = $this->escapeHtml($dbArray->getName());
-    $this->headTitle('SIGERI - ' . $title);
-    ?>
-
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3><?php echo $this->escapeHtml($title); ?></h3>
+<?php echo $this->partial('partial/view_top.phtml'); ?>
+<div class="row top_tiles">        
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <p><label>ID: </label><?php echo $this->escapeHtml($dbArray->getId()); ?></p>   
+        <p><label>Status: </label><?php echo $this->escapeHtml($dbArray->getStatus()); ?></p>
+        <p><label>Likelihood: </label> <?php echo $this->escapeHtml($dbArray->getLikelihood()); ?></p>
+        <p><label>Impact: </label> <?php echo $this->escapeHtml($dbArray->getImpact()); ?></p>
+        <p><label>Type: </label> <?php echo $this->escapeHtml($dbArray->getType()); ?></p>
+        <p><label>Analyst: </label> <?php echo $this->escapeHtml($dbArray->getAnalyst()); ?></p>
+        <p><label>Register: </label> <?php echo $this->dateFormat($dbArray->getCreated(), IntlDateFormatter::LONG); ?></p>
+        <p><label>Changed: </label> <?php echo $this->dateFormat($dbArray->getUpdated(), IntlDateFormatter::LONG); ?></p>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <script type="text/javascript" src="/js/mygraph.js"></script>
+        <link type="text/css" href="/css/mygraph.css" rel="stylesheet">
+        <div id="piechart01" class="piechart">
+            <script>
+                piechart("piechart01", "/risk/typeassetlist", 1, "Risk Type");
+            </script>
         </div>
-        <div class="panel-body">
-            <p>
-                <a href="<?php
-                echo $this->url('risk', array('action' => 'edit', 'id' => $dbArray->getId()));
-                ?>">
-                    Edit register</a> 
-            </p>
+    </div>
 
-            <p><label>ID: </label> <?php echo $this->escapeHtml($dbArray->getId()); ?></p>   
-            <p><label>Status: </label> <?php echo $this->escapeHtml($dbArray->getStatus()); ?></p>
-            <p><label>Likelihood: </label> <?php echo $this->escapeHtml($dbArray->getLikelihood()); ?></p>
-            <p><label>Impact: </label> <?php echo $this->escapeHtml($dbArray->getImpact()); ?></p>
-            <p><label>Type: </label> <?php echo $this->escapeHtml($dbArray->getType()); ?></p>
-            <p><label>Analyst: </label> <?php echo $this->escapeHtml($dbArray->getAnalyst()); ?></p>
-            <p><label>Register: </label> <?php echo $this->dateFormat($dbArray->getCreated(), IntlDateFormatter::LONG); ?></p>
-            <p><label>Changed: </label> <?php echo $this->dateFormat($dbArray->getUpdated(), IntlDateFormatter::LONG); ?></p>
+</div>
+<div>
+    <ul class="nav nav-tabs nav-justified" style="color:#000;font-weight: bold;">
+        <li class="active"><a data-toggle="tab" href="#description">Description</a></li>
+        <li><a data-toggle="tab" href="#notes">Notes</a></li>
+        <li><a data-toggle="tab" href="#detimpact">Impact</a></li>
+        <li><a data-toggle="tab" href="#controls">Controls</a></li>
+        <li><a data-toggle="tab" href="#compliance">compliance</a></li>
+        <li><a data-toggle="tab" href="#documents">Documents</a></li>
+        <li><a data-toggle="tab" href="#methods">Methods</a></li>
+        <li><a data-toggle="tab" href="#revisions">Revisions</a></li>        
+    </ul>
+    <div class="panel" style="padding-top:5px;">
 
-            <ul class="nav nav-tabs nav-justified" style="color:#000;font-weight: bold;">
-                <li class="active"><a data-toggle="tab" href="#description">Description</a></li>
-                <li><a data-toggle="tab" href="#notes">Notes</a></li>
-                <li><a data-toggle="tab" href="#detimpact">Impact</a></li>
-                <li><a data-toggle="tab" href="#controls">Controls</a></li>
-                <li><a data-toggle="tab" href="#compliance">compliance</a></li>
-                <li><a data-toggle="tab" href="#documents">Documents</a></li>
-                <li><a data-toggle="tab" href="#methods">Methods</a></li>
-                <li><a data-toggle="tab" href="#revisions">Revisions</a></li>        
-            </ul>
-            <div class="panel" style="padding-top:5px;">
-
-                <div class="tab-content col-sm-12">
-                    <div id="description" class="tab-pane fade in active">
-                        <p><?php echo $dbArray->getDescription(); ?></p>
-                    </div>
-                    <div id="notes" class="tab-pane fade in">
-                        <p><?php echo $dbArray->getAnnotations(); ?></p>
-                    </div>
-                    <div id="detimpact" class="tab-pane fade in">
-                        <p><?php echo $dbArray->getDetimpact(); ?></p>
-                    </div>
-                    <div id="controls" class="tab-pane fade in">
-                        <p>&nbsp;
-                        </p>
-                        <table id="datatable" class="table table-striped responsive-utilities jambo_table bulk_action">
-                            <thead>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Name</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($dbArray->getCompliance() as $dbRow) : ?>
-                                    <tr>
-                                        <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
-                                        <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>
-                                        <td><?php echo $this->escapeHtml($dbRow->getDescription()); ?></td>                       
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div id="compliance" class="tab-pane fade in">
-                        <p>&nbsp;
-                        </p>
-                        <table id="datatable" class="table table-striped responsive-utilities jambo_table bulk_action">
-                            <thead>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Name</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($dbArray->getControls() as $dbRow) : ?>
-                                    <tr>
-                                        <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
-                                        <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>
-                                        <td><?php echo $this->escapeHtml($dbRow->getDescription()); ?></td>                         
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div id="documents" class="tab-pane fade in">
-                        <p>&nbsp;
-                        </p>
-                        <table id="datatable" class="table table-striped responsive-utilities jambo_table bulk_action">
-                            <thead>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Name</th>
-                                    <th>Description</th>
-                                    <th>Folder</th>
-                                    <th>Type</th> 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($dbArray->getDocuments() as $dbRow) : ?>
-                                    <tr>
-                                        <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
-                                        <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>
-                                        <td><?php echo $this->escapeHtml($dbRow->getDescription()); ?></td>
-                                        <td><?php echo $this->escapeHtml($dbRow->getFolder()); ?></td>
-                                        <td><?php echo $this->escapeHtml($dbRow->getType()); ?></td>                                
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div id = "revisions" class = "tab-pane fade in">            
-                        <table class="table table-striped responsive-utilities jambo_table bulk_action">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Status</th>                        
-                                    <th>Type</th>                        
-                                    <th>Likelihood</th>
-                                    <th>Impact</th>                        
-                                    <th>Risk</th>
-                                    <th>Created</th>
-                                    <th>Changed</th>                        
-                                    <th>&nbsp;</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($vsArray as $dbRow) : ?>
-                                    <tr>
-                                        <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
-                                        <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>
-                                        <td><?php echo $this->escapeHtml($dbRow->getStatus()); ?></td>
-                                        <td><?php echo $this->escapeHtml($dbRow->getType()); ?></td>
-                                        <td><?php echo $this->escapeHtml($dbRow->getLikelihood()->getValue()); ?></td>
-                                        <td><?php echo $this->escapeHtml($dbRow->getImpact()->getValue()); ?></td>
-                                        <td><?php echo $this->escapeHtml($dbRow->getLikelihood()->getValue() * $dbRow->getImpact()->getValue()); ?></td>
-                                        <td><?php echo $this->dateFormat($dbRow->getCreated(), IntlDateFormatter::SHORT, IntlDateFormatter::SHORT); ?></td>
-                                        <td><?php echo $this->dateFormat($dbRow->getUpdated(), IntlDateFormatter::SHORT, IntlDateFormatter::SHORT); ?></td>
-                                        <td><a
-                                                href="<?php
-                                                echo $this->url('riskversion', array(
-                                                    'action' => 'edit',
-                                                    'id' => $dbRow->getId()
-                                                ));
-                                                ?>">Edit</a>
-                                            <a
-                                                href="<?php
-                                                echo $this->url('riskversion', array(
-                                                    'action' => 'delete',
-                                                    'id' => $dbRow->getId()
-                                                ));
-                                                ?>">Del</a>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
+        <div class="tab-content col-sm-12">
+            <div id="description" class="tab-pane fade in active">
+                <p><?php echo $dbArray->getDescription(); ?></p>
+            </div>
+            <div id="notes" class="tab-pane fade in">
+                <p><?php echo $dbArray->getAnnotations(); ?></p>
+            </div>
+            <div id="detimpact" class="tab-pane fade in">
+                <p><?php echo $dbArray->getDetimpact(); ?></p>
+            </div>
+            <div id="controls" class="tab-pane fade in">
+                <p>&nbsp;
+                </p>
+                <table id="datatable" class="table table-striped responsive-utilities jambo_table bulk_action">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($dbArray->getCompliance() as $dbRow) : ?>
+                            <tr>
+                                <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
+                                <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>
+                                <td><?php echo $this->escapeHtml($dbRow->getDescription()); ?></td>                       
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+            <div id="compliance" class="tab-pane fade in">
+                <p>&nbsp;
+                </p>
+                <table id="datatable" class="table table-striped responsive-utilities jambo_table bulk_action">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($dbArray->getControls() as $dbRow) : ?>
+                            <tr>
+                                <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
+                                <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>
+                                <td><?php echo $this->escapeHtml($dbRow->getDescription()); ?></td>                         
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+            <div id="documents" class="tab-pane fade in">
+                <p>&nbsp;
+                </p>
+                <table id="datatable" class="table table-striped responsive-utilities jambo_table bulk_action">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Folder</th>
+                            <th>Type</th> 
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($dbArray->getDocuments() as $dbRow) : ?>
+                            <tr>
+                                <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
+                                <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>
+                                <td><?php echo $this->escapeHtml($dbRow->getDescription()); ?></td>
+                                <td><?php echo $this->escapeHtml($dbRow->getFolder()); ?></td>
+                                <td><?php echo $this->escapeHtml($dbRow->getType()); ?></td>                                
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+            <div id = "revisions" class = "tab-pane fade in">            
+                <table class="table table-striped responsive-utilities jambo_table bulk_action">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Status</th>                        
+                            <th>Type</th>                        
+                            <th>Likelihood</th>
+                            <th>Impact</th>                        
+                            <th>Risk</th>
+                            <th>Created</th>
+                            <th>Changed</th>                        
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($vsArray as $dbRow) : ?>
+                            <tr>
+                                <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
+                                <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>
+                                <td><?php echo $this->escapeHtml($dbRow->getStatus()); ?></td>
+                                <td><?php echo $this->escapeHtml($dbRow->getType()); ?></td>
+                                <td><?php echo $this->escapeHtml($dbRow->getLikelihood()->getValue()); ?></td>
+                                <td><?php echo $this->escapeHtml($dbRow->getImpact()->getValue()); ?></td>
+                                <td><?php echo $this->escapeHtml($dbRow->getLikelihood()->getValue() * $dbRow->getImpact()->getValue()); ?></td>
+                                <td><?php echo $this->dateFormat($dbRow->getCreated(), IntlDateFormatter::SHORT, IntlDateFormatter::SHORT); ?></td>
+                                <td><?php echo $this->dateFormat($dbRow->getUpdated(), IntlDateFormatter::SHORT, IntlDateFormatter::SHORT); ?></td>
+                                <td><a
+                                        href="<?php
+                                        echo $this->url('riskversion', array(
+                                            'action' => 'edit',
+                                            'id' => $dbRow->getId()
+                                        ));
+                                        ?>">Edit</a>
+                                    <a
+                                        href="<?php
+                                        echo $this->url('riskversion', array(
+                                            'action' => 'delete',
+                                            'id' => $dbRow->getId()
+                                        ));
+                                        ?>">Del</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
 
 
-                    </div>
-                    <div id="methods" class="tab-pane fade in">                        
-                        <table id="datatable" class="table table-striped responsive-utilities jambo_table bulk_action">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Method</th>
-                                    <th>Value</th>                
-                                    <th>&nbsp;</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($dbArray->getMethod() as $dbRow) : ?>
-                                    <tr>
-                                        <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
-                                        <td><?php echo strtoupper($this->escapeHtml($dbRow->getMethod())); ?></td>
-                                        <td><?php echo $this->escapeHtml($dbRow->getValue()); ?></td>
-                                        <td><a
-                                                href="<?php
-                                                echo $this->url('method' . $dbRow->getMethod(), array(
-                                                    'action' => 'view',
-                                                    'id' => $dbRow->getId()
-                                                ));
-                                                ?>">View</a>
-                                            <a
-                                                href="<?php
-                                                echo $this->url('method' . $dbRow->getMethod(), array(
-                                                    'action' => 'edit',
-                                                    'id' => $dbRow->getId()
-                                                ));
-                                                ?>">Edit</a>
-                                            <a
-                                                href="<?php
-                                                echo $this->url('method' . $dbRow->getMethod(), array(
-                                                    'action' => 'delete',
-                                                    'id' => $dbRow->getId()
-                                                ));
-                                                ?>">Del</a>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
-
-                </div>
+            </div>
+            <div id="methods" class="tab-pane fade in">                        
+                <table id="datatable" class="table table-striped responsive-utilities jambo_table bulk_action">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Method</th>
+                            <th>Value</th>                
+                            <th>&nbsp;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($dbArray->getMethod() as $dbRow) : ?>
+                            <tr>
+                                <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
+                                <td><?php echo strtoupper($this->escapeHtml($dbRow->getMethod())); ?></td>
+                                <td><?php echo $this->escapeHtml($dbRow->getValue()); ?></td>
+                                <td><a
+                                        href="<?php
+                                        echo $this->url('method' . $dbRow->getMethod(), array(
+                                            'action' => 'view',
+                                            'id' => $dbRow->getId()
+                                        ));
+                                        ?>">View</a>
+                                    <a
+                                        href="<?php
+                                        echo $this->url('method' . $dbRow->getMethod(), array(
+                                            'action' => 'edit',
+                                            'id' => $dbRow->getId()
+                                        ));
+                                        ?>">Edit</a>
+                                    <a
+                                        href="<?php
+                                        echo $this->url('method' . $dbRow->getMethod(), array(
+                                            'action' => 'delete',
+                                            'id' => $dbRow->getId()
+                                        ));
+                                        ?>">Del</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
             </div>
 
         </div>
     </div>
-</section>
+</div>
 
-
-<script>
-
-    $(document).ready(function () {
-        var table = $('.table').DataTable({
-            "lengthChange": false,
-            "pagingType": "simple",
-            "pageLength": 10,
-            "searching": false
-        });
-
-    });
-</script>
+</div>
+<?php echo $this->partial('partial/view_bottom.phtml'); ?>

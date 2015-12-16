@@ -22,39 +22,53 @@ class RiskController extends GenericController {
         parent::__construct();
     }
 
-    public function xychartAction() {
+    public function xyriskAction() {
         $viewModel = new ViewModel(array(
             'title' => $this->title,
         ));
-        return $viewModel->setTemplate('risk/risk/xychart.phtml');
+        return $viewModel->setTemplate('risk/risk/xyrisk.phtml');
     }
 
-    public function piechartAction() {
+    public function pieriskAction() {
         $viewModel = new ViewModel(array(
             'title' => $this->title,
         ));
-        return $viewModel->setTemplate('risk/risk/piechart.phtml');
+        return $viewModel->setTemplate('risk/risk/pierisk.phtml');
+    }
+    
+    public function pieassetAction() {
+        $viewModel = new ViewModel(array(
+            'title' => $this->title,
+        ));
+        return $viewModel->setTemplate('risk/risk/pieasset.phtml');
     }
 
-    public function barchartAction() {
+    public function barriskAction() {
         $viewModel = new ViewModel(array(
             'title' => $this->title,
         ));
-        return $viewModel->setTemplate('risk/risk/barchart.phtml');
+        return $viewModel->setTemplate('risk/risk/barrisk.phtml');
     }
 
-    public function linechartAction() {
+    public function lineriskversionAction() {
         $viewModel = new ViewModel(array(
             'title' => $this->title,
         ));
-        return $viewModel->setTemplate('risk/risk/linechart.phtml');
+        return $viewModel->setTemplate('risk/risk/lineriskversion.phtml');
     }
 
-    public function columnchartAction() {
+    public function colriskAction() {
         $viewModel = new ViewModel(array(
             'title' => $this->title,
         ));
-        return $viewModel->setTemplate('risk/risk/columnchart.phtml');
+        return $viewModel->setTemplate('risk/risk/colrisk.phtml');
+    }
+    
+    public function collikeximpactAction() {
+        $viewModel = new ViewModel(array(
+            'title' => $this->title,
+        ));
+        return $viewModel->setTemplate('risk/risk/collikeximpact.phtml');
     }
 
     public function chartAction() {
@@ -184,6 +198,14 @@ class RiskController extends GenericController {
 
         return new JsonModel($this->querysql($query));
     }
+    
+    public function countRegisterAction() {
+        $entity = $this->params()->fromQuery('entity');
+        $query = "SELECT count(*) AS rowCount FROM " . $entity;
+
+        return new JsonModel($this->querysql($query));
+    }
+    
 
     public function addAction() {
         $builder = new DoctrineAnnotationBuilder($this->getEntityManager());

@@ -1,0 +1,38 @@
+<script type="text/javascript" src="/js/mygraph.js"></script>
+<link type="text/css" href="/css/mygraph.css" rel="stylesheet">
+
+<?php
+echo $this->headScript()
+        ->prependFile($this->basePath() . '/js/d3.js')
+?>
+<section class="edit">           
+    <?php
+    $title = 'Graphs ' . $this->title;
+    $this->headTitle('SIGERI - ' . $title);
+    ?>
+
+    <h2><?php echo $this->escapeHtml($title); ?></h2>
+    <?php echo $this->data2 ?>
+    <div id="barchart01">
+        <style>
+            .barline {
+                ont: 10px sans-serif;
+                background-color: steelblue;
+                text-align: right;
+                padding: 3px;
+                margin: 1px;
+                color: white;
+                text-decoration: none;
+            }
+            .barline:hover {
+                background-color: maroon;
+                text-decoration: none;
+            }
+        </style>
+        <script type="text/javascript">
+            // xychartChart(destiny div, json link, external links, labels, yLabel) 
+            barchart("barchart01", "/risk/jsonRiskData", "likelihood", "/risk/view/", 1);
+        </script>
+    </div>
+
+</section>
