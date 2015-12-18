@@ -150,6 +150,58 @@ label {
     color: white;
 }*/
 
-div {
+/*div {
     background-color: sienna;
+}*/
+
+
+// LineChart
+path { 
+    stroke: steelblue;
 }
+
+path {
+    stroke-width: 2.5px;
+    fill: none;
+}
+
+path.highlighted {
+    stroke: red;
+    stroke-width: 3;
+}
+
+.chart div {
+    font: 10px sans-serif;
+    background-color: steelblue;
+    text-align: right;
+    padding: 3px;
+    margin: 1px;
+    color: white;
+}
+.linechart {
+    border: solid 1px #ccc;
+    /* position: absolute; */
+    width: 100%;
+    padding: 9px;
+    border-radius: 5px;
+    /* display: block; */
+}
+
+.legend {
+    font-size: 10px;
+    font-weight: bold;
+    text-anchor: middle;
+}
+
+/*.tooltip {   
+    position: absolute;           
+    text-align: left;           
+    //width: 80px;                  
+    //height: 35px;                 
+    padding: 10px;             
+    font: 11px sans-serif;        
+    background: #EEE;   
+    border: 0px;      
+    border-radius: 3px;           
+    pointer-events: none;
+    box-shadow: 1px 1px 2px #CCC;*/

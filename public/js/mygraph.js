@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-function piechart(divChart, dbData, labels, title) {
+function piechart(divChart, dbData, labels, title, prop) {
     var tooltip = d3.select("body").append("div")
             .attr("class", "tooltip");
 
@@ -115,7 +115,7 @@ function piechart(divChart, dbData, labels, title) {
 
 }
 
-function columnchart(divChart, dbData, exlink, labels, yLabel) {
+function columnchart(divChart, dbData, exlink, labels, yLabel, prop) {
     var tooltip = d3.select("body").append("div")
             .attr("class", "tooltip");
 
@@ -253,7 +253,7 @@ function columnchart(divChart, dbData, exlink, labels, yLabel) {
 //    }
 }
 
-function multicolumnChart(divChart, dbData, mfield, exlink, labels, yLabel) {
+function multicolumnChart(divChart, dbData, mfield, exlink, labels, yLabel, prop) {
     var tooltip = d3.select("body").append("div")
             .attr("class", "tooltip");
 
@@ -673,7 +673,7 @@ function xychart(divChart, dbData, mfield, exlink, labels) {
 
 }
 
-function barchart(divChart, dbData, field, exlink, labels) {
+function barchart(divChart, dbData, field, exlink, labels, prop) {
     var tooltip = d3.select("body").append("div")
             .attr("class", "tooltip");
 
@@ -705,7 +705,7 @@ function barchart(divChart, dbData, field, exlink, labels) {
                 .enter().append("a")
                 .attr("href", function (d) {
                     return exlink + d.id;
-                }).append("div")                
+                }).append("div")
                 .style("width", function (d) {
                     return x(d[field]) + "px";
                 })
@@ -733,4 +733,246 @@ function barchart(divChart, dbData, field, exlink, labels) {
                     return d.name;
                 });
     });
+}
+
+function linechart(divChart, dbData, field, exlink, labels, yLabel, prop) {
+    var tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip");
+
+    // Set the dimensions of the canvas / graph
+    var margin = {top: 20, right: 20, bottom: 50, left: 40};
+
+    var width = $("#" + divChart).width() - margin.left - margin.right,
+            height = (width * prop) - margin.top - margin.bottom;
+
+    // Parse the date / time
+    var parseDate = d3.time.format("%Y-%m-%d %H:%M:%S.%L%L").parse;
+    var bisectDate = d3.bisector(function (d) {
+        return d.date;
+    }).left;
+
+    // Set the ranges
+    var x = d3.time.scale().range([0, width]);
+    var y = d3.scale.linear().range([height, 0]);
+
+    // Define the axes
+    var xAxis = d3.svg.axis().scale(x)
+            .orient("bottom").ticks(5);
+
+    var yAxis = d3.svg.axis().scale(y)
+            .orient("left").ticks(10);
+
+    // Define the line
+    var valueline = d3.svg.line()
+            //.interpolate("basis")
+            .x(function (d) {
+                return x(d.date);
+            })
+            .y(function (d) {
+                return y(d.value);
+            });
+
+    // Adds the svg canvas
+    var svg = d3.select("#" + divChart)
+            .append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    // Get the data
+    d3.json(dbData, function (error, data) {
+
+        data.forEach(function (d) {
+            //console.log(parseDate(d.date.date));
+            d.date = parseDate(d.date.date);
+            d.value = +d.value;
+        });
+
+        // Scale the range of the data
+        x.domain(d3.extent(data, function (d) {
+            return d.date;
+        }));
+        y.domain([0, d3.max(data, function (d) {
+                return d.value;
+            })]);
+
+        // Nest the entries by symbol
+        var dataNest = d3.nest()
+                .key(function (d) {
+                    return d.value_id;
+                })
+                .entries(data);
+
+
+        var color = d3.scale.category10();   // set the colour scale
+
+        legendSpace = width / dataNest.length; // spacing for legend
+
+        // Loop through each symbol / key
+        dataNest.forEach(function (d, i) {
+            var path = svg.append("path")
+                    .attr("class", "line")
+                    .style("stroke", function () { // Add the colours dynamically
+                        return d.color = color(d.key);
+                    })
+                    .attr("d", valueline(d.values))
+                    .on("mouseover", function (d) {
+                        d3.select(this)                          //on mouseover of each line, give it a nice thick stroke
+                                .style("stroke-width", '5px');
+
+                        circle
+                                .transition()
+                                .duration(1000)
+                                .attr('r', 30)
+                                .style("opacity", 0);
+                        label.style("font-weight", "800");
+
+                    })
+                    .on("mouseout", function (d) {        
+                        //undo everything on the mouseout
+                        d3.select(this)
+                                .style("stroke-width", '2.5px');
+                        circle
+                                .transition()
+                                .delay(100)
+                                .duration(0)
+                                .attr('r', 4)
+                                .style("opacity", 1);
+                        label.style("font-weight", "300");
+                    });
+
+            var circle = svg.append('g')
+                    .selectAll('circle')
+                    .data(d.values)
+                    .enter()
+                    .append("a")
+                    .attr("xlink:href", function (d) {
+                        return exlink + d.id;
+                    })
+                    .append('circle')
+//                            .style("fill", "transparent")
+                    .attr({
+                        'cx': function (d, i) {
+                            return x(d.date);
+                        },
+                        'cy': function (d, i) {
+                            return y(d.value);
+                        }
+                    })
+                    .style("stroke", "#666666")
+                    .style("fill", "#CCCCCC")
+                    .style("opacity", 1)
+                    .attr('r', 4)
+                    .on("mouseover", function (d) {
+                        tooltip.transition()
+                                .duration(200)
+                                .style("opacity", 1);
+                        tooltip.html(
+                                "Name: " + d.name +
+                                "</br>" + field[0] + ": " + d[field[0]] +
+                                "</br>" + field[1] + ": " + d[field[1]] +
+                                "</br>" + d.date)
+                                .style("left", (d3.event.pageX) + "px")
+                                .style("top", (d3.event.pageY - 60) + "px");
+
+//                                d3.select(this)
+//                                        .transition()
+//                                        .style("opacity", .75)
+//                                        .attr("r", 8);
+
+                        rect
+                                .attr('y', y(d.value))
+                                .attr({
+                                    'width': x(d.date),
+                                    'height': height - y(d.value)})
+                                .style("display", "");
+
+                        path.style("stroke-width", '4px');
+                        label.style("font-weight", "800");
+                    })
+                    .on("mouseout", function (d) {
+                        tooltip.transition()
+                                .duration(500)
+                                .style("opacity", 0);
+
+//                                d3.select(this)
+//                                        .transition()
+//                                        .duration(500)
+//                                        .delay(500)
+//                                        .style("opacity", 1)
+//                                        .attr("r", 4);
+
+                        rect.style("display", "none");
+
+                        path.style("stroke-width", '2px');
+                        label.style("font-weight", "300");
+
+                    });
+            ;
+
+        });
+
+
+        var rect = svg.append("rect")
+                .style("display", "none")
+                .style("stroke", "#666")
+                .style("stroke-width", 1)
+                .style("stroke-dasharray", "2,2")
+                .style("fill", "#CCC")
+                .style("fill-opacity", 0.2);
+
+
+        // Add the X Axis
+        svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis);
+
+        // Add the Y Axis
+        svg.append("g")
+                .attr("class", "y axis")
+                .call(yAxis)
+                .append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 6)
+                .attr("dy", ".70em")
+                .style("text-anchor", "end")
+                .text(yLabel);
+
+        //Labels
+        if (labels) {
+            var dx = 0;
+            var label = svg.append("text")
+                    .attr("transform", "translate(" +
+                            x(d.values[0].date) + "," +
+                            y(d.values[0].value) + ")")
+                    .style("text-anchor", function () {
+                        if (x(d.values[0].date) > (width / 2)) {
+                            dx = -6;
+                            return "end";
+                        }
+                        else {
+                            dx = 6;
+                            return "start";
+                        }
+                    })
+                    .attr("dx", dx)
+                    .style()
+                    .attr("dy", ".35em")
+                    .text(d.values[0].name);
+            
+            // Add the Legend
+            svg.append("text")
+                    .attr("x", (legendSpace / 2) + i * legendSpace) // spacing
+                    .attr("y", height + (margin.bottom / 2) + 20)
+                    .attr("class", "legend")    // style the legend
+                    .style("fill", function () { // dynamic colours
+                        return d.color = color(d.key);
+                    })
+                    .text(d.values[0].name);
+        }
+
+    });
+
 }

@@ -34,12 +34,12 @@ class RiskVersionController extends GenericController {
 
         $query = "SELECT 
                         u.id AS id, 
-                        u.risk_id AS risk_id,
+                        u.risk_id AS value_id,
                         u.name AS name,
                         u.created AS date,                        
                         i.value AS impact, 
                         p.value AS likelihood,
-                        (i.value * p.value) AS risk
+                        (i.value * p.value) AS value
                     FROM Risk\Entity\RiskVersion u                     
                     JOIN u.impact i 
                     JOIN u.likelihood p " . 
