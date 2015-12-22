@@ -143,7 +143,6 @@
                             <th>Id</th>
                             <th>Name</th>
                             <th>Description</th>
-                            <th>Folder</th>
                             <th>Type</th> 
                         </tr>
                     </thead>
@@ -153,7 +152,6 @@
                                 <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
                                 <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>
                                 <td><?php echo $this->escapeHtml($dbRow->getDescription()); ?></td>
-                                <td><?php echo $this->escapeHtml($dbRow->getFolder()); ?></td>
                                 <td><?php echo $this->escapeHtml($dbRow->getType()); ?></td>                                
                             </tr>
                         <?php endforeach; ?>

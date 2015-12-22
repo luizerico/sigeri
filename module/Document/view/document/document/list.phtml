@@ -10,7 +10,6 @@
 <table class="table">
 		 <tr>		 	
 		     <th>ID</th>
-		     <th>Folder</th>
 		     <td>Name</td>
 		     <th>Decription</th>
 		     <th>Type</th>
@@ -19,7 +18,6 @@
 		 <?php foreach ($dbArray as $dbRow ) : ?>
 		 <tr>		 	 
 		     <td><?php echo $this->escapeHtml($dbRow->getId());?></td>
-		     <td><?php echo $this->escapeHtml($dbRow->getFolder());?></td>
 		     <td><?php echo $this->escapeHtml($dbRow->getName());?></td>
 		     <td><?php echo $this->escapeHtml($dbRow->getDescription());?></td>     
 		     <td><?php echo $this->escapeHtml($dbRow->getType());?></td>

@@ -64,10 +64,10 @@ class Risk extends \Risk\Entity\Risk implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'id', 'name', 'status', 'type', 'method', 'probability', 'impact', 'analyst', 'date', 'description', 'annotations', 'detimpact', 'compliance', 'controls', 'documents', 'revisions', 'submit');
+            return array('__isInitialized__', 'id', 'name', 'status', 'type', 'method', 'likelihood', 'impact', 'analyst', 'description', 'annotations', 'vulnerabilities', 'threaties', 'compliance', 'controls', 'assets', 'documents', 'revisions', '' . "\0" . 'Risk\\Entity\\Risk' . "\0" . 'created', '' . "\0" . 'Risk\\Entity\\Risk' . "\0" . 'updated', '' . "\0" . 'Risk\\Entity\\Risk' . "\0" . 'contentChanged', 'submit');
         }
 
-        return array('__isInitialized__', 'id', 'name', 'status', 'type', 'method', 'probability', 'impact', 'analyst', 'date', 'description', 'annotations', 'detimpact', 'compliance', 'controls', 'documents', 'revisions', 'submit');
+        return array('__isInitialized__', 'id', 'name', 'status', 'type', 'method', 'likelihood', 'impact', 'analyst', 'description', 'annotations', 'vulnerabilities', 'threaties', 'compliance', 'controls', 'assets', 'documents', 'revisions', '' . "\0" . 'Risk\\Entity\\Risk' . "\0" . 'created', '' . "\0" . 'Risk\\Entity\\Risk' . "\0" . 'updated', '' . "\0" . 'Risk\\Entity\\Risk' . "\0" . 'contentChanged', 'submit');
     }
 
     /**
@@ -290,23 +290,23 @@ class Risk extends \Risk\Entity\Risk implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getProbability()
+    public function getLikelihood()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getProbability', array());
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getLikelihood', array());
 
-        return parent::getProbability();
+        return parent::getLikelihood();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setProbability(\Risk\Entity\Probability $probability)
+    public function setLikelihood(\Risk\Entity\Likelihood $likelihood)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setProbability', array($probability));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setLikelihood', array($likelihood));
 
-        return parent::setProbability($probability);
+        return parent::setLikelihood($likelihood);
     }
 
     /**
@@ -587,12 +587,177 @@ class Risk extends \Risk\Entity\Risk implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function addVulnerabilities(\Doctrine\Common\Collections\Collection $vulnerabilities)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addVulnerabilities', array($vulnerabilities));
+
+        return parent::addVulnerabilities($vulnerabilities);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeVulnerabilities(\Doctrine\Common\Collections\Collection $vulnerabilities)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeVulnerabilities', array($vulnerabilities));
+
+        return parent::removeVulnerabilities($vulnerabilities);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getVulnerabilities()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getVulnerabilities', array());
+
+        return parent::getVulnerabilities();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addThreaties(\Doctrine\Common\Collections\Collection $threaties)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addThreaties', array($threaties));
+
+        return parent::addThreaties($threaties);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeThreaties(\Doctrine\Common\Collections\Collection $threaties)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeThreaties', array($threaties));
+
+        return parent::removeThreaties($threaties);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getThreaties()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getThreaties', array());
+
+        return parent::getThreaties();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getMethod()
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getMethod', array());
 
         return parent::getMethod();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addAssets(\Doctrine\Common\Collections\Collection $assets)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addAssets', array($assets));
+
+        return parent::addAssets($assets);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeAssets(\Doctrine\Common\Collections\Collection $assets)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeAssets', array($assets));
+
+        return parent::removeAssets($assets);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAssets()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAssets', array());
+
+        return parent::getAssets();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAssetSumValue()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAssetSumValue', array());
+
+        return parent::getAssetSumValue();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getCreated()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getCreated', array());
+
+        return parent::getCreated();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUpdated()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUpdated', array());
+
+        return parent::getUpdated();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getContentChanged()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getContentChanged', array());
+
+        return parent::getContentChanged();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function postUpdate()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'postUpdate', array());
+
+        return parent::postUpdate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function preUpdate()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'preUpdate', array());
+
+        return parent::preUpdate();
     }
 
 }
