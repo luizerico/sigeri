@@ -37,7 +37,7 @@ class RiskVersion {
      * @var integer
      * @access protected
      */
-    protected $risk_id;
+    protected $entity_id;
 
     /**
      * @ORM\Column(type="string")
@@ -305,7 +305,7 @@ class RiskVersion {
 
     public function exchangeArray($data) {
         $this->id = (isset($data ["id"])) ? $data ["id"] : null;
-        $this->risk_id = (isset($data ["risk_id"])) ? $data ["risk_id"] : null;
+        $this->entity_id = (isset($data ["entity_id"])) ? $data ["entity_id"] : null;
         $this->name = (isset($data ["name"])) ? $data ["name"] : null;
         $this->status = (isset($data ["status"])) ? $data ["status"] : null;
         $this->description = (isset($data ["description"])) ? $data ["description"] : null;
@@ -340,15 +340,15 @@ class RiskVersion {
         return $this;
     }
     
-    public function getRiskId() {
-        return $this->risk_id;
+    public function getEntityId() {
+        return $this->entity_id;
     }
 
-    public function setRiskId($risk_id) {
-        $this->risk_id = $risk_id;
+    public function setEntityId($entity_id) {
+        $this->entity_id = $entity_id;
         return $this;
     }
-
+    
     public function getName() {
         return $this->name;
     }

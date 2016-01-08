@@ -38,7 +38,7 @@ class GenericController extends AbstractActionController {
         }
         return $this->em;
     }
-
+    
     public function addAction() {
         $builder = new DoctrineAnnotationBuilder($this->getEntityManager());
         $form = $builder->createForm($this->object);
@@ -58,6 +58,21 @@ class GenericController extends AbstractActionController {
                 $this->object->exchangeArray($hydrator->extract($form->getData()));
                 $this->getEntityManager()->persist($this->object);
                 $this->getEntityManager()->flush();
+
+                /*
+                 *  Insert a new register on RiskVersion
+                 *  To my mind this method is strange and poor but is more simple that
+                 *  use the clone or copy to keep an entirely entity and all
+                 *  relations on another table.
+                 */
+                if (isset($this->entityversion)) {
+                    $version = new $this->entityversion;
+                    $version->exchangeArray($hydrator->extract($form->getData()));
+                    $version->setEntityId($this->object->getId());
+                    $this->getEntityManager()->persist($version);
+                    $this->getEntityManager()->flush();
+                }
+
                 return $this->redirect()->toRoute($this->route, array(
                             'action' => 'list'
                 ));
@@ -70,7 +85,7 @@ class GenericController extends AbstractActionController {
             'form' => $form
         );
     }
-
+    
     public function editAction() {
         $builder = new DoctrineAnnotationBuilder($this->getEntityManager());
         $form = $builder->createForm($this->object);
@@ -85,6 +100,11 @@ class GenericController extends AbstractActionController {
             ));
         }
 
+        /*
+         * Check if the requested Id is valid and
+         * Exist in the database
+         * To do: Customize a page to report the request with a invalid Id
+         */
         try {
             $ORMRepository = $this->getEntityManager()->getRepository($this->entity);
             $dbArray = $ORMRepository->find($id);
@@ -105,7 +125,14 @@ class GenericController extends AbstractActionController {
             $form->setData($request->getPost());
             if ($form->isValid()) {
 
-                $this->object->exchangeArray($hydrator->extract($form->getData()));
+                // Insert a new register on the RiskVersion
+                if (isset($this->entityversion)) {
+                    $version = new $this->entityversion;
+                    $version->exchangeArray($hydrator->extract($form->getData()));
+                    $version->setEntityId($id);
+                    $this->getEntityManager()->persist($version);
+                } // End of RiskVersion insert
+
                 $this->getEntityManager()->flush();
                 return $this->redirect()->toRoute($this->route, array(
                             'action' => 'list'
@@ -113,11 +140,20 @@ class GenericController extends AbstractActionController {
             }
         }
 
+        try {
+            $versionArray = $this->getEntityManager()
+                    ->getRepository($this->entityversion)
+                    ->findBy(array('entity_id' => $id));
+        } catch (Exception $ex) {
+            $versionArray = null;
+        }
+
         return array(
             'title' => $this->title,
-            'router' => $this->route,
             'id' => $id,
-            'form' => $form
+            'form' => $form,
+            'dbArray' => $dbArray,
+            'vsArray' => $versionArray,
         );
     }
 
@@ -189,7 +225,7 @@ class GenericController extends AbstractActionController {
                     'action' => 'list'
         ));
     }
-
+    
     public function viewAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
@@ -209,11 +245,20 @@ class GenericController extends AbstractActionController {
                         'action' => 'list'
             ));
         }
+        
+        try {
+            $versionArray = $this->getEntityManager()
+                    ->getRepository($this->entityversion)
+                    ->findBy(array('entity_id' => $id));
+        } catch (Exception $ex) {
+            $versionArray = null;
+        }        
 
         return new ViewModel(array(
             'title' => $this->title,
             'router' => $this->route,
-            'dbArray' => $dbArray
+            'dbArray' => $dbArray,
+            'vsArray' => $versionArray,
         ));
     }
 

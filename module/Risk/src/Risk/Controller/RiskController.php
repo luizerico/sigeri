@@ -18,7 +18,7 @@ class RiskController extends GenericController {
         $this->entity = 'Risk\Entity\Risk';
         $this->title = 'Risk';
         $this->route = 'risk';
-        $this->entityversion = 'Risk\Entity\RiskVersion';                
+        $this->entityversion = 'Risk\Entity\RiskVersion';
 
         parent::__construct();
     }
@@ -139,7 +139,7 @@ class RiskController extends GenericController {
         $query = "SELECT COUNT(*) AS assetcount FROM (
                         SELECT asset.name AS asset, risk.name AS name, impact.value AS impact, likelihood.value AS likelihood, (impact.value * likelihood.value) AS risk 
                             FROM risk 
-                            left join risk_asset ON risk.id=risk_asset.risk_id 
+                            left join risk_asset ON risk.id=risk_asset.entity_id 
                             left join asset ON risk_asset.asset_id=asset.id 
                             join impact 
                             join likelihood
@@ -194,8 +194,8 @@ class RiskController extends GenericController {
     }
 
     public function versionListAction() {
-        $risk_id = $this->params()->fromQuery('risk_id');
-        $query = "SELECT * FROM riskversion where risk_id=" . $risk_id;
+        $entity_id = $this->params()->fromQuery('entity_id');
+        $query = "SELECT * FROM riskversion where entity_id=" . $entity_id;
 
         return new JsonModel($this->querysql($query));
     }
@@ -205,156 +205,6 @@ class RiskController extends GenericController {
         $query = "SELECT count(*) AS rowCount FROM " . $entity;
 
         return new JsonModel($this->querysql($query));
-    }
-
-    public function addAction() {
-        $builder = new DoctrineAnnotationBuilder($this->getEntityManager());
-        $form = $builder->createForm($this->object);
-        $hydrator = new DoctrineHydrator($this->getEntityManager(), $this->entity);
-        $form->setHydrator($hydrator);
-        $form->get('submit')->setAttribute('value', 'Add');
-
-        $form->bind($this->object);
-
-        // Get the asset informations send by the import code
-        $form->populateValues(array('name' => $this->params()->fromQuery('assetname')));
-
-        $request = $this->getRequest();
-        if ($request->isPost()) {
-            $form->setData($request->getPost());
-            if ($form->isValid()) {
-                $this->object->exchangeArray($hydrator->extract($form->getData()));
-                $this->getEntityManager()->persist($this->object);
-                $this->getEntityManager()->flush();
-
-                /*
-                 *  Insert a new register on RiskVersion
-                 *  To my mind this method is strange and poor but is more simple that
-                 *  use the clone or copy to keep an entirely entity and all
-                 *  relations on another table.
-                 */
-                if (isset($object_version)) {
-                    $riskversion = new RiskVersion();
-                    $riskversion->exchangeArray($hydrator->extract($form->getData()));
-                    $riskversion->setRiskId($this->object->getId());
-                    $this->getEntityManager()->persist($riskversion);
-                    $this->getEntityManager()->flush();
-                }
-
-                return $this->redirect()->toRoute($this->route, array(
-                            'action' => 'list'
-                ));
-            }
-        }
-
-        return array(
-            'title' => $this->title,
-            'router' => $this->route,
-            'form' => $form
-        );
-    }
-
-    public function editAction() {
-        $builder = new DoctrineAnnotationBuilder($this->getEntityManager());
-        $form = $builder->createForm($this->object);
-        $hydrator = new DoctrineHydrator($this->getEntityManager(), $this->entity);
-        $form->setHydrator($hydrator);
-
-        $id = (int) $this->params()->fromRoute('id', 0);
-
-        if (!$id) {
-            return $this->Redirect()->toRoute($this->route, array(
-                        'action' => 'list'
-            ));
-        }
-
-        /*
-         * Check if the requested Id is valid and
-         * Exist in the database
-         * To do: Customize a page to report the request with a invalid Id
-         */
-        try {
-            $ORMRepository = $this->getEntityManager()->getRepository($this->entity);
-            $dbArray = $ORMRepository->find($id);
-            if (!$dbArray) {
-                throw new Exception('Id invalido.');
-            }
-        } catch (Exception $ex) {
-            return $this->redirect()->toRoute($this->route, array(
-                        'action' => 'list'
-            ));
-        }
-
-        $form->bind($dbArray);
-        $form->get('submit')->setAttribute('value', 'Edit');
-
-        $request = $this->getRequest();
-        if ($request->isPost()) {
-            $form->setData($request->getPost());
-            if ($form->isValid()) {
-
-                // Insert a new register on the RiskVersion
-                if(isset($this->entityversion)){
-                    $version = new $this->entityversion;
-                    $version->exchangeArray($hydrator->extract($form->getData()));
-                    $version->setRiskId($id);
-                    $this->getEntityManager()->persist($version);
-                } // End of RiskVersion insert
-                
-                $this->getEntityManager()->flush();
-                return $this->redirect()->toRoute($this->route, array(
-                            'action' => 'list'
-                ));
-            }
-        }
-
-        try {
-            $versionArray = $this->getEntityManager()
-                ->getRepository($this->entityversion)
-                ->findBy(array('risk_id' => $id));
-        } catch (Exception $ex) {
-            $versionArray = null;
-        }
-
-        return array(
-            'title' => $this->title,
-            'id' => $id,
-            'form' => $form,
-            'dbArray' => $dbArray,
-            'vsArray' => $versionArray,
-        );
-    }
-
-    public function viewAction() {
-        $id = (int) $this->params()->fromRoute('id', 0);
-        if (!$id) {
-            return $this->redirect()->toRoute($this->route, array(
-                        'action' => 'list'
-            ));
-        }
-
-        try {
-            $ORMRepository = $this->getEntityManager();
-            $dbArray = $ORMRepository->getRepository($this->entity)->find($id);
-            if (!$dbArray) {
-                throw new Exception('Id invalido.');
-            }
-        } catch (Exception $ex) {
-            return $this->redirect()->toRoute($this->route, array(
-                        'action' => 'list'
-            ));
-        }
-
-        $versionArray = $this->getEntityManager()
-                ->getRepository('\Risk\Entity\RiskVersion')
-                ->findBy(array('risk_id' => $id));
-
-        return new ViewModel(array(
-            'title' => $this->title,
-            'router' => $this->route,
-            'dbArray' => $dbArray,
-            'vsArray' => $versionArray,
-        ));
     }
 
 }

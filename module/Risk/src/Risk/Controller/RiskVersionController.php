@@ -21,12 +21,12 @@ class RiskVersionController extends GenericController {
     }     
     
     public function jsonRiskDataAction() {
-        $risk_id = $this->params()->fromQuery('risk_id');
+        $entity_id = $this->params()->fromQuery('entity_id');
         $orderby = $this->params()->fromQuery('orderby');
         $limit = $this->params()->fromQuery('limit');
 
-        if (isset($risk_id)) {
-            $risk_id = " WHERE u.risk_id=" . $risk_id . " ";
+        if (isset($entity_id)) {
+            $entity_id = " WHERE u.entity_id=" . $entity_id . " ";
         }
         if (isset($orderby)) {
             $orderby = " ORDER BY " . $orderby . " DESC ";
@@ -34,7 +34,7 @@ class RiskVersionController extends GenericController {
 
         $query = "SELECT 
                         u.id AS id, 
-                        u.risk_id AS value_id,
+                        u.entity_id AS value_id,
                         u.name AS name,
                         u.created AS date,                        
                         i.value AS impact, 
@@ -43,7 +43,7 @@ class RiskVersionController extends GenericController {
                     FROM Risk\Entity\RiskVersion u                     
                     JOIN u.impact i 
                     JOIN u.likelihood p " . 
-                    $risk_id . 
+                    $entity_id . 
                     $orderby;
 
         $ORMRepository = $this->getEntityManager();

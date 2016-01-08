@@ -2,7 +2,7 @@
 <div class="panel-body">
     <p>Are you sure that you want to delete?</p>
     Name: <?php echo $this->escapeHtml($dbArray->getName()); ?> <br>
-    Risk ID: <?php echo $this->escapeHtml($dbArray->getRiskId()); ?> <br>
+    Risk ID: <?php echo $this->escapeHtml($dbArray->getEntityId()); ?> <br>
     Type: <?php echo $this->escapeHtml($dbArray->getType()); ?> <br>
     Analyst: <?php echo $this->escapeHtml($dbArray->getAnalyst()); ?> <br>
     Registered: <?php echo $this->dateFormat($dbArray->getCreated(), IntlDateFormatter::LONG, IntlDateFormatter::MEDIUM); ?><br>

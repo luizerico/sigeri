@@ -15,7 +15,7 @@
         <link type="text/css" href="/css/mygraph.css" rel="stylesheet">
         <div id="linechart01"></div>
         <script type="text/javascript">
-            linechart("linechart01", "/riskversion/jsonRiskData?orderby=date&risk_id=" +
+            linechart("linechart01", "/riskversion/jsonRiskData?orderby=date&entity_id=" +
 <?php echo $dbArray->getId(); ?>, ["likelihood", "impact"], "/riskversion/view/", 0, "Revisions", 0.428);
         </script>
     </div>
