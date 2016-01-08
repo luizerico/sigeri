@@ -1,0 +1,24 @@
+<table id="datatable" class="table table-striped responsive-utilities jambo_table bulk_action">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Type</th> 
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($dbArray->getDocuments() as $dbRow) : ?>
+            <tr>
+                <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
+                <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>
+                <td><?php echo $this->escapeHtml($dbRow->getDescription()); ?></td>
+                <td><?php echo $this->escapeHtml($dbRow->getType()); ?></td> 
+                <td><a target="_blank"
+                        href="<?php echo $dbRow->getWebPath() . $dbRow->getName();
+            ?>">View</a></td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>

@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BugCollection version='3.0.0' threshold='low' effort='max'><Error></Error><Project><SrcDir>/opt/citsmart/citsmart-VC5R3.35-SRC/src/main/java</SrcDir><SrcDir>/opt/citsmart/citsmart-VC5R3.35-SRC/src/test/java</SrcDir></Project></BugCollection>

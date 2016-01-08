@@ -18,6 +18,7 @@ class RiskController extends GenericController {
         $this->entity = 'Risk\Entity\Risk';
         $this->title = 'Risk';
         $this->route = 'risk';
+        $this->entityversion = 'Risk\Entity\RiskVersion';                
 
         parent::__construct();
     }
@@ -35,7 +36,7 @@ class RiskController extends GenericController {
         ));
         return $viewModel->setTemplate('risk/risk/pierisk.phtml');
     }
-    
+
     public function pieassetAction() {
         $viewModel = new ViewModel(array(
             'title' => $this->title,
@@ -63,7 +64,7 @@ class RiskController extends GenericController {
         ));
         return $viewModel->setTemplate('risk/risk/colrisk.phtml');
     }
-    
+
     public function collikeximpactAction() {
         $viewModel = new ViewModel(array(
             'title' => $this->title,
@@ -198,14 +199,13 @@ class RiskController extends GenericController {
 
         return new JsonModel($this->querysql($query));
     }
-    
+
     public function countRegisterAction() {
         $entity = $this->params()->fromQuery('entity');
         $query = "SELECT count(*) AS rowCount FROM " . $entity;
 
         return new JsonModel($this->querysql($query));
     }
-    
 
     public function addAction() {
         $builder = new DoctrineAnnotationBuilder($this->getEntityManager());
@@ -228,15 +228,18 @@ class RiskController extends GenericController {
                 $this->getEntityManager()->flush();
 
                 /*
-                 *  This method is strange and poor but is more simple that
-                 *  use the clone or copy to copy an entirely entity and all
-                 *  relations.
+                 *  Insert a new register on RiskVersion
+                 *  To my mind this method is strange and poor but is more simple that
+                 *  use the clone or copy to keep an entirely entity and all
+                 *  relations on another table.
                  */
-                $riskversion = new RiskVersion();
-                $riskversion->exchangeArray($hydrator->extract($form->getData()));
-                $riskversion->setRiskId($this->object->getId());
-                $this->getEntityManager()->persist($riskversion);
-                $this->getEntityManager()->flush();
+                if (isset($object_version)) {
+                    $riskversion = new RiskVersion();
+                    $riskversion->exchangeArray($hydrator->extract($form->getData()));
+                    $riskversion->setRiskId($this->object->getId());
+                    $this->getEntityManager()->persist($riskversion);
+                    $this->getEntityManager()->flush();
+                }
 
                 return $this->redirect()->toRoute($this->route, array(
                             'action' => 'list'
@@ -290,11 +293,14 @@ class RiskController extends GenericController {
             $form->setData($request->getPost());
             if ($form->isValid()) {
 
-                $riskversion = new RiskVersion();
-                $riskversion->exchangeArray($hydrator->extract($form->getData()));
-                $riskversion->setRiskId($id);
-                $this->getEntityManager()->persist($riskversion);
-
+                // Insert a new register on the RiskVersion
+                if(isset($this->entityversion)){
+                    $version = new $this->entityversion;
+                    $version->exchangeArray($hydrator->extract($form->getData()));
+                    $version->setRiskId($id);
+                    $this->getEntityManager()->persist($version);
+                } // End of RiskVersion insert
+                
                 $this->getEntityManager()->flush();
                 return $this->redirect()->toRoute($this->route, array(
                             'action' => 'list'
@@ -302,8 +308,13 @@ class RiskController extends GenericController {
             }
         }
 
-        $versionArray = $this->getEntityManager()
-                        ->getRepository('\Risk\Entity\RiskVersion')->findBy(array('risk_id' => $id));
+        try {
+            $versionArray = $this->getEntityManager()
+                ->getRepository($this->entityversion)
+                ->findBy(array('risk_id' => $id));
+        } catch (Exception $ex) {
+            $versionArray = null;
+        }
 
         return array(
             'title' => $this->title,
@@ -335,7 +346,8 @@ class RiskController extends GenericController {
         }
 
         $versionArray = $this->getEntityManager()
-                        ->getRepository('\Risk\Entity\RiskVersion')->findBy(array('risk_id' => $id));
+                ->getRepository('\Risk\Entity\RiskVersion')
+                ->findBy(array('risk_id' => $id));
 
         return new ViewModel(array(
             'title' => $this->title,
