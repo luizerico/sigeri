@@ -1,10 +1,10 @@
 <?php echo $this->partial('partial/delete_top.phtml'); ?>
 <div class="panel-body">
     <p>Are you sure that you want to delete?</p>
-    <label>Review:</label> <?php echo $this->escapeHtml($dbArray->getName()); ?> <br>
+    <label>Plan:</label> <?php echo $this->escapeHtml($dbArray->getName()); ?> <br>
     <label>Analyst:</label> <?php echo $this->escapeHtml($dbArray->getAnalyst()); ?> <br>
-    <label>Registered:</label> <?php echo $this->escapeHtml($dbArray->getFormatedDate()); ?> <br>
-
+    <label>Status:</label> <?php echo $this->escapeHtml($dbArray->getStatus()); ?> <br>
+    <label>Registered:</label> <?php echo $this->escapeHtml($dbArray->getFormatedDate()); ?> <br>            
     <p>
         <?php
         $url = $this->url($this->router, array(

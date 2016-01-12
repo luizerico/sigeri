@@ -151,29 +151,14 @@ class Plan {
     protected $date;
 
     /**
-     * @ORM\OneToMany(targetEntity="Risk\Entity\PlanReview", mappedBy="plan")
-     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Required(false)
-     * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Revisions"})
-     *
-     * @var \Risk\Entity\PlanReview
-     * @access protected
-     */
-    protected $revisions;
-    
-    
-    
-    
-    /**
      * @Annotation\Type("Zend\Form\Element\Submit")
      * @Annotation\Attributes({"value":"Submit"})
      * @Annotation\Attributes({"style":"width:150px", "class":"btn btn-default"})
      */
     protected $submit;
     
-    public function __construct() {        
-        $this->revisions = new ArrayCollection();
+    public function __construct() { 
+        $this->documents = new ArrayCollection();
     }
 
     public function exchangeArray($data) {
@@ -186,7 +171,6 @@ class Plan {
         $this->status = (isset($data ['status'])) ? $data ['status'] : null;
         $this->date = (isset($data ['date'])) ? $data ['date'] : null;
         $this->annotations = (isset($data ['annotations'])) ? $data ['annotations'] : null;
-        $this->revisions = (isset($data ['revisions'])) ? $data ['revisions'] : null;
         $this->documents = (isset($data ['documents'])) ? $data ['documents'] : null;
     }
 
@@ -293,22 +277,6 @@ class Plan {
 
     public function getDocuments() {
         return $this->documents;
-    }
-    
-    public function addRevisions(Collection $revisions) {
-        foreach ($revisions as $revision) {
-            $this->revisions->add($revision);
-        }
-    }
-
-    public function removeRevisions(Collection $revisions) {
-        foreach ($revisions as $revision) {
-            $this->revisions->removeElement($revision);
-        }
-    }
-
-    public function getRevisions() {
-        return $this->revisions;
     }
 
 }

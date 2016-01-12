@@ -1,0 +1,31 @@
+<?php echo $this->partial('partial/view_top.phtml'); ?>
+<div class="panel-body">
+
+            <p><label>ID: </label> <?php echo $this->escapeHtml($dbArray->getId()); ?></p>   
+            <p><label>Status: </label> <?php echo $this->escapeHtml($dbArray->getStatus()); ?></p>                
+            <p><label>Analyst: </label> <?php echo $this->escapeHtml($dbArray->getAnalyst()); ?></p>
+            <p><label>Register: </label> <?php echo $this->escapeHtml($dbArray->getFormatedDate()); ?></p>
+
+            <ul class="nav nav-tabs nav-justified" style="color:#000;font-weight: bold;">
+                <li class="active"><a data-toggle="tab" href="#description">Description</a></li>
+                <li><a data-toggle="tab" href="#notes">Notes</a></li>
+                <li><a data-toggle="tab" href="#documents">Documents</a></li>    
+            </ul>
+            <div class="panel" style="padding-top:5px;">
+
+                <div class="tab-content col-sm-12">
+                    <div id="description" class="tab-pane fade in active">
+                        <p><?php echo $dbArray->getDescription(); ?></p>
+                    </div>
+                    <div id="notes" class="tab-pane fade in">
+                        <p><?php echo $dbArray->getAnnotations(); ?></p>
+                    </div>
+                    <div id="documents" class="tab-pane fade in">
+                        <?php echo $this->partial('partial/list_documents.phtml'); ?>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+<?php echo $this->partial('partial/view_bottom.phtml');

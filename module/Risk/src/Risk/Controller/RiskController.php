@@ -3,13 +3,9 @@
 namespace Risk\Controller;
 
 use Risk\Entity\Risk;
-use Risk\Entity\RiskVersion;
 use Risk\Controller\GenericController;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
-use DoctrineModule\Stdlib\Hydrator\DoctrineObject as DoctrineHydrator;
-use DoctrineORMModule\Form\Annotation\AnnotationBuilder as DoctrineAnnotationBuilder;
-use Exception;
 
 class RiskController extends GenericController {
 

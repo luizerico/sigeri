@@ -165,7 +165,14 @@
                                 <td><?php echo $this->escapeHtml($dbRow->getLikelihood()->getValue() * $dbRow->getImpact()->getValue()); ?></td>
                                 <td><?php echo $this->dateFormat($dbRow->getCreated(), IntlDateFormatter::SHORT, IntlDateFormatter::SHORT); ?></td>
                                 <td><?php echo $this->dateFormat($dbRow->getUpdated(), IntlDateFormatter::SHORT, IntlDateFormatter::SHORT); ?></td>
-                                <td><a
+                                <td><a target="_blank"
+                                           href="<?php
+                                           echo $this->url('riskversion', array(
+                                               'action' => 'view',
+                                               'id' => $dbRow->getId()
+                                           ));
+                                           ?>">View</a>
+                                    <a
                                         href="<?php
                                         echo $this->url('riskversion', array(
                                             'action' => 'edit',
@@ -236,4 +243,4 @@
 </div>
 
 </div>
-<?php echo $this->partial('partial/view_bottom.phtml'); ?>
+<?php echo $this->partial('partial/view_bottom.phtml');

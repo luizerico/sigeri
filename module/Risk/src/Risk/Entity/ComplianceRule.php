@@ -46,14 +46,14 @@ class ComplianceRule {
      * @Annotation\Type("Zend\Form\Element\Text")
      * @Annotation\Required(true)
      * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Validator({"name":"StringLength", "options":{"min":"5"}})
+     * @Annotation\Validator({"name":"StringLength", "options":{"min":"3"}})
      * @Annotation\Options({"label":"Rule"})
      * @Annotation\Attributes({"style":"width:100%"}) // Define the size in html code
      *
      * @var string
      * @access protected
      */
-    protected $rule;
+    protected $name;
 
     /**
      * @ORM\ManyToOne(targetEntity="Risk\Entity\ComplianceType")
@@ -103,14 +103,14 @@ class ComplianceRule {
     protected $submit;
     
     public function __construct() {
-        $this->revisions = new ArrayCollection();
         $this->documents = new ArrayCollection();
     }
 
     public function exchangeArray($data) {
         $this->id = (isset($data ['id'])) ? $data ['id'] : null;        
         $this->compliance = (isset($data ['compliance'])) ? $data ['compliance'] : null;
-        $this->rule = (isset($data ['rule'])) ? $data ['rule'] : null;
+        $this->name = (isset($data ['name'])) ? $data ['name'] : null;
+        $this->type = (isset($data ['type'])) ? $data ['type'] : null;
         $this->description = (isset($data ['description'])) ? $data ['description'] : null;
         $this->annotations = (isset($data ['annotations'])) ? $data ['annotations'] : null; 
     }
@@ -137,12 +137,12 @@ class ComplianceRule {
         return $this;
     }
 
-    public function getRule() {
-        return $this->rule;
+    public function getName() {
+        return $this->name;
     }
 
-    public function setRule($rule) {
-        $this->rule = $rule;
+    public function setName($name) {
+        $this->name = $name;
         return $this;
     }
     

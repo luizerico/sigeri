@@ -1,7 +1,7 @@
 <?php echo $this->partial('partial/edit_top.phtml'); ?>
 <?php
 foreach ($form as $element) :
-    if ((in_array($element->getAttribute('name'), array('name', 'compliance', 'type')))) {
+    if (!(in_array($element->getAttribute('name'), array('submit', 'description', 'documents', 'annotations')))) {
         ?>
         <div class="form-group <?php
         if ($this->formElementErrors($element))
@@ -21,14 +21,16 @@ foreach ($form as $element) :
                 <span class="help-inline"><?php echo $this->formElementErrors($element) ?></span>
             </div>
         </div>
+
         <?php
     }
 endforeach;
-?> 
+?>
 <br>
 <ul class = "nav nav-tabs nav-justified" style = "color:#000;font-weight: bold;">
     <li class = "active"><a data-toggle = "tab" href = "#description">Description</a></li>
     <li><a data-toggle = "tab" href = "#notes">Notes</a></li>
+    <li><a data-toggle = "tab" href = "#documents">Documents</a></li>
 </ul>
 <div class = "panel" style = "padding-top:5px;">
     <div class = "tab-content ">
@@ -40,6 +42,11 @@ endforeach;
             <?php echo $this->formElement($form->get('annotations'));
             ?>
         </div>
+        <div id = "documents" class = "tab-pane fade in">
+            <?php echo $this->formElement($form->get('documents'));
+            ?>
+        </div>                       
     </div>
-</div> 
+</div>
+
 <?php echo $this->partial('partial/edit_bottom.phtml'); ?>

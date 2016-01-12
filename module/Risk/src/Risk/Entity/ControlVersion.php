@@ -9,11 +9,11 @@ use Doctrine\Common\Collections\Collection;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="control")
+ * @ORM\Table(name="controlversion")
  * @Annotation\Hydrator("Zend\Stdlib\Hydrator\ObjectProperty")
- * @Annotation\Name("Control")
+ * @Annotation\Name("ControlVersion")
  */
-class Control {
+class ControlVersion {
 
     /**
      * @ORM\Id
@@ -26,6 +26,16 @@ class Control {
      * @access protected
      */
     protected $id;  
+    
+    /**
+     * @ORM\Column(type="integer")
+     * @Annotation\Options({"label":"Risk Id:"})
+     * @Annotation\Attributes({"readonly":"readonly"})
+     *
+     * @var integer
+     * @access protected
+     */
+    protected $entity_id;
     
 
     /**
@@ -122,8 +132,7 @@ class Control {
      * @var string
      * @access protected
      */
-    protected $annotations;   
-    
+    protected $annotations;
     
     /**
      * @ORM\ManyToMany(targetEntity="Document\Entity\Document")
@@ -145,12 +154,13 @@ class Control {
      */
     protected $submit;
     
-    public function __construct() {
+    public function __construct() {        
         $this->documents = new ArrayCollection();
     }
 
     public function exchangeArray($data) {
         $this->id = (isset($data ['id'])) ? $data ['id'] : null;
+        $this->entity_id = (isset($data ["entity_id"])) ? $data ["entity_id"] : null;
         $this->version = (isset($data ['version'])) ? $data ['version'] : null;
         $this->name = (isset($data ['name'])) ? $data ['name'] : null;
         $this->status = (isset($data ['status'])) ? $data ['status'] : null;
@@ -171,6 +181,15 @@ class Control {
 
     public function setId($id) {
         $this->id = $id;
+        return $this;
+    }
+    
+    public function getEntityId() {
+        return $this->entity_id;
+    }
+
+    public function setEntityId($entity_id) {
+        $this->entity_id = $entity_id;
         return $this;
     }
     

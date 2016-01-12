@@ -1,108 +1,93 @@
 <?php echo $this->partial('partial/edit_top.phtml'); ?>
 <?php
 foreach ($form as $element) :
-                if (!(in_array($element->getAttribute('name'), array('submit', 'description', 'documents', 'annotations')))) {
+    if (!(in_array($element->getAttribute('name'), array('submit', 'description', 'documents', 'annotations')))) {
+        ?>
+        <div class="form-group <?php
+        if ($this->formElementErrors($element))
+            echo "error"
+            ?>">
+            <label class="col-xs-2 col-sm-2 col-md-2 control-label"><?php echo $element->getLabel() ?></label>
+            <div class="col-xs-10 col-sm-10 col-md-10">
+                <?php
+                $element->setAttribute('class', 'form-control ' . $element->getAttribute('class'));
+
+                //if (!$element->hasAttribute('class'))
+                //	$element->setAttribute('class', 'form-control');
+                echo $this->formElement($element);
+                if ($this->formElementErrors($element))
+                    
                     ?>
-
-                    <div class="form-group <?php
-                    if ($this->formElementErrors($element))
-                        echo "error"
-                        ?>">
-                        <label class="col-sm-2 control-label"><?php echo $element->getLabel() ?></label>
-                        <div class="col-sm-10">
-                            <?php
-                            //echo $element->getAttribute('type');
-                            if ($element->getAttribute('type') != 'submit') {
-                                $element->setAttribute('class', 'form-control ' . $element->getAttribute('class'));
-                            } else {
-                                $element->setAttribute('class', 'btn btn-primary');
-                                $element->setAttribute('style', 'width:150px');
-                            };
-
-                            //if (!$element->hasAttribute('class'))
-                            //	$element->setAttribute('class', 'form-control');
-                            echo $this->formElement($element);
-                            if ($this->formElementErrors($element))
-                                
-                                ?>
-                            <span class="help-inline"><?php echo $this->formElementErrors($element) ?></span>
-                        </div>
-                    </div>
-
-                    <?php
-                }
-            endforeach;
-            ?>
-            <br>
-            <ul class = "nav nav-tabs nav-justified" style = "color:#000;font-weight: bold;">
-                <li class = "active"><a data-toggle = "tab" href = "#description">Description</a></li>
-                <li><a data-toggle = "tab" href = "#notes">Notes</a></li>
-                <li><a data-toggle = "tab" href = "#documents">Documents</a></li>
-                <li><a data-toggle = "tab" href = "#revisions">Revisions</a></li>
-            </ul>
-            <div class = "panel" style = "padding-top:5px;">
-                <div class = "tab-content ">
-                    <div id = "description" class = "tab-pane fade in active">
-                        <?php echo $this->formElement($form->get('description'));
-                        ?>
-                    </div>
-                    <div id = "notes" class = "tab-pane fade in">
-                        <?php echo $this->formElement($form->get('annotations'));
-                        ?>
-                    </div>
-                    <div id = "documents" class = "tab-pane fade in">
-                        <?php echo $this->formElement($form->get('documents'));
-                        ?>
-                    </div>   
-                    <div id = "revisions" class = "tab-pane fade in">
-                        <p>
-                            <a href="<?php
-                            echo $this->url('planreview', array('action' => 'add'), array('query' => array('plan_id' => $dbArray->getId()))
-                            );
-                            ?>">
-                                New revision register</a> 
-                        </p>
-                        <table id="datatable" class="table table-striped responsive-utilities jambo_table bulk_action">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Status</th>                
-                                    <th>Analyst</th>
-                                    <th>Register</th>
-                                    <th>&nbsp;</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($dbArray->getRevisions() as $dbRow) : ?>
-                                    <tr>
-                                        <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
-                                        <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>
-                                        <td><?php echo $this->escapeHtml($dbRow->getStatus()); ?></td>
-                                        <td><?php echo $this->escapeHtml($dbRow->getAnalyst()); ?></td>
-                                        <td><?php echo $this->escapeHtml($dbRow->getFormatedDate()); ?></td>
-                                        <td><a
-                                                href="<?php
-                                                echo $this->url('planreview', array(
-                                                    'action' => 'edit',
-                                                    'id' => $dbRow->getId()
-                                                ));
-                                                ?>">Edit</a>
-                                            <a
-                                                href="<?php
-                                                echo $this->url('planreview', array(
-                                                    'action' => 'delete',
-                                                    'id' => $dbRow->getId()
-                                                ));
-                                                ?>">Del</a>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-
-                    </div>
-                </div>
+                <span class="help-inline"><?php echo $this->formElementErrors($element) ?></span>
             </div>
-                       
+        </div>
+        <?php
+    }
+endforeach;
+?>
+<br>
+<ul class = "nav nav-tabs nav-justified" style = "color:#000;font-weight: bold;">
+    <li class = "active"><a data-toggle = "tab" href = "#description">Description</a></li>
+    <li><a data-toggle = "tab" href = "#notes">Notes</a></li>
+    <li><a data-toggle = "tab" href = "#documents">Documents</a></li>
+    <li><a data-toggle = "tab" href = "#revisions">Revisions</a></li>
+</ul>
+<div class = "panel" style = "padding-top:5px;">
+    <div class = "tab-content ">
+        <div id = "description" class = "tab-pane fade in active">
+            <?php echo $this->formElement($form->get('description'));
+            ?>
+        </div>
+        <div id = "notes" class = "tab-pane fade in">
+            <?php echo $this->formElement($form->get('annotations'));
+            ?>
+        </div>
+        <div id = "documents" class = "tab-pane fade in">
+            <?php echo $this->formElement($form->get('documents'));
+            ?>
+        </div>   
+        <div id = "revisions" class = "tab-pane fade in">            
+            <table id="datatable" class="table table-striped responsive-utilities jambo_table bulk_action">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Status</th>                
+                        <th>Analyst</th>
+                        <th>Register</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($vsArray as $dbRow) : ?>
+                        <tr>
+                            <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
+                            <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>
+                            <td><?php echo $this->escapeHtml($dbRow->getStatus()); ?></td>
+                            <td><?php echo $this->escapeHtml($dbRow->getAnalyst()); ?></td>
+                            <td><?php echo $this->escapeHtml($dbRow->getFormatedDate()); ?></td>
+                            <td><a
+                                    href="<?php
+                                    echo $this->url('planversion', array(
+                                        'action' => 'edit',
+                                        'id' => $dbRow->getId()
+                                    ));
+                                    ?>">Edit</a>
+                                <a
+                                    href="<?php
+                                    echo $this->url('planversion', array(
+                                        'action' => 'delete',
+                                        'id' => $dbRow->getId()
+                                    ));
+                                    ?>">Del</a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
 <?php echo $this->partial('partial/edit_bottom.phtml'); ?>

@@ -64,10 +64,10 @@ class Risk extends \Risk\Entity\Risk implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', 'id', 'name', 'status', 'type', 'method', 'likelihood', 'impact', 'analyst', 'description', 'annotations', 'vulnerabilities', 'threaties', 'compliance', 'controls', 'assets', 'documents', 'revisions', '' . "\0" . 'Risk\\Entity\\Risk' . "\0" . 'created', '' . "\0" . 'Risk\\Entity\\Risk' . "\0" . 'updated', '' . "\0" . 'Risk\\Entity\\Risk' . "\0" . 'contentChanged', 'submit');
+            return array('__isInitialized__', 'id', 'name', 'status', 'type', 'method', 'likelihood', 'impact', 'analyst', 'description', 'annotations', 'vulnerabilities', 'threaties', 'compliance', 'controls', 'assets', 'documents', '' . "\0" . 'Risk\\Entity\\Risk' . "\0" . 'created', '' . "\0" . 'Risk\\Entity\\Risk' . "\0" . 'updated', '' . "\0" . 'Risk\\Entity\\Risk' . "\0" . 'contentChanged', 'submit');
         }
 
-        return array('__isInitialized__', 'id', 'name', 'status', 'type', 'method', 'likelihood', 'impact', 'analyst', 'description', 'annotations', 'vulnerabilities', 'threaties', 'compliance', 'controls', 'assets', 'documents', 'revisions', '' . "\0" . 'Risk\\Entity\\Risk' . "\0" . 'created', '' . "\0" . 'Risk\\Entity\\Risk' . "\0" . 'updated', '' . "\0" . 'Risk\\Entity\\Risk' . "\0" . 'contentChanged', 'submit');
+        return array('__isInitialized__', 'id', 'name', 'status', 'type', 'method', 'likelihood', 'impact', 'analyst', 'description', 'annotations', 'vulnerabilities', 'threaties', 'compliance', 'controls', 'assets', 'documents', '' . "\0" . 'Risk\\Entity\\Risk' . "\0" . 'created', '' . "\0" . 'Risk\\Entity\\Risk' . "\0" . 'updated', '' . "\0" . 'Risk\\Entity\\Risk' . "\0" . 'contentChanged', 'submit');
     }
 
     /**
@@ -483,39 +483,6 @@ class Risk extends \Risk\Entity\Risk implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getDocuments', array());
 
         return parent::getDocuments();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function addRevisions(\Doctrine\Common\Collections\Collection $revisions)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addRevisions', array($revisions));
-
-        return parent::addRevisions($revisions);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function removeRevisions(\Doctrine\Common\Collections\Collection $revisions)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeRevisions', array($revisions));
-
-        return parent::removeRevisions($revisions);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getRevisions()
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getRevisions', array());
-
-        return parent::getRevisions();
     }
 
     /**

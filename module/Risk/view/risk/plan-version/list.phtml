@@ -7,7 +7,6 @@
             <th>Status</th>                
             <th>Analyst</th>
             <th>Register</th>
-            <th>Risk</th>
             <th>&nbsp;</th>
         </tr>
     </thead>
@@ -19,7 +18,6 @@
                 <td><?php echo $this->escapeHtml($dbRow->getStatus()); ?></td>
                 <td><?php echo $this->escapeHtml($dbRow->getAnalyst()); ?></td>
                 <td><?php echo $this->escapeHtml($dbRow->getFormatedDate()); ?></td>
-                <td><?php echo $this->escapeHtml($dbRow->getRisk()); ?></td>
                 <td><a
                         href="<?php
                         echo $this->url($this->router, array(
@@ -40,7 +38,7 @@
                             'action' => 'delete',
                             'id' => $dbRow->getId()
                         ));
-                        ?>">Delete</a>
+                        ?>">Del</a>
                 </td>
             </tr>
         <?php endforeach; ?>

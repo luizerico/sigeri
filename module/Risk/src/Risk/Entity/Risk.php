@@ -241,18 +241,6 @@ class Risk {
     protected $documents;
 
     /**
-     * @ORM\OneToMany(targetEntity="Risk\Entity\RiskReview", mappedBy="risk")
-     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
-     * @Annotation\Required(false)
-     * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Revisions"})
-     *
-     * @var \Risk\Entity\RiskReview
-     * @access protected
-     */
-    protected $revisions;
-
-    /**
      * @var \DateTime $created
      *
      * @Gedmo\Timestampable(on="create")
@@ -284,7 +272,6 @@ class Risk {
     protected $submit;
 
     public function __construct() {
-        $this->revisions = new ArrayCollection();
         $this->documents = new ArrayCollection();
         $this->controls = new ArrayCollection();
         $this->compliance = new ArrayCollection();
@@ -305,7 +292,6 @@ class Risk {
         $this->analyst = (isset($data ["analyst"])) ? $data ["analyst"] : null;
         $this->date = (isset($data ["date"])) ? $data ["date"] : null;
         $this->annotations = (isset($data ["annotations"])) ? $data ["annotations"] : null;
-        $this->revisions = (isset($data ["revisions"])) ? $data ["revisions"] : null;
         $this->documents = (isset($data ["documents"])) ? $data ["documents"] : null;
         $this->controls = (isset($data ["controls"])) ? $data ["controls"] : null;
         $this->compliance = (isset($data ["compliance"])) ? $data ["compliance"] : null;
@@ -437,22 +423,6 @@ class Risk {
 
     public function getDocuments() {
         return $this->documents;
-    }
-
-    public function addRevisions(Collection $revisions) {
-        foreach ($revisions as $revision) {
-            $this->revisions->add($revision);
-        }
-    }
-
-    public function removeRevisions(Collection $revisions) {
-        foreach ($revisions as $revision) {
-            $this->revisions->removeElement($revision);
-        }
-    }
-
-    public function getRevisions() {
-        return $this->revisions;
     }
 
     public function addControls(Collection $controls) {

@@ -34,7 +34,6 @@ return array(
             'RiskVersion' => 'Risk\Controller\RiskVersionController',
             'RiskType' => 'Risk\Controller\RiskTypeController',
             'RiskStatus' => 'Risk\Controller\RiskStatusController',
-            'RiskReview' => 'Risk\Controller\RiskReviewController',
             'RiskManager' => 'Risk\Controller\RiskManagerController',
             'Impact' => 'Risk\Controller\ImpactController',
             'Likelihood' => 'Risk\Controller\LikelihoodController',
@@ -48,12 +47,12 @@ return array(
             'Control' => 'Risk\Controller\ControlController',
             'ControlType' => 'Risk\Controller\ControlTypeController',
             'ControlStatus' => 'Risk\Controller\ControlStatusController',
-            'ControlReview' => 'Risk\Controller\ControlReviewController',
+            'ControlVersion' => 'Risk\Controller\ControlVersionController',
             'Plan' => 'Risk\Controller\PlanController',
             'PlanStatus' => 'Risk\Controller\PlanStatusController',
             'PlanStrategy' => 'Risk\Controller\PlanStrategyController',
             'PlanEffort' => 'Risk\Controller\PlanEffortController',
-            'PlanReview' => 'Risk\Controller\PlanReviewController',
+            'PlanVersion' => 'Risk\Controller\PlanVersionController',
             'Compliance' => 'Risk\Controller\ComplianceController',
             'ComplianceType' => 'Risk\Controller\ComplianceTypeController',
             'ComplianceRule' => 'Risk\Controller\ComplianceRuleController',
@@ -116,20 +115,6 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'RiskStatus',
-                        'action' => 'index'
-                    )
-                )
-            ),
-            'riskreview' => array(
-                'type' => 'Segment',
-                'options' => array(
-                    'route' => '/riskreview[/][:action[/:id]]',
-                    'constraints' => array(
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id' => '[0-9]+'
-                    ),
-                    'defaults' => array(
-                        'controller' => 'RiskReview',
                         'action' => 'index'
                     )
                 )
@@ -316,16 +301,16 @@ return array(
                     )
                 )
             ),
-            'controlreview' => array(
+            'controlversion' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/controlreview[/][:action[/:id]]',
+                    'route' => '/controlversion[/][:action[/:id]]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id' => '[0-9]+'
                     ),
                     'defaults' => array(
-                        'controller' => 'ControlReview',
+                        'controller' => 'ControlVersion',
                         'action' => 'index'
                     )
                 )
@@ -386,16 +371,16 @@ return array(
                     )
                 )
             ),
-            'planreview' => array(
+            'planversion' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/planreview[/][:action[/:id]]',
+                    'route' => '/planversion[/][:action[/:id]]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id' => '[0-9]+'
                     ),
                     'defaults' => array(
-                        'controller' => 'PlanReview',
+                        'controller' => 'PlanVersion',
                         'action' => 'index'
                     )
                 )

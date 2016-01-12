@@ -1,7 +1,8 @@
-<?php echo $this->partial('partial/edit_top.phtml'); ?>
+<?php echo $this->partial('partial/add_top.phtml'); ?>
+
 <?php
 foreach ($form as $element) :
-    if ((in_array($element->getAttribute('name'), array('name', 'compliance', 'type')))) {
+    if (!(in_array($element->getAttribute('name'), array('submit', 'description', 'documents', 'annotations')))) {
         ?>
         <div class="form-group <?php
         if ($this->formElementErrors($element))
@@ -21,14 +22,16 @@ foreach ($form as $element) :
                 <span class="help-inline"><?php echo $this->formElementErrors($element) ?></span>
             </div>
         </div>
-        <?php
+
+    <?php
     }
 endforeach;
-?> 
+?>
 <br>
 <ul class = "nav nav-tabs nav-justified" style = "color:#000;font-weight: bold;">
     <li class = "active"><a data-toggle = "tab" href = "#description">Description</a></li>
     <li><a data-toggle = "tab" href = "#notes">Notes</a></li>
+    <li><a data-toggle = "tab" href = "#documents">Documents</a></li>
 </ul>
 <div class = "panel" style = "padding-top:5px;">
     <div class = "tab-content ">
@@ -40,6 +43,23 @@ endforeach;
             <?php echo $this->formElement($form->get('annotations'));
             ?>
         </div>
+        <div id = "documents" class = "tab-pane fade in">
+            <?php echo $this->formElement($form->get('documents'));
+            ?>
+        </div>   
+
     </div>
-</div> 
-<?php echo $this->partial('partial/edit_bottom.phtml'); ?>
+</div>
+<?php $element = $this->form->get('submit'); ?>
+<div class="form-group" style="text-align:right;">
+    <div class="col-sm-12">
+        <?php
+        $element->setAttribute('class', 'btn btn-primary');
+        $element->setAttribute('style', 'width:150px');
+
+        echo $this->formElement($element);
+        ?>
+    </div>
+</div>
+?> 
+<?php echo $this->partial('partial/add_bottom.phtml'); ?>

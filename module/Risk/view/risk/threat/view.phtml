@@ -1,80 +1,80 @@
 <?php echo $this->partial('partial/view_top.phtml'); ?>
 
-        <div class="panel-body">
-            <p><label>ID: </label> <?php echo $this->escapeHtml($dbArray->getId()); ?></p>   
-            <p><label>Level: </label> <?php echo $this->escapeHtml($dbArray->getLevel()); ?></p>
-            <p><label>Type: </label> <?php echo $this->escapeHtml($dbArray->getType()); ?></p>
-            <p><label>Analyst: </label> <?php echo $this->escapeHtml($dbArray->getAnalyst()); ?></p>
-            <p><label>Origin: </label> 
-                <?php
-                if ($dbArray->getDeliberate()) {
-                    echo " Deliberate. ";
-                };
-                ?>
-                <?php
-                if ($dbArray->getAccidental()) {
-                    echo " Accidental. ";
-                };
-                ?>
-                <?php
-                if ($dbArray->getEnvironmental()) {
-                    echo " Environmental. ";
-                };
-                ?>                
-            </p>
+<div class="panel-body">
+    <p><label>ID: </label> <?php echo $this->escapeHtml($dbArray->getId()); ?></p>   
+    <p><label>Level: </label> <?php echo $this->escapeHtml($dbArray->getLevel()); ?></p>
+    <p><label>Type: </label> <?php echo $this->escapeHtml($dbArray->getType()); ?></p>
+    <p><label>Analyst: </label> <?php echo $this->escapeHtml($dbArray->getAnalyst()); ?></p>
+    <p><label>Origin: </label> 
+        <?php
+        if ($dbArray->getDeliberate()) {
+            echo " Deliberate. ";
+        };
+        ?>
+        <?php
+        if ($dbArray->getAccidental()) {
+            echo " Accidental. ";
+        };
+        ?>
+        <?php
+        if ($dbArray->getEnvironmental()) {
+            echo " Environmental. ";
+        };
+        ?>                
+    </p>
 
-            <ul class="nav nav-tabs nav-justified" style="color:#000;font-weight: bold;">
-                <li class="active"><a data-toggle="tab" href="#description">Description</a></li>
-                <li><a data-toggle="tab" href="#notes">Notes</a></li>   
-                <li><a data-toggle="tab" href="#sources">Sources</a></li> 
-                <li><a data-toggle="tab" href="#documents">Documents</a></li>                      
-            </ul>
-            <div class="panel" style="padding-top:5px;">
+    <ul class="nav nav-tabs nav-justified" style="color:#000;font-weight: bold;">
+        <li class="active"><a data-toggle="tab" href="#description">Description</a></li>
+        <li><a data-toggle="tab" href="#notes">Notes</a></li>   
+        <li><a data-toggle="tab" href="#sources">Sources</a></li> 
+        <li><a data-toggle="tab" href="#documents">Documents</a></li>                      
+    </ul>
+    <div class="panel" style="padding-top:5px;">
 
-                <div class="tab-content col-sm-12">
-                    <div id="description" class="tab-pane fade in active">
-                        <br>
-                        <p><?php echo $dbArray->getDescription(); ?></p>                        
-                    </div>
-                    <div id="notes" class="tab-pane fade in">
-                        <br>
-                        <p><?php echo $dbArray->getAnnotations(); ?></p>
-                    </div>   
-                    <div id="sources" class="tab-pane fade in">
-                        <p>&nbsp;
-                        </p>
-                        <table id="datatable" class="table table-striped responsive-utilities jambo_table bulk_action">
-                            <thead>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Name</th>                                     
-                                    <th></th> 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($dbArray->getSources() as $dbRow) : ?>
-                                    <tr>
-                                        <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
-                                        <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>                                          
-                                        <td><a
-                                                href="<?php
-                                                echo $this->url('threatsource', array(
-                                                    'action' => 'view',
-                                                    'id' => $dbRow->getId()
-                                                ));
-                                                ?>">View </a></td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>       
-
-                    <div id="documents" class="tab-pane fade in">
-                        <?php echo $this->partial('partial/list_documents.phtml'); ?>
-                    </div>                   
-
-                </div>
+        <div class="tab-content col-sm-12">
+            <div id="description" class="tab-pane fade in active">
+                <br>
+                <p><?php echo $dbArray->getDescription(); ?></p>                        
             </div>
+            <div id="notes" class="tab-pane fade in">
+                <br>
+                <p><?php echo $dbArray->getAnnotations(); ?></p>
+            </div>   
+            <div id="sources" class="tab-pane fade in">
+                <p>&nbsp;
+                </p>
+                <table id="datatable" class="table table-striped responsive-utilities jambo_table bulk_action">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>                                     
+                            <th></th> 
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($dbArray->getSources() as $dbRow) : ?>
+                            <tr>
+                                <td><?php echo $this->escapeHtml($dbRow->getId()); ?></td>
+                                <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>                                          
+                                <td><a
+                                        href="<?php
+                                        echo $this->url('threatsource', array(
+                                            'action' => 'view',
+                                            'id' => $dbRow->getId()
+                                        ));
+                                        ?>">View </a></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>       
+
+            <div id="documents" class="tab-pane fade in">
+                <?php echo $this->partial('partial/list_documents.phtml'); ?>
+            </div>                   
 
         </div>
+    </div>
+
+</div>
 <?php echo $this->partial('partial/view_bottom.phtml'); ?>

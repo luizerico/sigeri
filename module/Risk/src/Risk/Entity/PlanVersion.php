@@ -9,11 +9,11 @@ use Doctrine\Common\Collections\Collection;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="control")
+ * @ORM\Table(name="planversion")
  * @Annotation\Hydrator("Zend\Stdlib\Hydrator\ObjectProperty")
- * @Annotation\Name("Control")
+ * @Annotation\Name("PlanVersion")
  */
-class Control {
+class PlanVersion {
 
     /**
      * @ORM\Id
@@ -25,8 +25,17 @@ class Control {
      * @var integer
      * @access protected
      */
-    protected $id;  
+    protected $id;
     
+    /**
+     * @ORM\Column(type="integer")
+     * @Annotation\Options({"label":"Risk Id:"})
+     * @Annotation\Attributes({"readonly":"readonly"})
+     *
+     * @var integer
+     * @access protected
+     */
+    protected $entity_id;
 
     /**
      * @ORM\Column(type="string")
@@ -43,32 +52,32 @@ class Control {
     protected $name;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Risk\Entity\ControlStatus")
-     * @ORM\JoinColumn(name="status_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Risk\Entity\PlanStrategy")
+     * @ORM\JoinColumn(name="strategy_id", referencedColumnName="id")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Required(true)
      * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Status", "empty_option":"Please select..."})
+     * @Annotation\Options({"label":"Strategy", "empty_option":"Please select..."})
      * @Annotation\Attributes({"style":"width:100%"})
      *
      * @var string
      * @access protected
      */
-    protected $status;  
-    
+    protected $strategy;
+
     /**
-     * @ORM\ManyToOne(targetEntity="Risk\Entity\ControlType")
-     * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Risk\Entity\PlanEffort")
+     * @ORM\JoinColumn(name="effort_id", referencedColumnName="id")
      * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
      * @Annotation\Required(true)
      * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Options({"label":"Type", "empty_option":"Please select..."})
+     * @Annotation\Options({"label":"Effort", "empty_option":"Please select..."})
      * @Annotation\Attributes({"style":"width:100%"})
      *
-     * @var \Risk\Entity\ControlType
+     * @var string
      * @access protected
      */
-    protected $type;
+    protected $effort;
 
     /**
      * @ORM\ManyToOne(targetEntity="User\Entity\User")
@@ -84,20 +93,6 @@ class Control {
      */
     protected $analyst;
     
-    /**
-     * @ORM\Column(type="date")
-     * @Annotation\Type("Zend\Form\Element\DateTime")
-     * @Annotation\Required(true)
-     * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Validator({"name":"StringLength"})
-     * @Annotation\Options({"label":"Registered"})
-     * @Annotation\Attributes({"style":"width:50%"})
-     *
-     * @var string
-     * @access protected
-     */
-    protected $date;
-
     /**
      * @ORM\Column(type="text", nullable=true)
      * @Annotation\Type("Zend\Form\Element\Textarea")
@@ -122,8 +117,7 @@ class Control {
      * @var string
      * @access protected
      */
-    protected $annotations;   
-    
+    protected $annotations;
     
     /**
      * @ORM\ManyToMany(targetEntity="Document\Entity\Document")
@@ -137,6 +131,34 @@ class Control {
      * @access protected
      */
     protected $documents;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Risk\Entity\PlanStatus")
+     * @ORM\JoinColumn(name="status_id", referencedColumnName="id")
+     * @Annotation\Type("DoctrineORMModule\Form\Element\EntitySelect")
+     * @Annotation\Required(true)
+     * @Annotation\Filter({"name":"StripTags"})
+     * @Annotation\Options({"label":"Status", "empty_option":"Please select..."})
+     * @Annotation\Attributes({"style":"width:100%"})
+     *
+     * @var string
+     * @access protected
+     */
+    protected $status;
+    
+    /**
+     * @ORM\Column(type="date")
+     * @Annotation\Type("Zend\Form\Element\DateTime")
+     * @Annotation\Required(false)
+     * @Annotation\Filter({"name":"StripTags"})
+     * @Annotation\Validator({"name":"StringLength"})
+     * @Annotation\Options({"label":"Date"})
+     * @Annotation\Attributes({"style":"width:50%"})
+     *
+     * @var string
+     * @access protected
+     */
+    protected $date;
 
     /**
      * @Annotation\Type("Zend\Form\Element\Submit")
@@ -145,19 +167,21 @@ class Control {
      */
     protected $submit;
     
-    public function __construct() {
-        $this->documents = new ArrayCollection();
+    public function __construct() {     
+        $this->documents = new ArrayCollection();        
     }
 
     public function exchangeArray($data) {
         $this->id = (isset($data ['id'])) ? $data ['id'] : null;
-        $this->version = (isset($data ['version'])) ? $data ['version'] : null;
+        $this->entity_id = (isset($data ["entity_id"])) ? $data ["entity_id"] : null;
         $this->name = (isset($data ['name'])) ? $data ['name'] : null;
-        $this->status = (isset($data ['status'])) ? $data ['status'] : null;
-        $this->analyst = (isset($data ['analyst'])) ? $data ['analyst'] : null;
-        $this->date = (isset($data ['date'])) ? $data ['date'] : null;
         $this->description = (isset($data ['description'])) ? $data ['description'] : null;
-        $this->annotations = (isset($data ['annotations'])) ? $data ['annotations'] : null;        
+        $this->analyst = (isset($data ['analyst'])) ? $data ['analyst'] : null;
+        $this->effort = (isset($data ['effort'])) ? $data ['effort'] : null;
+        $this->strategy = (isset($data ['strategy'])) ? $data ['strategy'] : null;
+        $this->status = (isset($data ['status'])) ? $data ['status'] : null;
+        $this->date = (isset($data ['date'])) ? $data ['date'] : null;
+        $this->annotations = (isset($data ['annotations'])) ? $data ['annotations'] : null;
         $this->documents = (isset($data ['documents'])) ? $data ['documents'] : null;
     }
 
@@ -174,12 +198,12 @@ class Control {
         return $this;
     }
     
-    public function getVersion() {
-        return $this->version;
+    public function getEntityId() {
+        return $this->entity_id;
     }
 
-    public function setVersion($version) {
-        $this->version = $version;
+    public function setEntityId($entity_id) {
+        $this->entity_id = $entity_id;
         return $this;
     }
 
@@ -190,24 +214,6 @@ class Control {
     public function setName($name) {
         $this->name = $name;
         return $this;
-    }
-
-    public function getStatus() {
-        return $this->status;
-    }
-
-    public function setStatus($status) {
-        $this->status = $status;
-        return $this;
-    }
-    
-     public function setType(\Risk\Entity\ControlType $type) {
-        $this->type = $type;
-        return $this;
-    }
-
-    public function getType() {
-        return $this->type;
     }
 
     public function getDescription() {
@@ -225,6 +231,33 @@ class Control {
 
     public function setAnalyst(\User\Entity\User $analyst) {
         $this->analyst = $analyst;
+        return $this;
+    }
+
+    public function getEffort() {
+        return $this->effort;
+    }
+
+    public function setEffort(\Risk\Entity\PlanEffort $effort) {
+        $this->effort = $effort;
+        return $this;
+    }
+
+    public function getStrategy() {
+        return $this->strategy;
+    }
+
+    public function setStrategy(\Risk\Entity\PlanStrategy $strategy) {
+        $this->strategy = $strategy;
+        return $this;
+    }
+
+    public function getStatus() {
+        return $this->status;
+    }
+
+    public function setStatus(\Risk\Entity\PlanStatus $status) {
+        $this->status = $status;
         return $this;
     }
 
@@ -249,7 +282,7 @@ class Control {
         $this->annotations = $annotations;
         return $this;
     }
-
+    
     public function addDocuments(Collection $documents) {
         foreach ($documents as $document) {
             $this->documents->add($document);
