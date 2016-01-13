@@ -6,12 +6,14 @@ use Zend\Form\Annotation;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="control")
  * @Annotation\Hydrator("Zend\Stdlib\Hydrator\ObjectProperty")
  * @Annotation\Name("Control")
+ * @ORM\HasLifecycleCallbacks
  */
 class Control {
 
@@ -25,8 +27,7 @@ class Control {
      * @var integer
      * @access protected
      */
-    protected $id;  
-    
+    protected $id;
 
     /**
      * @ORM\Column(type="string")
@@ -54,8 +55,8 @@ class Control {
      * @var string
      * @access protected
      */
-    protected $status;  
-    
+    protected $status;
+
     /**
      * @ORM\ManyToOne(targetEntity="Risk\Entity\ControlType")
      * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
@@ -83,10 +84,10 @@ class Control {
      * @access protected
      */
     protected $analyst;
-    
+
     /**
      * @ORM\Column(type="date")
-     * @Annotation\Type("Zend\Form\Element\DateTime")
+     * @Annotation\Type("Zend\Form\Element\Date")
      * @Annotation\Required(true)
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Validator({"name":"StringLength"})
@@ -96,7 +97,7 @@ class Control {
      * @var string
      * @access protected
      */
-    protected $date;
+    // protected $date;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -122,9 +123,8 @@ class Control {
      * @var string
      * @access protected
      */
-    protected $annotations;   
-    
-    
+    protected $annotations;
+
     /**
      * @ORM\ManyToMany(targetEntity="Document\Entity\Document")
      * @ORM\JoinColumn(name="documents_id", referencedColumnName="id")
@@ -139,12 +139,36 @@ class Control {
     protected $documents;
 
     /**
+     * @var \DateTime $created
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $created;
+
+    /**
+     * @var \DateTime $updated
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updated;
+
+    /**
+     * @var \DateTime $contentChanged
+     *
+     * @ORM\Column(name="content_changed", type="datetime", nullable=true)
+     * @Gedmo\Timestampable(on="change", field={"name", "status", "type", "likelihood", "impact", "analyst"})
+     */
+    private $contentChanged;
+
+    /**
      * @Annotation\Type("Zend\Form\Element\Submit")
      * @Annotation\Attributes({"value":"Submit"})
      * @Annotation\Attributes({"style":"width:150px", "class":"btn btn-default"})
      */
     protected $submit;
-    
+
     public function __construct() {
         $this->documents = new ArrayCollection();
     }
@@ -157,7 +181,7 @@ class Control {
         $this->analyst = (isset($data ['analyst'])) ? $data ['analyst'] : null;
         $this->date = (isset($data ['date'])) ? $data ['date'] : null;
         $this->description = (isset($data ['description'])) ? $data ['description'] : null;
-        $this->annotations = (isset($data ['annotations'])) ? $data ['annotations'] : null;        
+        $this->annotations = (isset($data ['annotations'])) ? $data ['annotations'] : null;
         $this->documents = (isset($data ['documents'])) ? $data ['documents'] : null;
     }
 
@@ -173,7 +197,7 @@ class Control {
         $this->id = $id;
         return $this;
     }
-    
+
     public function getVersion() {
         return $this->version;
     }
@@ -200,8 +224,8 @@ class Control {
         $this->status = $status;
         return $this;
     }
-    
-     public function setType(\Risk\Entity\ControlType $type) {
+
+    public function setType(\Risk\Entity\ControlType $type) {
         $this->type = $type;
         return $this;
     }
@@ -264,6 +288,28 @@ class Control {
 
     public function getDocuments() {
         return $this->documents;
+    }
+
+    public function getCreated() {
+        return $this->created;
+    }
+
+    public function getUpdated() {
+        return $this->updated;
+    }
+
+    public function getContentChanged() {
+        return $this->contentChanged;
+    }
+
+    /** @ORM\PostUpdate */
+    public function postUpdate() {
+        
+    }
+
+    /** @ORM\PreUpdate */
+    public function preUpdate() {
+        
     }
 
 }

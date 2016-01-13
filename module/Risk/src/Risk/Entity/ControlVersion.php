@@ -96,7 +96,7 @@ class ControlVersion {
     
     /**
      * @ORM\Column(type="date")
-     * @Annotation\Type("Zend\Form\Element\DateTime")
+     * @Annotation\Type("Zend\Form\Element\Date")
      * @Annotation\Required(true)
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Validator({"name":"StringLength"})

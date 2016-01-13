@@ -286,7 +286,7 @@ class Asset {
         return $this->relevance;
     }
 
-    public function setRelevance(\Asset\Entity\AssetValue $relevance) {
+    public function setRelevance(\Asset\Entity\AssetRelevance $relevance) {
         $this->relevance = $relevance;
         return $this;
     }

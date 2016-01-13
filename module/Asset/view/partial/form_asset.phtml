@@ -1,6 +1,7 @@
 <?php
 foreach ($form as $element) :
-    if ((in_array($element->getAttribute('name'), array('name',
+    if ((in_array($element->getAttribute('name'), array('name', 
+                'relevance',
                 'type',
                 'analyst',
                 'unit',
@@ -25,4 +26,3 @@ foreach ($form as $element) :
         <?php
     }
 endforeach;
-?>
