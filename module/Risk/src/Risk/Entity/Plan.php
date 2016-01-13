@@ -252,10 +252,6 @@ class Plan {
         return $this;
     }
 
-    public function getFormatedDate() {
-        return $this->date->format('d/m/Y');
-    }
-
     public function getAnnotations() {
         return $this->annotations;
     }

@@ -86,20 +86,6 @@ class Control {
     protected $analyst;
 
     /**
-     * @ORM\Column(type="date")
-     * @Annotation\Type("Zend\Form\Element\Date")
-     * @Annotation\Required(true)
-     * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Validator({"name":"StringLength"})
-     * @Annotation\Options({"label":"Registered"})
-     * @Annotation\Attributes({"style":"width:50%"})
-     *
-     * @var string
-     * @access protected
-     */
-    // protected $date;
-
-    /**
      * @ORM\Column(type="text", nullable=true)
      * @Annotation\Type("Zend\Form\Element\Textarea")
      * @Annotation\Required(false)
@@ -179,7 +165,6 @@ class Control {
         $this->name = (isset($data ['name'])) ? $data ['name'] : null;
         $this->status = (isset($data ['status'])) ? $data ['status'] : null;
         $this->analyst = (isset($data ['analyst'])) ? $data ['analyst'] : null;
-        $this->date = (isset($data ['date'])) ? $data ['date'] : null;
         $this->description = (isset($data ['description'])) ? $data ['description'] : null;
         $this->annotations = (isset($data ['annotations'])) ? $data ['annotations'] : null;
         $this->documents = (isset($data ['documents'])) ? $data ['documents'] : null;
@@ -249,19 +234,6 @@ class Control {
 
     public function setAnalyst(\User\Entity\User $analyst) {
         $this->analyst = $analyst;
-        return $this;
-    }
-
-    public function getFormatedDate() {
-        return $this->date->format('d/m/Y');
-    }
-
-    public function getDate() {
-        return $this->date;
-    }
-
-    public function setDate($date) {
-        $this->date = $date;
         return $this;
     }
 

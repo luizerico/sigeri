@@ -1,7 +1,7 @@
 <?php echo $this->partial('partial/edit_top.phtml'); ?>
 <?php
 foreach ($form as $element) :
-    if (!(in_array($element->getAttribute('name'), array('submit', 'description', 'annotations', 'documents')))) {
+    if ((in_array($element->getAttribute('name'), array('name', 'status', 'type', 'analyst')))) {
         ?>
 
         <div class="form-group <?php
@@ -94,8 +94,6 @@ endforeach;
                     <?php endforeach; ?>
                 </tbody>
             </table>
-
-
         </div>
     </div>
 </div>

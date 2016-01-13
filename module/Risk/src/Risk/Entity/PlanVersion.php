@@ -6,12 +6,14 @@ use Zend\Form\Annotation;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="planversion")
  * @Annotation\Hydrator("Zend\Stdlib\Hydrator\ObjectProperty")
  * @Annotation\Name("PlanVersion")
+ * @ORM\HasLifecycleCallbacks
  */
 class PlanVersion {
 
@@ -145,21 +147,31 @@ class PlanVersion {
      * @access protected
      */
     protected $status;
-    
-    /**
-     * @ORM\Column(type="date")
-     * @Annotation\Type("Zend\Form\Element\Date")
-     * @Annotation\Required(false)
-     * @Annotation\Filter({"name":"StripTags"})
-     * @Annotation\Validator({"name":"StringLength"})
-     * @Annotation\Options({"label":"Date"})
-     * @Annotation\Attributes({"style":"width:50%"})
-     *
-     * @var string
-     * @access protected
-     */
-    protected $date;
 
+    /**
+     * @var \DateTime $created
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $created;
+
+    /**
+     * @var \DateTime $updated
+     *
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updated;
+
+    /**
+     * @var \DateTime $contentChanged
+     *
+     * @ORM\Column(name="content_changed", type="datetime", nullable=true)
+     * @Gedmo\Timestampable(on="change", field={"name", "status", "type", "likelihood", "impact", "analyst"})
+     */
+    private $contentChanged;
+    
     /**
      * @Annotation\Type("Zend\Form\Element\Submit")
      * @Annotation\Attributes({"value":"Submit"})
@@ -179,8 +191,7 @@ class PlanVersion {
         $this->analyst = (isset($data ['analyst'])) ? $data ['analyst'] : null;
         $this->effort = (isset($data ['effort'])) ? $data ['effort'] : null;
         $this->strategy = (isset($data ['strategy'])) ? $data ['strategy'] : null;
-        $this->status = (isset($data ['status'])) ? $data ['status'] : null;
-        $this->date = (isset($data ['date'])) ? $data ['date'] : null;
+        $this->status = (isset($data ['status'])) ? $data ['status'] : null;        
         $this->annotations = (isset($data ['annotations'])) ? $data ['annotations'] : null;
         $this->documents = (isset($data ['documents'])) ? $data ['documents'] : null;
     }
@@ -261,19 +272,6 @@ class PlanVersion {
         return $this;
     }
 
-    public function getFormatedDate() {
-        return $this->date->format('d/m/Y');
-    }
-
-    public function getDate() {
-        return $this->date;
-    }
-
-    public function setDate($date) {
-        $this->date = $date;
-        return $this;
-    }
-
     public function getAnnotations() {
         return $this->annotations;
     }
@@ -297,6 +295,27 @@ class PlanVersion {
 
     public function getDocuments() {
         return $this->documents;
+    }
+    
+    public function getCreated() {
+        return $this->created;
+    }
+
+    public function getUpdated() {
+        return $this->updated;
+    }
+
+    public function getContentChanged() {
+        return $this->contentChanged;
+    }
+    
+    /** @ORM\PostUpdate */
+    public function postUpdate(){
+    }
+    
+    /** @ORM\PreUpdate */
+    public function preUpdate(){
+        
     }
 
 }
