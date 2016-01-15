@@ -41,17 +41,6 @@ class AuthenticationController extends AbstractActionController {
 
             $dbresult = $this->getAuthService()->authenticate();
 
-//            $this->getLDAPAuthService()->getAdapter()
-//                    ->setIdentity($this->params()->fromPost('username'))
-//                    ->setCredential($this->params()->fromPost('password'));
-//            $this->getLDAPAuthService()->getAdapter()
-//                    ->setIdentity('admin')
-//                    ->setCredential('sumep-exc');
-//
-//            var_dump($this->getLDAPAuthService()->getIdentity());
-//            
-//            $ldapresult = $this->getLDAPAuthService()->authenticate();           
-
             if ($dbresult->isValid()) {
                 $resultRow = $this->getAuthService()->getAdapter()
                         ->getResultRowObject();

@@ -38,7 +38,7 @@ class GenericController extends AbstractActionController {
         }
         return $this->em;
     }
-    
+
     public function addAction() {
         $builder = new DoctrineAnnotationBuilder($this->getEntityManager());
         $form = $builder->createForm($this->object);
@@ -85,7 +85,7 @@ class GenericController extends AbstractActionController {
             'form' => $form
         );
     }
-    
+
     public function editAction() {
         $builder = new DoctrineAnnotationBuilder($this->getEntityManager());
         $form = $builder->createForm($this->object);
@@ -225,7 +225,7 @@ class GenericController extends AbstractActionController {
                     'action' => 'list'
         ));
     }
-    
+
     public function viewAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
@@ -245,14 +245,14 @@ class GenericController extends AbstractActionController {
                         'action' => 'list'
             ));
         }
-        
+
         try {
             $versionArray = $this->getEntityManager()
                     ->getRepository($this->entityversion)
                     ->findBy(array('entity_id' => $id));
         } catch (Exception $ex) {
             $versionArray = null;
-        }        
+        }
 
         return new ViewModel(array(
             'title' => $this->title,
@@ -295,7 +295,7 @@ class GenericController extends AbstractActionController {
 
         return new JsonModel($result);
     }
-    
+
     protected function querysql($query) {
         $con = $this->getEntityManager()->getConnection();
         $stmt = $con->prepare($query);

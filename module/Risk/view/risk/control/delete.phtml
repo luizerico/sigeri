@@ -2,7 +2,8 @@
 <div class="panel-body">  
     <p>Are you sure that you want to delete?</p>
     <label>Name:</label> <?php echo $this->escapeHtml($dbArray->getName()); ?> <br>
-    <label>Description:</label> <?php echo $this->escapeHtml($dbArray->getDescription()); ?>
+    <label>Registered:</label> <?php echo$this->dateFormat($dbArray->getCreated(), IntlDateFormatter::LONG);?><br>
+    <label>Last Change:</label> <?php echo$this->dateFormat($dbArray->getUpdated(), IntlDateFormatter::LONG);?>
 
     <?php
     $url = $this->url($this->router, array(

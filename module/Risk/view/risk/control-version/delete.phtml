@@ -3,8 +3,8 @@
     <p>Are you sure that you want to delete?</p>
     <label>Review:</label> <?php echo $this->escapeHtml($dbArray->getName()); ?> <br>
     <label>Analyst:</label> <?php echo $this->escapeHtml($dbArray->getAnalyst()); ?> <br>
-    <label>Registered:</label> <?php echo $this->escapeHtml($dbArray->getFormatedDate()); ?> <br>
-<p>
+    <label>Updated:</label> <?php echo $this->dateFormat($dbArray->getUpdated(), IntlDateFormatter::LONG); ?> <br>
+    <p>
     <p>
         <?php
         $url = $this->url($this->router, array(
@@ -23,4 +23,5 @@
         </div>
     </form>
 </div>
-<?php echo $this->partial('partial/delete_bottom.phtml'); ?>
+<?php
+echo $this->partial('partial/delete_bottom.phtml');

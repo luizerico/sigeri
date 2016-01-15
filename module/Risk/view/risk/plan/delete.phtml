@@ -4,7 +4,7 @@
     <label>Plan:</label> <?php echo $this->escapeHtml($dbArray->getName()); ?> <br>
     <label>Analyst:</label> <?php echo $this->escapeHtml($dbArray->getAnalyst()); ?> <br>
     <label>Status:</label> <?php echo $this->escapeHtml($dbArray->getStatus()); ?> <br>
-    <label>Registered:</label> <?php echo $this->escapeHtml($dbArray->getFormatedDate()); ?> <br>            
+    <label>Registered:</label> <?php echo $this->dateFormat($dbArray->getUpdated(), IntlDateFormatter::LONG); ?> <br>            
     <p>
         <?php
         $url = $this->url($this->router, array(

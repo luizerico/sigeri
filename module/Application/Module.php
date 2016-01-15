@@ -33,10 +33,12 @@ class Module {
         });
 
         // Set Translation
-        $translator = $e->getApplication()->getServiceManager()->get('translator');
-        $translator
-                ->setLocale(\Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']))
-                ->setFallbackLocale('en_US');
+        if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+            $translator = $e->getApplication()->getServiceManager()->get('translator');
+            $translator
+                    ->setLocale(\Locale::acceptFromHttp($_SERVER['HTTP_ACCEPT_LANGUAGE']))
+                    ->setFallbackLocale('en_US');
+        }
     }
 
     public function getConfig() {
@@ -101,6 +103,9 @@ class Module {
                     $authService->setAdapter($ldapAuthAdapter);
 
                     return $authService;
+                },
+                'UserService' => function($sm) {
+                    return new \Application\Service\UserService($sm);
                 })
         );
     }

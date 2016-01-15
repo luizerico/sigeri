@@ -6,7 +6,6 @@
             <th>Name</th>
             <th>Status</th>                
             <th>Analyst</th>
-            <th>Register</th>
             <th>&nbsp;</th>
         </tr>
     </thead>
@@ -17,7 +16,6 @@
                 <td><?php echo $this->escapeHtml($dbRow->getName()); ?></td>
                 <td><?php echo $this->escapeHtml($dbRow->getStatus()); ?></td>
                 <td><?php echo $this->escapeHtml($dbRow->getAnalyst()); ?></td>
-                <td><?php echo $this->escapeHtml($dbRow->getFormatedDate()); ?></td>
                 <td><a
                         href="<?php
                         echo $this->url($this->router, array(
