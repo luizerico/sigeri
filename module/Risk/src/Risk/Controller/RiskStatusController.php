@@ -3,6 +3,7 @@
 namespace Risk\Controller;
 
 use Risk\Entity\RiskStatus;
+use Risk\Controller\GenericController;
 
 class RiskStatusController extends GenericController {
 

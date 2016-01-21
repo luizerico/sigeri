@@ -40,16 +40,38 @@ class GenericController extends AbstractActionController {
     }
 
     public function addAction() {
+        /*
+         * Snippet to redirect to the previous page
+         * Check if there is a Referer value to buid the redirect url
+         */
+        $referer = $this->getRequest()->getHeader('Referer');
+        if ($referer) {
+            $refererUrl = $referer->uri()->getPath(); // referer url
+            $refererHost = $referer->uri()->getHost(); // referer host
+            $host = $this->getRequest()->getUri()->getHost(); // current host            
+        }
+        // Only redirect to previous page if request comes from same host
+        if (isset($refererUrl) && ($refererHost == $host)) {
+            $redirectUrl = $refererUrl;
+        } else {
+            $redirectUrl = '/' . $this->route . '/list';
+        }
+
+        // Build the form
         $builder = new DoctrineAnnotationBuilder($this->getEntityManager());
         $form = $builder->createForm($this->object);
         $hydrator = new DoctrineHydrator($this->getEntityManager(), $this->entity);
         $form->setHydrator($hydrator);
-        $form->get('submit')->setAttribute('value', 'Add');
 
         $form->bind($this->object);
-
-        // Get the asset informations send by the import code
-        $form->populateValues(array('name' => $this->params()->fromQuery('assetname')));
+        $form->get('submit')->setAttribute('value', 'Add');
+        $form->add(array(
+            'type' => 'Zend\Form\Element\Hidden',
+            'name' => 'redirecturl',
+            'attributes' => array(
+                'value' => $redirectUrl,
+            )
+        ));
 
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -73,9 +95,8 @@ class GenericController extends AbstractActionController {
                     $this->getEntityManager()->flush();
                 }
 
-                return $this->redirect()->toRoute($this->route, array(
-                            'action' => 'list'
-                ));
+                return $this->Redirect()->toUrl(
+                                $this->params()->fromPost('redirecturl'));
             }
         }
 
@@ -87,6 +108,24 @@ class GenericController extends AbstractActionController {
     }
 
     public function editAction() {
+        /*
+         * Snippet to redirect to the previous page
+         * Check if there is a Referer value to buid the redirect url
+         */
+        $referer = $this->getRequest()->getHeader('Referer');
+        if ($referer) {
+            $refererUrl = $referer->uri()->getPath(); // referer url
+            $refererHost = $referer->uri()->getHost(); // referer host
+            $host = $this->getRequest()->getUri()->getHost(); // current host            
+        }
+        // Only redirect to previous page if request comes from same host
+        if (isset($refererUrl) && ($refererHost == $host)) {
+            $redirectUrl = $refererUrl;
+        } else {
+            $redirectUrl = '/' . $this->route . '/list';
+        }
+
+        // Build the form
         $builder = new DoctrineAnnotationBuilder($this->getEntityManager());
         $form = $builder->createForm($this->object);
         $hydrator = new DoctrineHydrator($this->getEntityManager(), $this->entity);
@@ -95,16 +134,9 @@ class GenericController extends AbstractActionController {
         $id = (int) $this->params()->fromRoute('id', 0);
 
         if (!$id) {
-            return $this->Redirect()->toRoute($this->route, array(
-                        'action' => 'list'
-            ));
+            return $this->Redirect()->toUrl($redirectUrl);
         }
 
-        /*
-         * Check if the requested Id is valid and
-         * Exist in the database
-         * To do: Customize a page to report the request with a invalid Id
-         */
         try {
             $ORMRepository = $this->getEntityManager()->getRepository($this->entity);
             $dbArray = $ORMRepository->find($id);
@@ -112,31 +144,36 @@ class GenericController extends AbstractActionController {
                 throw new Exception('Id invalido.');
             }
         } catch (Exception $ex) {
-            return $this->redirect()->toRoute($this->route, array(
-                        'action' => 'list'
-            ));
+            return $this->Redirect()->toUrl($redirectUrl);
         }
 
         $form->bind($dbArray);
-        $form->get('submit')->setAttribute('value', 'Edit');
+        $form->get('submit')->setAttribute('value', 'Save');
+        $form->add(array(
+            'type' => 'Zend\Form\Element\Hidden',
+            'name' => 'redirecturl',
+            'attributes' => array(
+                'value' => $redirectUrl,
+            )
+        ));
 
+        // Save the values to the entity
         $request = $this->getRequest();
         if ($request->isPost()) {
             $form->setData($request->getPost());
             if ($form->isValid()) {
-
-                // Insert a new register on the RiskVersion
+                // Insert a new register on the **Entity**Version
                 if (isset($this->entityversion)) {
                     $version = new $this->entityversion;
                     $version->exchangeArray($hydrator->extract($form->getData()));
                     $version->setEntityId($id);
                     $this->getEntityManager()->persist($version);
-                } // End of RiskVersion insert
+                } // End of Version insert
 
+                $this->object->exchangeArray($hydrator->extract($form->getData()));
                 $this->getEntityManager()->flush();
-                return $this->redirect()->toRoute($this->route, array(
-                            'action' => 'list'
-                ));
+                return $this->Redirect()->toUrl(
+                                $this->params()->fromPost('redirecturl'));
             }
         }
 
@@ -177,11 +214,26 @@ class GenericController extends AbstractActionController {
     }
 
     public function deleteAction() {
+        /*
+         * Snippet to redirect to the previous page
+         * Check if there is a Referer value to buid the redirect url
+         */
+        $referer = $this->getRequest()->getHeader('Referer');
+        if ($referer) {
+            $refererUrl = $referer->uri()->getPath(); // referer url
+            $refererHost = $referer->uri()->getHost(); // referer host
+            $host = $this->getRequest()->getUri()->getHost(); // current host            
+        }
+        // Only redirect to previous page if request comes from same host
+        if (isset($refererUrl) && ($refererHost == $host)) {
+            $redirectUrl = $refererUrl;
+        } else {
+            $redirectUrl = '/' . $this->route . '/list';
+        }
+
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute($this->route, array(
-                        'action' => 'list'
-            ));
+            return $this->Redirect()->toUrl($redirectUrl);
         }
 
         try {
@@ -192,9 +244,7 @@ class GenericController extends AbstractActionController {
                 throw new Exception('Id invalido.');
             }
         } catch (Exception $ex) {
-            return $this->redirect()->toRoute($this->route, array(
-                        'action' => 'list'
-            ));
+            return $this->Redirect()->toUrl($redirectUrl);
         }
 
         $request = $this->getRequest();
@@ -207,15 +257,15 @@ class GenericController extends AbstractActionController {
                 $ORMRepository->flush();
             }
 
-            return $this->redirect()->toRoute($this->route, array(
-                        'action' => 'list'
-            ));
+            return $this->Redirect()->toUrl(
+                            $this->params()->fromPost('redirecturl'));
         }
 
         return array(
             'title' => $this->title,
             'router' => $this->route,
             'id' => $id,
+            'redirecturl' => $redirectUrl,
             'dbArray' => $this->getEntityManager()->getRepository($this->entity)->find($id)
         );
     }

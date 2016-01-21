@@ -1,11 +1,11 @@
 <?php
 foreach ($form as $element) :
-    if ((in_array($element->getAttribute('name'), array('name', 
+    if ((in_array($element->getAttribute('name'), array('name',
                 'relevance',
                 'type',
                 'analyst',
                 'unit',
-                'value')))) {
+                'value',)))) {
         ?>
         <div class="form-group <?php
         if ($this->formElementErrors($element))

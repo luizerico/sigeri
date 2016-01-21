@@ -1,0 +1,32 @@
+Tests
+================================
+I have implemented only a few number of functions to test the code.
+The test are focused on test the controllers and the entity test need
+to be implemented yet. 
+
+Besides the localization is working, it is not implemented to all messages and 
+fields. The initial SQL need to be changed to.
+=================================
+
+
+1. Implement ENTITY tests
+2. Implement a audit model to follow the users actions
+3. Implement a better integration with LDAP authentication
+4. Implement AJAX to show some screens.
+5. Put the code on Github
+6. Change the code to allow fields and messages localization in all views (only english available)
+7. Change SQL to allow the values localization 
+8. Improve the navigation between the view/edit/list screen (Pending only USERS)
+9. Improve the METHOD screen
+10. Implement the CLASSIC METHOD 
+11. Implement the OCTAVE METHOD
+12. Improve the PROCESS asset 
+13. Improve the LOCATION asset 
+14. Improve the SERVICE asset 
+15. Integrate PLANS and CONTROLS to the calculated risk
+16. Remove redundant buttons on the main screen
+17. Fix the SETTINGS screens
+18. Remove EntityVersions on delete action of the Entity
+19. Implement Bulk Action
+
+X. Work faster... 

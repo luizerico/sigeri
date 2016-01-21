@@ -12,7 +12,6 @@ return array(
         'DoctrineORMModule',
         'Asset',
         'Risk',
-        'Plan',
         'User',
         'Document',
     ),

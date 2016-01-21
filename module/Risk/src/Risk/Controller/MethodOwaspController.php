@@ -27,6 +27,9 @@ class MethodOwaspController extends GenericController {
 
         $redirectUrl = (string) $this->getRequest()
                             ->getHeader('Referer')->uri()->getPath();
+        
+        $form->bind($this->object);
+        
         $form->add(array(
             'type' => 'Zend\Form\Element\Hidden',
             'name' => 'redirecturl',
@@ -34,8 +37,6 @@ class MethodOwaspController extends GenericController {
                 'value' => $redirectUrl,
             )
         ));
-
-        $form->bind($this->object);
 
         $risk_id = $this->params()->fromQuery('risk_id', 0);
 

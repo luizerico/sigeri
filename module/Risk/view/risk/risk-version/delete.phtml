@@ -1,28 +1,12 @@
 <?php echo $this->partial('partial/delete_top.phtml'); ?>
 <div class="panel-body">
-    <p>Are you sure that you want to delete?</p>
-    Name: <?php echo $this->escapeHtml($dbArray->getName()); ?> <br>
-    Risk ID: <?php echo $this->escapeHtml($dbArray->getEntityId()); ?> <br>
-    Type: <?php echo $this->escapeHtml($dbArray->getType()); ?> <br>
-    Analyst: <?php echo $this->escapeHtml($dbArray->getAnalyst()); ?> <br>
-    Registered: <?php echo $this->dateFormat($dbArray->getCreated(), IntlDateFormatter::LONG, IntlDateFormatter::MEDIUM); ?><br>
-    Updated: <?php echo $this->dateFormat($dbArray->getUpdated(), IntlDateFormatter::LONG, IntlDateFormatter::MEDIUM); ?>  
-<p>
+    <p>Are you sure that you want to delete?</p>    
+    <label>Name:</label> <?php echo $this->escapeHtml($dbArray->getName()); ?> <br>
+    <label>Risk ID:</label> <?php echo $this->escapeHtml($dbArray->getEntityId()); ?> <br>
+    <label>Type:</label> <?php echo $this->escapeHtml($dbArray->getType()); ?> <br>
+    <label>Analyst:</label> <?php echo $this->escapeHtml($dbArray->getAnalyst()); ?> <br>
+    <label>Registered:</label> <?php echo $this->dateFormat($dbArray->getCreated(), IntlDateFormatter::LONG, IntlDateFormatter::MEDIUM); ?><br>
+    <label>Updated:</label> <?php echo $this->dateFormat($dbArray->getUpdated(), IntlDateFormatter::LONG, IntlDateFormatter::MEDIUM); ?>  
+
     <?php
-    $url = $this->url($this->router, array(
-        'action' => 'delete',
-        'id' => $this->id
-    ));
-    ?>
-    <form action="<?php echo $url; ?>" method="post" >
-        <div class="form-group" >
-            <input  type="hidden" name="id"
-                    value="<?php echo (int) $dbArray->getId(); ?>" /> 
-            <input class="btn btn-warning" style="width:100px" type="submit" name="del" 
-                   value="Yes" /> 
-            <input class="btn btn-primary" style="width:100px" type="submit"
-                   name="del" value="No" />
-        </div>
-    </form>
-</div>
-<?php echo $this->partial('partial/delete_bottom.phtml'); ?>
+    echo $this->partial('partial/delete_bottom.phtml');   

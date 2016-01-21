@@ -6,22 +6,5 @@
     Analyst: <?php echo $this->escapeHtml($dbArray->getAnalyst()); ?> <br>
     Registered: <?php echo $this->dateFormat($dbArray->getCreated(), IntlDateFormatter::LONG); ?><br>
     Updated: <?php echo $this->dateFormat($dbArray->getUpdated(), IntlDateFormatter::LONG); ?>  
-<p>
-    <?php
-    $url = $this->url($this->router, array(
-        'action' => 'delete',
-        'id' => $this->id
-    ));
-    ?>
-    <form action="<?php echo $url; ?>" method="post" >
-        <div class="form-group" >
-            <input  type="hidden" name="id"
-                    value="<?php echo (int) $dbArray->getId(); ?>" /> 
-            <input class="btn btn-warning" style="width:100px" type="submit" name="del" 
-                   value="Yes" /> 
-            <input class="btn btn-primary" style="width:100px" type="submit"
-                   name="del" value="No" />
-        </div>
-    </form>
-</div>
-<?php echo $this->partial('partial/delete_bottom.phtml'); ?>
+
+    <?php echo $this->partial('partial/delete_bottom.phtml'); 

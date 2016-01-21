@@ -19,7 +19,7 @@ class GenericController extends AbstractActionController {
     public function __construct() {
         //$this->view->addScriptPath("../Asset/view/asset/generic/");
     }
-    
+
     public function onDispatch(\Zend\Mvc\MvcEvent $e) {
         if (!$this->getServiceLocator()->get('AuthService')->hasIdentity()) {
             $this->redirect()->toRoute('authentication', array('action' => 'login'));
@@ -40,13 +40,38 @@ class GenericController extends AbstractActionController {
     }
 
     public function addAction() {
+        /*
+         * Snippet to redirect to the previous page
+         * Check if there is a Referer value to buid the redirect url
+         */
+        $referer = $this->getRequest()->getHeader('Referer');
+        if ($referer) {
+            $refererUrl = $referer->uri()->getPath(); // referer url
+            $refererHost = $referer->uri()->getHost(); // referer host
+            $host = $this->getRequest()->getUri()->getHost(); // current host            
+        }
+        // Only redirect to previous page if request comes from same host
+        if (isset($refererUrl) && ($refererHost == $host)) {
+            $redirectUrl = $refererUrl;
+        } else {
+            $redirectUrl = '/' . $this->route . '/list';
+        }
+
+        // Build the form
         $builder = new DoctrineAnnotationBuilder($this->getEntityManager());
         $form = $builder->createForm($this->object);
         $hydrator = new DoctrineHydrator($this->getEntityManager(), $this->entity);
         $form->setHydrator($hydrator);
-        $form->get('submit')->setAttribute('value', 'Add');
 
         $form->bind($this->object);
+        $form->get('submit')->setAttribute('value', 'Add');
+        $form->add(array(
+            'type' => 'Zend\Form\Element\Hidden',
+            'name' => 'redirecturl',
+            'attributes' => array(
+                'value' => $redirectUrl,
+            )
+        ));
 
         // Get the asset informations send by the import code
         $form->populateValues(array('name' => $this->params()->fromQuery('assetname')));
@@ -58,9 +83,23 @@ class GenericController extends AbstractActionController {
                 $this->object->exchangeArray($hydrator->extract($form->getData()));
                 $this->getEntityManager()->persist($this->object);
                 $this->getEntityManager()->flush();
-                return $this->redirect()->toRoute($this->route, array(
-                            'action' => 'list'
-                ));
+                
+                /*
+                 *  Insert a new register on RiskVersion
+                 *  To my mind this method is strange and poor but is more simple that
+                 *  use the clone or copy to keep an entirely entity and all
+                 *  relations on another table.
+                 */
+                if (isset($this->entityversion)) {
+                    $version = new $this->entityversion;
+                    $version->exchangeArray($hydrator->extract($form->getData()));
+                    $version->setEntityId($this->object->getId());
+                    $this->getEntityManager()->persist($version);
+                    $this->getEntityManager()->flush();
+                }
+                
+                return $this->Redirect()->toUrl(
+                                $this->params()->fromPost('redirecturl'));
             }
         }
 
@@ -72,6 +111,24 @@ class GenericController extends AbstractActionController {
     }
 
     public function editAction() {
+        /*
+         * Snippet to redirect to the previous page
+         * Check if there is a Referer value to buid the redirect url
+         */
+        $referer = $this->getRequest()->getHeader('Referer');
+        if ($referer) {
+            $refererUrl = $referer->uri()->getPath(); // referer url
+            $refererHost = $referer->uri()->getHost(); // referer host
+            $host = $this->getRequest()->getUri()->getHost(); // current host            
+        }
+        // Only redirect to previous page if request comes from same host
+        if (isset($refererUrl) && ($refererHost == $host)) {
+            $redirectUrl = $refererUrl;
+        } else {
+            $redirectUrl = '/' . $this->route . '/list';
+        }
+
+        // Build the form
         $builder = new DoctrineAnnotationBuilder($this->getEntityManager());
         $form = $builder->createForm($this->object);
         $hydrator = new DoctrineHydrator($this->getEntityManager(), $this->entity);
@@ -80,9 +137,7 @@ class GenericController extends AbstractActionController {
         $id = (int) $this->params()->fromRoute('id', 0);
 
         if (!$id) {
-            return $this->Redirect()->toRoute($this->route, array(
-                        'action' => 'list'
-            ));
+            return $this->Redirect()->toUrl($redirectUrl);
         }
 
         try {
@@ -92,32 +147,53 @@ class GenericController extends AbstractActionController {
                 throw new Exception('Id invalido.');
             }
         } catch (Exception $ex) {
-            return $this->redirect()->toRoute($this->route, array(
-                        'action' => 'list'
-            ));
+            return $this->Redirect()->toUrl($redirectUrl);
         }
 
         $form->bind($dbArray);
-        $form->get('submit')->setAttribute('value', 'Edit');
+        $form->get('submit')->setAttribute('value', 'Save');
+        $form->add(array(
+            'type' => 'Zend\Form\Element\Hidden',
+            'name' => 'redirecturl',
+            'attributes' => array(
+                'value' => $redirectUrl,
+            )
+        ));
 
+        // Save the values to the entity
         $request = $this->getRequest();
         if ($request->isPost()) {
             $form->setData($request->getPost());
             if ($form->isValid()) {
-
+                // Insert a new register on the **Entity**Version
+                if (isset($this->entityversion)) {
+                    $version = new $this->entityversion;
+                    $version->exchangeArray($hydrator->extract($form->getData()));
+                    $version->setEntityId($id);
+                    $this->getEntityManager()->persist($version);
+                } // End of Version insert
+                
                 $this->object->exchangeArray($hydrator->extract($form->getData()));
                 $this->getEntityManager()->flush();
-                return $this->redirect()->toRoute($this->route, array(
-                            'action' => 'list'
-                ));
+                return $this->Redirect()->toUrl(
+                                $this->params()->fromPost('redirecturl'));
             }
+        }
+        
+        try {
+            $versionArray = $this->getEntityManager()
+                    ->getRepository($this->entityversion)
+                    ->findBy(array('entity_id' => $id));
+        } catch (Exception $ex) {
+            $versionArray = null;
         }
 
         return array(
             'title' => $this->title,
             'router' => $this->route,
             'id' => $id,
-            'form' => $form
+            'form' => $form,
+            'vsArray' => $versionArray,
         );
     }
 
@@ -141,11 +217,26 @@ class GenericController extends AbstractActionController {
     }
 
     public function deleteAction() {
+        /*
+         * Snippet to redirect to the previous page
+         * Check if there is a Referer value to buid the redirect url
+         */
+        $referer = $this->getRequest()->getHeader('Referer');
+        if ($referer) {
+            $refererUrl = $referer->uri()->getPath(); // referer url
+            $refererHost = $referer->uri()->getHost(); // referer host
+            $host = $this->getRequest()->getUri()->getHost(); // current host            
+        }
+        // Only redirect to previous page if request comes from same host
+        if (isset($refererUrl) && ($refererHost == $host)) {
+            $redirectUrl = $refererUrl;
+        } else {
+            $redirectUrl = '/' . $this->route . '/list';
+        }
+        
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute($this->route, array(
-                        'action' => 'list'
-            ));
+            return $this->Redirect()->toUrl($redirectUrl);
         }
 
         try {
@@ -156,9 +247,7 @@ class GenericController extends AbstractActionController {
                 throw new Exception('Id invalido.');
             }
         } catch (Exception $ex) {
-            return $this->redirect()->toRoute($this->route, array(
-                        'action' => 'list'
-            ));
+            return $this->Redirect()->toUrl($redirectUrl);
         }
 
         $request = $this->getRequest();
@@ -171,15 +260,15 @@ class GenericController extends AbstractActionController {
                 $ORMRepository->flush();
             }
 
-            return $this->redirect()->toRoute($this->route, array(
-                        'action' => 'list'
-            ));
+            return $this->Redirect()->toUrl(
+                                $this->params()->fromPost('redirecturl'));
         }
 
         return array(
             'title' => $this->title,
             'router' => $this->route,
             'id' => $id,
+            'redirecturl' => $redirectUrl,
             'dbArray' => $this->getEntityManager()->getRepository($this->entity)->find($id)
         );
     }
@@ -216,7 +305,7 @@ class GenericController extends AbstractActionController {
             'dbArray' => $dbArray
         ));
     }
-    
+
     public function countAction($where = '') {
         $dql = 'SELECT COUNT(rows) FROM ' . $this->entity . ' rows ' . $where;
 
@@ -233,22 +322,22 @@ class GenericController extends AbstractActionController {
 
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('row')->from($this->entity, 'row');
-        
-        if(isset($limit)){
+
+        if (isset($limit)) {
             $qb->setMaxResults($limit);
         }
-        
-        if(isset($where)){
-            $qb->andWhere('row.'. $where);
+
+        if (isset($where)) {
+            $qb->andWhere('row.' . $where);
         }
-        
-        if(isset($orderby)){
-            $qb->addOrderBy('row.'.$orderby, $order = 'DESC');
+
+        if (isset($orderby)) {
+            $qb->addOrderBy('row.' . $orderby, $order = 'DESC');
         }
-                
+
         $rows = $qb->getQuery()->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_SCALAR);
         $result = array("rows" => $rows);
         return new JsonModel($result);
-    }   
+    }
 
 }

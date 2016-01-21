@@ -4,7 +4,7 @@ namespace ApplicationTest\Controller;
 
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 
-class IndexControllerTest extends AbstractHttpControllerTestCase {
+abstract class GenericControllerTest extends AbstractHttpControllerTestCase {
 
     protected $serviceManager;
 
@@ -13,6 +13,7 @@ class IndexControllerTest extends AbstractHttpControllerTestCase {
                 include '/home/luizerico/Projects/sigeri/config/application.config.php'
         );
         parent::setUp();
+        
         $authMock = $this->getMock('Zend\Authentication\AuthenticationService');
 
         $authMock->expects($this->any())
@@ -22,19 +23,32 @@ class IndexControllerTest extends AbstractHttpControllerTestCase {
         $serviceManager = $this->getApplicationServiceLocator();
         $serviceManager->setAllowOverride(true);
         $serviceManager->setService('AuthService', $authMock);
+        
     }
 
-    public function testIndexActionCanBeAccessed() {
-        $this->dispatch('/');
-        $this->assertResponseStatusCode(200);
-        $this->assertModuleName('Application');
-        $this->assertControllerName('Application\Controller\Index');
-        $this->assertControllerClass('IndexController');
-        $this->assertMatchedRouteName('home');
+    public function __construct() {
+        
+        parent::__construct();
     }
-    
-    public function testGraph(){
-        $this->assertTrue((2 > 1), 'TEST: 2 is greater than 1');        
+
+    public function testListAction() {
+        $this->dispatch($this->object . 'list');
+        $this->assertResponseStatusCode(200);
+    }
+
+    public function testAddAction() {
+        $this->dispatch($this->object . 'add');
+        $this->assertResponseStatusCode(200);
+    }
+
+    public function testEditAction() {
+        $this->dispatch($this->object . 'edit' . $this->register);
+        $this->assertResponseStatusCode(200);
+    }
+
+    public function testDeleteAction() {
+        $this->dispatch($this->object . 'delete' . $this->register);
+        $this->assertResponseStatusCode(200);
     }
 
 }

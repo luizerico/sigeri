@@ -1,15 +1,16 @@
-            <?php $element = $this->form->get('submit'); ?>
-            <div class="form-group" style="text-align:right;">
-                <div class="col-sm-12">
-                    <?php
-                    $element->setAttribute('class', 'btn btn-primary');
-                    $element->setAttribute('style', 'width:150px');
-                    echo $this->formElement($element);
-                    ?>
-                </div>
-            </div>
-            <?php
-            echo $this->form()->closeTag($form);
-            ?>
-        </div>
+<?php echo $this->formElement($this->form->get('redirecturl')); ?>
+<?php $element = $this->form->get('submit'); ?>
+<div class="form-group" style="text-align:right;">
+    <div class="col-sm-12">
+        <?php
+        $element->setAttribute('class', 'btn btn-primary');
+        $element->setAttribute('style', 'width:150px');
+        echo $this->formElement($element);
+        ?>
+    </div>
+</div>
+<?php
+echo $this->form()->closeTag($form);
+?>
+</div>
 </section>

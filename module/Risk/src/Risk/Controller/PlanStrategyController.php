@@ -3,6 +3,7 @@
 namespace Risk\Controller;
 
 use Risk\Entity\PlanStrategy;
+use Risk\Controller\GenericController;
 
 class PlanStrategyController extends GenericController {
     

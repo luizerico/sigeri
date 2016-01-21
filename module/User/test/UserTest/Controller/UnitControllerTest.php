@@ -2,11 +2,11 @@
 
 use ApplicationTest\Controller\GenericControllerTest;
 
-class DocumentControllerTest extends GenericControllerTest {
+class UnitControllerTest extends GenericControllerTest {
 
     public function __construct() {
-        $this->object = '/document/';
-        $this->register = '/2';
+        $this->object = '/unit/';
+        $this->register = '/1';
 
         parent::__construct();
     }

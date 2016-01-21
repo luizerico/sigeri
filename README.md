@@ -1,17 +1,23 @@
-ZendSkeletonApplication
+SIGERI
 =======================
 
 Introduction
 ------------
-This is a simple, skeleton application using the ZF2 MVC layer and module
-systems. This application is meant to be used as a starting place for those
-looking to get their feet wet with ZF2.
+This is the beta version of a system to management of risks - SIGERI. There are
+a lot of changes to be done before to put in a production environment. 
+This application is meant to be used as a starting point to develop a complete 
+risk management system.
+
 
 Installation
 ------------
 
-Using Composer (recommended)
+Obtain the code from bitbucket (github)
 ----------------------------
+
+Create and populate the database 
+----------------------------
+
 The recommended way to get a working copy of this project is to clone the repository
 and use `composer` to install dependencies using the `create-project` command:
 
@@ -27,23 +33,6 @@ Alternately, clone the repository and manually invoke `composer` using the shipp
     php composer.phar self-update
     php composer.phar install
 
-(The `self-update` directive is to ensure you have an up-to-date `composer.phar`
-available.)
-
-Another alternative for downloading the project is to grab it via `curl`, and
-then pass it to `tar`:
-
-    cd my/project/dir
-    curl -#L https://github.com/zendframework/ZendSkeletonApplication/tarball/master | tar xz --strip-components=1
-
-You would then invoke `composer` to install dependencies per the previous
-example.
-
-Using Git submodules
---------------------
-Alternatively, you can install using native git submodules:
-
-    git clone git://github.com/zendframework/ZendSkeletonApplication.git --recursive
 
 Web Server Setup
 ----------------

@@ -3,6 +3,7 @@
 namespace Risk\Controller;
 
 use Risk\Entity\Likelihood;
+use Risk\Controller\GenericController;
 
 class LikelihoodController extends GenericController {
     

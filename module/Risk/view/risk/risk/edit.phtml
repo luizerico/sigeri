@@ -187,5 +187,7 @@ endforeach;
     </div>
 </div>
 
-<?php echo $this->partial('partial/edit_bottom.phtml'); ?>
+<?php echo $this->formElement($this->form->get('redirecturl')); ?>
+
+<?php echo $this->partial('partial/edit_bottom.phtml'); 
 

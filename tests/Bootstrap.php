@@ -2,9 +2,10 @@
 
 namespace ApplicationTest;
 
-use Zend\Mvc;
-use Zend\ServiceManager\ServiceManager;
+use Zend\Mvc\Application;
+use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Service\ServiceManagerConfig;
+use Zend\ServiceManager\ServiceManager;
 
 class bootstrap {
 
@@ -19,7 +20,7 @@ class bootstrap {
 
         // Run application
         $config = require('config/application.config.php');
-        \Zend\Mvc\Application::init($config);
+        Application::init($config);
 
         $serviceManager = new ServiceManager(new ServiceManagerConfig());
         $serviceManager->setService('ApplicationConfig', $config);
@@ -36,7 +37,7 @@ class bootstrap {
     public function onBootstrap(MvcEvent $e) {
         $sm = $e->getApplication()->getServiceManager();
         $e->getTarget()->getEventManager()->getSharedManager()
-                ->attach('Admin', \Zend\Mvc\MvcEvent::EVENT_DISPATCH, function($e) use ($sm) {
+                ->attach('Admin', MvcEvent::EVENT_DISPATCH, function($e) use ($sm) {
                     $auth = $sm->get('AuthService');
                     $currentRouteName = $e->getRouteMatch()->getMatchedRouteName();
                     $allowed = array(

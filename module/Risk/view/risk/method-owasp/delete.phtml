@@ -1,25 +1,9 @@
 <?php echo $this->partial('partial/delete_top.phtml'); ?>
-<div class="panel-body">  
+<div class="panel-body">
     <p>Are you sure that you want to delete?</p>
     <label>Value:</label> <?php echo $this->escapeHtml($dbArray->getValue()); ?> <br>
     <label>Risk:</label> <?php echo $this->escapeHtml($dbArray->getRisk()); ?>
 
     <?php
-    $url = $this->url($this->router, array(
-        'action' => 'delete',
-        'id' => $this->id
-    ));
-    ?>
-    <p>
-    <form action="<?php echo $url; ?>" method="post" >
-        <div class="form-group" >
-            <input  type="hidden" name="id"
-                    value="<?php echo (int) $dbArray->getId(); ?>" /> 
-            <input class="btn btn-warning" style="width:100px" type="submit" name="del" 
-                   value="Yes" /> 
-            <input class="btn btn-primary" style="width:100px" type="submit"
-                   name="del" value="No" />
-        </div>
-    </form>
-</div>
-<?php echo $this->partial('partial/delete_bottom.phtml'); ?>
+    echo $this->partial('partial/delete_bottom.phtml');
+    

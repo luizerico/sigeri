@@ -3,6 +3,7 @@
 namespace Risk\Controller;
 
 use Risk\Entity\Impact;
+use Risk\Controller\GenericController;
 
 class ImpactController extends GenericController {
 
