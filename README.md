@@ -12,7 +12,7 @@ There is a lot of changes to be done before to put it in a production environmen
     a. Correct translations - I have started the changes on templates to make it works with .po files. Due to this some parts are in english and others in portuguese. 
     b. Make some things more responsive - I have started another project using React. Maybe I would rewrite the templates here... or not.
     c. Build printable reports.
-    d. Rebuild the charts to be confgurable.
+    d. Rebuild the charts to be "configurable".
     
 
 Installation
