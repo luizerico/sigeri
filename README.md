@@ -3,12 +3,17 @@ SIGERI
 
 Introduction
 ------------
-This is the beta version of a system to risk management - SIGERI. There are
-a lot of changes to be done before to put it in a production environment. 
+This is the beta version of a system to risk management - SIGERI.  
 This application is meant to be used as a starting point to develop a complete 
 risk management system.
 
-I'm using php7.0.
+There is a lot of changes to be done before to put it in a production environment:
+    
+    a. Correct translations - I have started the changes on templates to make it works with .po files. Due to this some parts are in english and others in portuguese. 
+    b. Make some things more responsive - I have started another project using React. Maybe I would rewrite the templates here... or not.
+    c. Build printable reports.
+    d. Rebuild the charts to be confgurable.
+    
 
 Installation
 ------------
