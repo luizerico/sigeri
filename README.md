@@ -13,22 +13,22 @@ I'm using php7.0.
 Installation
 ------------
 
-Obtain the code from github:
+1. Obtain the code from github:
 
     git clone https://github.com/luizerico/sigeri
 
-Install zend and other dependencies using composer:
+2. Install zend and other dependencies using composer:
 
     cd /directory/project
     php composer.phar self-update
     php composer.phar install
 
-Create and populate the database:
+3. Create and populate the database:
 
     mysql create database sigeri
     cat sigeri.sql | mysql -u <user> -p sigeri
 
-Configure MySQL database connection:
+4. Configure the user and password of MySQL database on /directory/project/config/autoload/doctrine.global.php and config/autoload/global.php.
 
 
 Web Server Setup
